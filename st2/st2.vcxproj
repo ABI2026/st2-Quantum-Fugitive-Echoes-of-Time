@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dist|x64">
+      <Configuration>Dist</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3EAB880B-AAB4-887C-3330-9F7C9F38947C}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>st2</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\bin\Debug-windows-x86_64\st2\</OutDir>
+    <IntDir>..\bin-int\Debug-windows-x86_64\st2\</IntDir>
+    <TargetName>st2</TargetName>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\Release-windows-x86_64\st2\</OutDir>
+    <IntDir>..\bin-int\Release-windows-x86_64\st2\</IntDir>
+    <TargetName>st2</TargetName>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\Dist-windows-x86_64\st2\</OutDir>
+    <IntDir>..\bin-int\Dist-windows-x86_64\st2\</IntDir>
+    <TargetName>st2</TargetName>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>SFML_STATIC;PLATFORM_WINDOWS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\SFML\SFML-2.6.1\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>freetype.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;openal32.lib;opengl32.lib;flac.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;sfml-audio-s-d.lib;sfml-network-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\vendor\SFML\SFML-2.6.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>SFML_STATIC;PLATFORM_WINDOWS;RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\SFML\SFML-2.6.1\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>freetype.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;openal32.lib;opengl32.lib;flac.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-audio-s.lib;sfml-network-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\vendor\SFML\SFML-2.6.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>SFML_STATIC;PLATFORM_WINDOWS;DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\SFML\SFML-2.6.1\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>freetype.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;openal32.lib;opengl32.lib;flac.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-audio-s.lib;sfml-network-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\vendor\SFML\SFML-2.6.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\GameWindow.h" />
+    <ClInclude Include="src\Utils\Log.h" />
+    <ClInclude Include="src\Utils\Random.h" />
+    <ClInclude Include="src\Utils\Soundsystem.h" />
+    <ClInclude Include="src\Utils\Timer.h" />
+    <ClInclude Include="src\Utils\spdlog\async.h" />
+    <ClInclude Include="src\Utils\spdlog\async_logger-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\async_logger.h" />
+    <ClInclude Include="src\Utils\spdlog\cfg\argv.h" />
+    <ClInclude Include="src\Utils\spdlog\cfg\env.h" />
+    <ClInclude Include="src\Utils\spdlog\cfg\helpers-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\cfg\helpers.h" />
+    <ClInclude Include="src\Utils\spdlog\common-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\common.h" />
+    <ClInclude Include="src\Utils\spdlog\details\backtracer-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\details\backtracer.h" />
+    <ClInclude Include="src\Utils\spdlog\details\circular_q.h" />
+    <ClInclude Include="src\Utils\spdlog\details\console_globals.h" />
+    <ClInclude Include="src\Utils\spdlog\details\file_helper-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\details\file_helper.h" />
+    <ClInclude Include="src\Utils\spdlog\details\fmt_helper.h" />
+    <ClInclude Include="src\Utils\spdlog\details\log_msg-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\details\log_msg.h" />
+    <ClInclude Include="src\Utils\spdlog\details\log_msg_buffer-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\details\log_msg_buffer.h" />
+    <ClInclude Include="src\Utils\spdlog\details\mpmc_blocking_q.h" />
+    <ClInclude Include="src\Utils\spdlog\details\null_mutex.h" />
+    <ClInclude Include="src\Utils\spdlog\details\os-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\details\os.h" />
+    <ClInclude Include="src\Utils\spdlog\details\periodic_worker-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\details\periodic_worker.h" />
+    <ClInclude Include="src\Utils\spdlog\details\registry-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\details\registry.h" />
+    <ClInclude Include="src\Utils\spdlog\details\synchronous_factory.h" />
+    <ClInclude Include="src\Utils\spdlog\details\tcp_client-windows.h" />
+    <ClInclude Include="src\Utils\spdlog\details\tcp_client.h" />
+    <ClInclude Include="src\Utils\spdlog\details\thread_pool-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\details\thread_pool.h" />
+    <ClInclude Include="src\Utils\spdlog\details\udp_client-windows.h" />
+    <ClInclude Include="src\Utils\spdlog\details\udp_client.h" />
+    <ClInclude Include="src\Utils\spdlog\details\windows_include.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bin_to_hex.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\args.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\chrono.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\color.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\compile.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\core.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\format-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\format.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\locale.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\os.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\ostream.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\printf.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\ranges.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\std.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\bundled\xchar.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\chrono.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\compile.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\fmt.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\ostr.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\ranges.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\std.h" />
+    <ClInclude Include="src\Utils\spdlog\fmt\xchar.h" />
+    <ClInclude Include="src\Utils\spdlog\formatter.h" />
+    <ClInclude Include="src\Utils\spdlog\fwd.h" />
+    <ClInclude Include="src\Utils\spdlog\logger-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\logger.h" />
+    <ClInclude Include="src\Utils\spdlog\pattern_formatter-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\pattern_formatter.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\android_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\ansicolor_sink-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\ansicolor_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\base_sink-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\base_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\basic_file_sink-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\basic_file_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\callback_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\daily_file_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\dist_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\dup_filter_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\hourly_file_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\kafka_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\mongo_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\msvc_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\null_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\ostream_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\qt_sinks.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\ringbuffer_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\rotating_file_sink-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\rotating_file_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\sink-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\stdout_color_sinks-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\stdout_color_sinks.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\stdout_sinks-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\stdout_sinks.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\syslog_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\systemd_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\tcp_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\udp_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\win_eventlog_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\wincolor_sink-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\sinks\wincolor_sink.h" />
+    <ClInclude Include="src\Utils\spdlog\spdlog-inl.h" />
+    <ClInclude Include="src\Utils\spdlog\spdlog.h" />
+    <ClInclude Include="src\Utils\spdlog\stopwatch.h" />
+    <ClInclude Include="src\Utils\spdlog\tweakme.h" />
+    <ClInclude Include="src\Utils\spdlog\version.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GameWindow.cpp" />
+    <ClCompile Include="src\Utils\Log.cpp" />
+    <ClCompile Include="src\Utils\Random.cpp" />
+    <ClCompile Include="src\Utils\Soundsystem.cpp" />
+    <ClCompile Include="src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Vendor\imgui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
