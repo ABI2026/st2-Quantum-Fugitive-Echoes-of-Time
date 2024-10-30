@@ -3,7 +3,7 @@
 #include <mutex>
 #include <unordered_map>
 #include <SFML/Audio.hpp>
-
+#define use_singleton_for_soundsystem
 
 
 
@@ -17,11 +17,11 @@ public:
 
 	struct Soundmetadata
 	{
-		float attenuation{0};
-		float mindistance{0};
+		float attenuation{ 0 };
+		float mindistance{ 0 };
 		Soundmetadata() = default;
-		Soundmetadata(float i_attenuation,float i_mindistance)
-		:attenuation(i_attenuation),mindistance(i_mindistance){}
+		Soundmetadata(float i_attenuation, float i_mindistance)
+			:attenuation(i_attenuation), mindistance(i_mindistance) {}
 	private:
 		friend class Soundsystem;
 		sf::SoundBuffer buffer;
@@ -54,7 +54,7 @@ private:
 	//sound data and mappings
 private:
 	std::unordered_map<int, std::string> m_mapping;
-	std::unordered_map<std::string, float> m_volumes; 
+	std::unordered_map<std::string, float> m_volumes;
 	std::unordered_map<std::string, std::deque<Soundmetadata>> m_sounds_meta_data;
 	std::unordered_map<std::string, sound_group> m_sounds;
 
@@ -85,36 +85,43 @@ private:
 
 	void internal_increment_volume(float increase, const std::string& group_id);
 
-	void internal_set_volumes(const std::unordered_map<std::string,float>& volumes);
+	void internal_set_volumes(const std::unordered_map<std::string, float>& volumes);
 
-	void internal_load_buffer(const std::string& location, bool priority, const std::string& group,const Soundmetadata& metadata);
+	void internal_load_buffer(const std::string& location, bool priority, const std::string& group, const Soundmetadata& metadata);
 
 	void internal_load_buffer(const std::string& location, bool priority, int group, const Soundmetadata& metadata);
 
 
-	Soundsystem(float tilesize, bool use_tile_size);
-	~Soundsystem();
 
 	//run method which runs on another thread
+private:
 	void run();
 
-public:
+	void start_thread();
 
+	void stop_thread();
+#ifndef use_singleton_for_soundsystem
+
+public:
+#else
+private:
+#endif
+	Soundsystem(float tilesize, bool use_tile_size);
+	~Soundsystem();
+public:
 	Soundsystem() = delete;
 	Soundsystem(const Soundsystem&) = delete;
 	Soundsystem operator=(const Soundsystem&) = delete;
-	Soundsystem(Soundsystem&&) = delete;
-	Soundsystem operator=(Soundsystem&&) = delete;
-
+	//Soundsystem(Soundsystem&&) = delete;
+	//Soundsystem operator=(Soundsystem&&) = delete;
+#ifdef use_singleton_for_soundsystem
 	static void init(float tilesize = 1, bool use_tile_size = false);
 
 	static Soundsystem* get_instance();
 
 	static void delete_instance();
+#endif
 
-	void start_thread();
-
-	void stop_thread();
 
 
 

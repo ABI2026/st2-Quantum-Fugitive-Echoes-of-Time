@@ -10,7 +10,7 @@ public:
 	static void Init(spdlog::level::level_enum client_level,spdlog::level::level_enum system_level)
 	{
 		spdlog::set_pattern("%^[%T] [thread %t] %n: %v%$");
-		s_system_logger = spdlog::stdout_color_mt("soundsystem");
+		s_system_logger = spdlog::stdout_color_mt("st2");
 		s_system_logger->set_level(system_level);
 		s_client_logger = spdlog::stdout_color_mt("client");
 		s_system_logger->set_level(client_level);
