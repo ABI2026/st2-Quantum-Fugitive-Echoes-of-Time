@@ -1165,8 +1165,8 @@ FMT_INLINE int remove_trailing_zeros(uint64_t& n) noexcept {
     // If yes, work with the quotient.
     auto n32 = static_cast<uint32_t>(nm.high() >> (90 - 64));
 
-    const uint32_t mod_inv_5 = 0xcccccccd;
-    const uint32_t mod_inv_25 = mod_inv_5 * mod_inv_5;
+    constexpr uint32_t mod_inv_5 = 0xcccccccd;
+    constexpr uint32_t mod_inv_25 = mod_inv_5 * mod_inv_5;
 
     int s = 8;
     while (true) {
@@ -1261,7 +1261,7 @@ template <typename T> decimal_fp<T> to_decimal(T x) noexcept {
   auto br = bit_cast<carrier_uint>(x);
 
   // Extract significand bits and exponent bits.
-  const carrier_uint significand_mask =
+  constexpr carrier_uint significand_mask =
       (static_cast<carrier_uint>(1) << num_significand_bits<T>()) - 1;
   carrier_uint significand = (br & significand_mask);
   int exponent =

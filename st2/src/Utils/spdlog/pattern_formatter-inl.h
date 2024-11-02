@@ -1398,7 +1398,7 @@ SPDLOG_INLINE void pattern_formatter::compile_pattern_(const std::string &patter
         {
             if (user_chars) // append user chars found so far
             {
-                formatters_.push_back(std::move(user_chars));
+                formatters_.emplace_back(user_chars.release());
             }
 
             auto padding = handle_padspec_(++it, end);

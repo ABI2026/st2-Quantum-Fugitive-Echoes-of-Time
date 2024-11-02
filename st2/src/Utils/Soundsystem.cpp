@@ -391,7 +391,10 @@ void Soundsystem::internal_load_buffer(const std::string& location, bool priorit
 		return;
 	}
 	sf::SoundBuffer temp_buffer;
-	temp_buffer.loadFromFile(location);
+	if(!temp_buffer.loadFromFile(location))
+	{
+		LOG_ERROR("Failed to load sound from location: {}", location);
+	}
 	Soundmetadata temp_metadata{ metadata };
 
 	temp_metadata.buffer = temp_buffer;

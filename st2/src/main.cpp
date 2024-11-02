@@ -6,7 +6,7 @@
 #include "Utils/Random.h"
 #include "imgui-SFML.h"
 #include "imgui.h"
-#include <cmath> // For sin() and cos()
+#include <cmath>
 #include "SFML/OpenGL.hpp"
 #include "Utils/Timer.h"
 
@@ -46,6 +46,7 @@ int Main(int argc, char** argv)
     LOG_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
     LOG_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
     LOG_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
+    ;
     while (SFwindowInstance.isOpen())
     {
         sf::Event event{};
@@ -73,12 +74,10 @@ int Main(int argc, char** argv)
                 break;
             }
         }
+
         const double deltatime = static_cast<double>(deltaClock.getElapsedTime().asSeconds());
         ImGui::SFML::Update(SFwindowInstance, deltaClock.restart());
-        ImGui::DockSpaceOverViewport();
-        ImGui::Begin("hallo welt");
-        ImGui::Text("hallo welt");
-        ImGui::End();
+
 
     	SFwindowInstance.clear();
         ImGui::SFML::Render(SFwindowInstance);
