@@ -77,14 +77,14 @@ void Eventsystem::add_key_listener(sf::Keyboard::Key key)
 
 }
 
-bool Eventsystem::get_key_state(sf::Keyboard::Key key)
+bool Eventsystem::get_key_state(sf::Keyboard::Key key) const
 {
-	return m_key_states[key];
+	return m_key_states.at(key);
 }
 
-bool Eventsystem::get_key_action(sf::Keyboard::Key key)
+int8_t Eventsystem::get_key_action(sf::Keyboard::Key key) const
 {
-	return m_key_actions[key];
+	return m_key_actions.at(key);
 }
 
 void Eventsystem::set_key_callback(sf::Keyboard::Key key, const std::function<void(sf::Keyboard::Key, int)>& callback)
@@ -105,15 +105,15 @@ void Eventsystem::add_mouse_button_listener(sf::Mouse::Button button)
 		m_mouse_button_events_callbacks.insert({ button,{} });
 }
 
-bool Eventsystem::get_mouse_button_state(sf::Mouse::Button button)
+bool Eventsystem::get_mouse_button_state(sf::Mouse::Button button) const
 {
-	return m_mouse_button_states[button];
+	return m_mouse_button_states.at(button);
 
 }
 
-bool Eventsystem::get_mouse_button_action(sf::Mouse::Button button)
+int8_t Eventsystem::get_mouse_button_action(sf::Mouse::Button button) const
 {
-	return m_mouse_button_actions[button];
+	return m_mouse_button_actions.at(button);
 
 }
 

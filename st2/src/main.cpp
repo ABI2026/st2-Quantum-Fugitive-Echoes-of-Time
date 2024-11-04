@@ -7,6 +7,8 @@
 #include "imgui-SFML.h"
 #include "imgui.h"
 #include <cmath>
+
+#include "Eventsystem.h"
 #include "SFML/OpenGL.hpp"
 #include "Utils/Timer.h"
 
@@ -37,8 +39,10 @@ int Main(int argc, char** argv)
     Log::Init(LOG_LEVEL_INFO,LOG_LEVEL_INFO);
     Random::Init();
     GameWindow::init(720, 480, "window");
-    init_sfml_imgui(SFwindowInstance);
-    SFwindowInstance.setFramerateLimit(60);
+    sf::RenderWindow& window = SFwindowInstance;
+    std::shared_ptr<Eventsystem> eventsystem;
+    init_sfml_imgui(window);
+    window.setFramerateLimit(60);
     sf::Clock deltaClock;
 	bool left_click = false;
     bool right_click = false;
@@ -46,29 +50,17 @@ int Main(int argc, char** argv)
     LOG_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
     LOG_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
     LOG_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
-    ;
-    while (SFwindowInstance.isOpen())
+    while (window.isOpen())
     {
         sf::Event event{};
-        while (SFwindowInstance.pollEvent(event))
+        while (window.pollEvent(event))
         {
-            ImGui::SFML::ProcessEvent(SFwindowInstance, event);
-
+            ImGui::SFML::ProcessEvent(window, event);
+            eventsystem->update_events(window, event);
             switch (event.type)
             {
             case sf::Event::Closed:
-                SFwindowInstance.close();
-                break;
-            case sf::Event::MouseButtonReleased://fallthrough
-            case sf::Event::MouseButtonPressed:
-            {
-	            const bool down = event.type == sf::Event::MouseButtonPressed;
-                if (event.mouseButton.button == sf::Mouse::Button::Left)
-                    left_click = down;
-                if (event.mouseButton.button == sf::Mouse::Button::Right)
-                    right_click = down;
-            }
-            break;
+                window.close();
                 break;
             default:
                 break;
@@ -76,12 +68,12 @@ int Main(int argc, char** argv)
         }
 
         const double deltatime = static_cast<double>(deltaClock.getElapsedTime().asSeconds());
-        ImGui::SFML::Update(SFwindowInstance, deltaClock.restart());
+        ImGui::SFML::Update(window, deltaClock.restart());
 
 
-    	SFwindowInstance.clear();
-        ImGui::SFML::Render(SFwindowInstance);
-        SFwindowInstance.display();
+        window.clear();
+        ImGui::SFML::Render(window);
+        window.display();
         
     }
 

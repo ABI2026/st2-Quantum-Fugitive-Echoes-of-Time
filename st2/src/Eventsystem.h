@@ -25,13 +25,13 @@ public:
 	void update_events(const sf::Window& window,const sf::Event& event);
 
 	void add_key_listener(sf::Keyboard::Key key);
-	bool get_key_state(sf::Keyboard::Key key);
-	bool get_key_action(sf::Keyboard::Key key);
+	[[nodiscard]] bool get_key_state(sf::Keyboard::Key key) const;
+	[[nodiscard]] int8_t get_key_action(sf::Keyboard::Key key) const;
 	void set_key_callback(sf::Keyboard::Key key, const std::function<void(sf::Keyboard::Key, int)>& callback);
 
 	void add_mouse_button_listener(sf::Mouse::Button button);
-	bool get_mouse_button_state(sf::Mouse::Button button);
-	bool get_mouse_button_action(sf::Mouse::Button button);
+	[[nodiscard]] bool get_mouse_button_state(sf::Mouse::Button button) const;
+	[[nodiscard]] int8_t get_mouse_button_action(sf::Mouse::Button button) const;
 	void set_mouse_button_callback(sf::Mouse::Button button, const std::function<void(sf::Mouse::Button, int)>& callback);
 };
 
