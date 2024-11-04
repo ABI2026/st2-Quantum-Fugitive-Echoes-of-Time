@@ -53,10 +53,11 @@ int Main(int argc, char** argv)
     while (window.isOpen())
     {
         sf::Event event{};
+        eventsystem->update(); //release events updaten
         while (window.pollEvent(event))
         {
             ImGui::SFML::ProcessEvent(window, event);
-            eventsystem->update_events(window, event);
+            eventsystem->process_events(window, event);
             switch (event.type)
             {
             case sf::Event::Closed:

@@ -11,7 +11,7 @@
 class Eventsystem
 {
 	bool focus = true;
-	//TODO: ENTSCHEIDEN OB STATES UND ACTIONS ZUSAMMENGEPACKT WERDEN SOLL MOMENTAN HABEN WIR KEIN SPEICHER PROBLEM ALSO WUERDE ICH DAS ERSTMAL SO LASSEN
+	//ENTSCHEIDEN OB STATES UND ACTIONS ZUSAMMENGEPACKT WERDEN SOLL MOMENTAN HABEN WIR KEIN SPEICHER PROBLEM ALSO WUERDE ICH DAS ERSTMAL SO LASSEN
 	std::unordered_map<sf::Keyboard::Key,bool> m_key_states;
 	std::unordered_map<sf::Keyboard::Key,int8_t> m_key_actions; 
 	std::unordered_map<sf::Keyboard::Key,std::function<void(sf::Keyboard::Key,int)>> m_key_events_callbacks;
@@ -22,8 +22,9 @@ class Eventsystem
 public:
 	Eventsystem();
 
-	void update_events(const sf::Window& window,const sf::Event& event);
-
+	//VLLT SOLL EVENTSYSTEM AUCH ALLES ANDERE MACHEN ALSO POLLEVENTS ETC.
+	void process_events(const sf::Window& window,const sf::Event& event);
+	void update();
 	void add_key_listener(sf::Keyboard::Key key);
 	[[nodiscard]] bool get_key_state(sf::Keyboard::Key key) const;
 	[[nodiscard]] int8_t get_key_action(sf::Keyboard::Key key) const;

@@ -1,10 +1,12 @@
 #include "Eventsystem.h"
 
+#include <ranges>
+
 Eventsystem::Eventsystem()
 {
 }
 
-void Eventsystem::update_events(const sf::Window& window, const sf::Event& event)
+void Eventsystem::process_events(const sf::Window& window, const sf::Event& event)
 {
 	if (event.type == sf::Event::LostFocus)
 		focus = false;
@@ -15,7 +17,8 @@ void Eventsystem::update_events(const sf::Window& window, const sf::Event& event
 		return;
 	switch (event.type)
 	{
-		//TODO: ENTSCHEIDEN OB ANDERE EVENTS AUCH GETRACT WERDEN SOLLTEN WIE RESIZE ETC.
+		//ENTSCHEIDEN OB ANDERE EVENTS AUCH GETRACT WERDEN SOLLTEN WIE RESIZE ETC.
+
 		//case sf::Event::Closed: break;
 		//case sf::Event::Resized: break;
 		//case sf::Event::TextEntered: break;
@@ -64,6 +67,21 @@ void Eventsystem::update_events(const sf::Window& window, const sf::Event& event
 	//case sf::Event::SensorChanged: break;
 
 	default: break;
+	}
+}
+
+void Eventsystem::update()
+{
+	for(auto& action : m_key_actions | std::views::values)
+	{
+		if (action == 0) //wenn die aktion 0(release) ist wird diese auf -1 (also nichts veraendert) geaendert
+			action = -1;
+	}
+
+	for(auto& action : m_mouse_button_actions | std::views::values)
+	{
+		if (action == 0) //wenn die aktion 0(release) ist wird diese auf -1 (also nichts veraendert) geaendert
+			action = -1;
 	}
 }
 
