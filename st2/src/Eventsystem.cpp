@@ -29,7 +29,7 @@ void Eventsystem::process_events(const sf::Window& window, const sf::Event& even
 		if (!m_key_states.contains(key))
 			break;
 		const bool down = (event.type == sf::Event::KeyPressed);
-		const int8_t action = (down) ? (m_key_states[key] ? 2 : 1) : (0);
+		const action action = (down) ? (m_key_states[key] ? action_repeat : action_pressed) : (action_released);
 		m_key_actions[key] = action;
 		m_key_states[key] = down;
 		if (m_key_events_callbacks[key])
@@ -46,7 +46,7 @@ void Eventsystem::process_events(const sf::Window& window, const sf::Event& even
 		if (!m_mouse_button_states.contains(button))
 			break;
 		const bool down = (event.type == sf::Event::MouseButtonPressed);
-		const int8_t action = (down) ? (m_mouse_button_states[button] ? 2 : 1) : (0);
+		const action action = (down) ? (m_mouse_button_states[button] ? action_repeat : action_pressed) : (action_released);
 		m_mouse_button_actions[button] = action;
 		m_mouse_button_states[button] = down;
 		if (m_mouse_button_events_callbacks[button])
@@ -72,16 +72,16 @@ void Eventsystem::process_events(const sf::Window& window, const sf::Event& even
 
 void Eventsystem::update()
 {
-	for(auto& action : m_key_actions | std::views::values)
+	for (auto& action : m_key_actions | std::views::values)
 	{
-		if (action == 0) //wenn die aktion 0(release) ist wird diese auf -1 (also nichts veraendert) geaendert
-			action = -1;
+		if (action == action_released)
+			action = action_none;
 	}
 
-	for(auto& action : m_mouse_button_actions | std::views::values)
+	for (auto& action : m_mouse_button_actions | std::views::values)
 	{
-		if (action == 0) //wenn die aktion 0(release) ist wird diese auf -1 (also nichts veraendert) geaendert
-			action = -1;
+		if (action == action_released)
+			action = action_none;
 	}
 }
 
@@ -89,27 +89,27 @@ void Eventsystem::add_key_listener(sf::Keyboard::Key key)
 {
 	m_key_states.insert_or_assign(key, sf::Keyboard::isKeyPressed(key));
 	if (!m_key_actions.contains(key))
-		m_key_actions.insert({ key,0 });
+		m_key_actions.insert({ key,action_none });
 	if (!m_key_events_callbacks.contains(key))
 		m_key_events_callbacks.insert({ key,{} });
 
 }
 
-bool Eventsystem::get_key_state(sf::Keyboard::Key key) const
+bool Eventsystem::get_key_state(const sf::Keyboard::Key key) const
 {
 	return m_key_states.at(key);
 }
 
-int8_t Eventsystem::get_key_action(sf::Keyboard::Key key) const
+Eventsystem::action Eventsystem::get_key_action(const sf::Keyboard::Key key) const
 {
 	return m_key_actions.at(key);
 }
 
-void Eventsystem::set_key_callback(sf::Keyboard::Key key, const std::function<void(sf::Keyboard::Key, int)>& callback)
+void Eventsystem::set_key_callback(sf::Keyboard::Key key, const std::function<void(sf::Keyboard::Key, action)>& callback)
 {
 	m_key_events_callbacks.insert_or_assign(key, callback);
 	if (!m_key_actions.contains(key))
-		m_key_actions.insert({ key,0 });
+		m_key_actions.insert({ key,action_none });
 	if (!m_key_states.contains(key))
 		m_key_states.insert({ key,sf::Keyboard::isKeyPressed(key) });
 }
@@ -118,28 +118,28 @@ void Eventsystem::add_mouse_button_listener(sf::Mouse::Button button)
 {
 	m_mouse_button_states.insert_or_assign(button, sf::Mouse::isButtonPressed(button));
 	if (!m_mouse_button_actions.contains(button))
-		m_mouse_button_actions.insert({button,-1});
+		m_mouse_button_actions.insert({ button,action_none });
 	if (!m_mouse_button_events_callbacks.contains(button))
 		m_mouse_button_events_callbacks.insert({ button,{} });
 }
 
-bool Eventsystem::get_mouse_button_state(sf::Mouse::Button button) const
+bool Eventsystem::get_mouse_button_state(const sf::Mouse::Button button) const
 {
 	return m_mouse_button_states.at(button);
 
 }
 
-int8_t Eventsystem::get_mouse_button_action(sf::Mouse::Button button) const
+Eventsystem::action Eventsystem::get_mouse_button_action(const sf::Mouse::Button button) const
 {
 	return m_mouse_button_actions.at(button);
 
 }
 
-void Eventsystem::set_mouse_button_callback(sf::Mouse::Button button, const std::function<void(sf::Mouse::Button, int)>& callback)
+void Eventsystem::set_mouse_button_callback(sf::Mouse::Button button, const std::function<void(sf::Mouse::Button, action)>& callback)
 {
 	m_mouse_button_events_callbacks.insert_or_assign(button, callback);
 	if (!m_mouse_button_actions.contains(button))
-		m_mouse_button_actions.insert({ button,-1 });
+		m_mouse_button_actions.insert({ button,action_none });
 	if (!m_mouse_button_states.contains(button))
 		m_mouse_button_states.insert({ button,sf::Mouse::isButtonPressed(button) });
 }
