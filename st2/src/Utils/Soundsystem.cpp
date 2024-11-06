@@ -79,7 +79,7 @@ size_t Soundsystem::internal_get_group_size(const std::string& group_id) const
 	if (!m_sounds.contains(group_id))
 	{
 		LOG_WARN("group_id: {} has no sounds", group_id);
-		return -1;
+		return 0;
 	}
 	return m_sounds.at(group_id).size();
 }

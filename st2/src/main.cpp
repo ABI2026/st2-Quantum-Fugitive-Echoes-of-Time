@@ -36,11 +36,13 @@ int main(int argc, char** argv)
 
 int Main(int argc, char** argv)
 {
-    Log::Init(LOG_LEVEL_INFO,LOG_LEVEL_INFO);
-    Random::Init();
+    Log::init(LOG_LEVEL_INFO,LOG_LEVEL_INFO);
+    Random::init();
+
     GameWindow::init(720, 480, "window");
-    sf::RenderWindow& window = SFwindowInstance;
-    std::shared_ptr<Eventsystem> eventsystem;
+
+	sf::RenderWindow& window = SFwindowInstance;
+    std::shared_ptr<Eventsystem> eventsystem = std::make_shared<Eventsystem>();
     init_sfml_imgui(window);
     window.setFramerateLimit(60);
     sf::Clock deltaClock;
@@ -78,6 +80,7 @@ int Main(int argc, char** argv)
         
     }
 
+    ImGui::SFML::Shutdown(window);
     GameWindow::delete_instance();
 	return 0;
 }

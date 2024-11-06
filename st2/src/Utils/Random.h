@@ -6,43 +6,43 @@
 class Random
 {
 public:
-	static void Init()
+	static void init()
 	{
 		s_random_engine.seed(std::random_device()());
 	}
 
-	static uint32_t UInt()
+	static uint32_t uint()
 	{
 		return s_distribution(s_random_engine);
 	}
 
-	static uint32_t UInt(const uint32_t min, const uint32_t max)
+	static uint32_t uint(const uint32_t min, const uint32_t max)
 	{
 		return min + (s_distribution(s_random_engine) % (max - min + 1));
 	}
 
-	static float Float()
+	static float floating()
 	{
 		return static_cast<float>(s_distribution(s_random_engine)) / static_cast<float>(std::numeric_limits<uint32_t>::max());
 	}
-	static float Float(const float min, const float max)
+	static float floating(const float min, const float max)
 	{
-		return Float() * (max - min) + min;
+		return floating() * (max - min) + min;
 	}
 
-	static glm::vec3 Vec3()
+	static glm::vec3 vec3()
 	{
-		return {Float(), Float(), Float()};
+		return { floating(), floating(), floating()};
 	}
 
-	static glm::vec3 Vec3(const float min, const float max)
+	static glm::vec3 vec3(const float min, const float max)
 	{
-		return {Float(min,max), Float(min,max), Float(min,max)};
+		return { floating(min,max), floating(min,max), floating(min,max)};
 	}
 
-	static glm::vec3 InUnitSphere()
+	static glm::vec3 in_unit_sphere()
 	{
-		return glm::normalize(Vec3(-1.0f, 1.0f));
+		return glm::normalize(vec3(-1.0f, 1.0f));
 	}
 private:
 	static std::mt19937 s_random_engine;
