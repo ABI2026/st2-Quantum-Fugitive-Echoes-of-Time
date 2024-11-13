@@ -41,17 +41,17 @@ int Main(int argc, char** argv)
 
     GameWindow::init(720, 480, "window");
 
-	sf::RenderWindow& window = SFwindowInstance;
-    std::shared_ptr<Eventsystem> eventsystem = std::make_shared<Eventsystem>();
-    init_sfml_imgui(window);
-    window.setFramerateLimit(60);
-    sf::Clock deltaClock;
-	bool left_click = false;
-    bool right_click = false;
     LOG_INFO("  OpenGL Info:");
     LOG_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
     LOG_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
     LOG_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
+
+	sf::RenderWindow& window = SFwindowInstance;
+    DBL_MAX;
+	std::shared_ptr<Eventsystem> eventsystem = std::make_shared<Eventsystem>();
+    init_sfml_imgui(window);
+    window.setFramerateLimit(60);
+    sf::Clock deltaClock;
     while (window.isOpen())
     {
         sf::Event event{};

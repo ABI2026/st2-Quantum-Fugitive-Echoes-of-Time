@@ -34,6 +34,9 @@ public:
 	[[nodiscard]] action get_mouse_button_action(sf::Mouse::Button button) const;
 	void set_mouse_button_callback(sf::Mouse::Button button, const std::function<void(sf::Mouse::Button, action)>& callback);
 
+	sf::Vector2f get_mouse_position() const;
+	sf::Vector2f get_mouse_offset() const;
+
 private:
 
 	bool focus = true;
@@ -45,5 +48,7 @@ private:
 	std::unordered_map<sf::Mouse::Button, bool> m_mouse_button_states;
 	std::unordered_map<sf::Mouse::Button, action> m_mouse_button_actions;
 	std::unordered_map<sf::Mouse::Button, std::function<void(sf::Mouse::Button, action)>> m_mouse_button_events_callbacks;
+	sf::Vector2f m_mouse_position;
+	sf::Vector2f m_mouse_offset;
 };
 

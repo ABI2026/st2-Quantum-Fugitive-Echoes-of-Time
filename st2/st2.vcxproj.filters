@@ -348,6 +348,9 @@
       <Filter>Utils\spdlog</Filter>
     </ClInclude>
     <ClInclude Include="src\Eventsystem.h" />
+    <ClInclude Include="src\Layer.h" />
+    <ClInclude Include="src\Menu.h" />
+    <ClInclude Include="src\Button.h" />
     <ClInclude Include="src\Player.h" />
   </ItemGroup>
   <ItemGroup>
@@ -364,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Eventsystem.cpp" />
+    <ClCompile Include="src\Layer.cpp" />
+    <ClCompile Include="src\Menu.cpp" />
+    <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\Player.cpp" />
   </ItemGroup>
 </Project>
