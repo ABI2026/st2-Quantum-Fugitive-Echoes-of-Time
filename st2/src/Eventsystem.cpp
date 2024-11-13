@@ -53,7 +53,13 @@ void Eventsystem::process_events(const sf::Window& window, const sf::Event& even
 			m_mouse_button_events_callbacks[button](button, action);
 	}
 	break;
-	//case sf::Event::MouseMoved: break;
+	case sf::Event::MouseMoved:
+	{
+		const sf::Vector2f new_mouse_position = {static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y)};
+		m_mouse_offset = m_mouse_position - new_mouse_position;
+		m_mouse_position = new_mouse_position;
+	}
+		break;
 	//case sf::Event::MouseEntered: break;
 	//case sf::Event::MouseLeft: break;
 	//case sf::Event::JoystickButtonPressed: break;
@@ -83,6 +89,7 @@ void Eventsystem::update()
 		if (action == action_released)
 			action = action_none;
 	}
+	m_mouse_offset = { 0.f,0.f };
 }
 
 void Eventsystem::add_key_listener(sf::Keyboard::Key key)
@@ -142,4 +149,14 @@ void Eventsystem::set_mouse_button_callback(sf::Mouse::Button button, const std:
 		m_mouse_button_actions.insert({ button,action_none });
 	if (!m_mouse_button_states.contains(button))
 		m_mouse_button_states.insert({ button,sf::Mouse::isButtonPressed(button) });
+}
+
+sf::Vector2f Eventsystem::get_mouse_position() const
+{
+	return m_mouse_position;
+}
+
+sf::Vector2f Eventsystem::get_mouse_offset() const
+{
+	return m_mouse_offset;
 }

@@ -47,12 +47,11 @@ int Main(int argc, char** argv)
     LOG_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
 
 	sf::RenderWindow& window = SFwindowInstance;
-
+    DBL_MAX;
 	std::shared_ptr<Eventsystem> eventsystem = std::make_shared<Eventsystem>();
     init_sfml_imgui(window);
     window.setFramerateLimit(60);
     sf::Clock deltaClock;
-
     while (window.isOpen())
     {
         sf::Event event{};
