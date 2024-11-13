@@ -348,6 +348,7 @@
       <Filter>Utils\spdlog</Filter>
     </ClInclude>
     <ClInclude Include="src\Eventsystem.h" />
+    <ClInclude Include="src\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp" />
@@ -363,5 +364,6 @@
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Eventsystem.cpp" />
+    <ClCompile Include="src\Player.cpp" />
   </ItemGroup>
 </Project>

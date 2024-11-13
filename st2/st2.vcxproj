@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Eventsystem.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameWindow.h" />
@@ -260,6 +261,7 @@
     <ClInclude Include="src\Utils\spdlog\version.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Eventsystem.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameWindow.cpp" />
