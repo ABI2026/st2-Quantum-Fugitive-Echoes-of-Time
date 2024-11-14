@@ -59,7 +59,7 @@ void Eventsystem::process_events(sf::Window& window, const sf::Event& event)
 	break;
 	case sf::Event::MouseMoved:
 	{
-		const sf::Vector2f new_mouse_position = {static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y)};
+		const sf::Vector2i new_mouse_position = {event.mouseMove.x,event.mouseMove.y};
 		m_mouse_offset = m_mouse_position - new_mouse_position;
 		m_mouse_position = new_mouse_position;
 	}
@@ -92,7 +92,7 @@ void Eventsystem::update(sf::Window& window)
 		action = action_none;
 	}
 
-	m_mouse_offset = { 0.f,0.f };
+	m_mouse_offset = { 0,0 };
 
 	sf::Event event{};
 	while (window.pollEvent(event))
@@ -161,12 +161,12 @@ void Eventsystem::set_mouse_button_callback(sf::Mouse::Button button, const std:
 		m_mouse_button_states.insert({ button,sf::Mouse::isButtonPressed(button) });
 }
 
-sf::Vector2f Eventsystem::get_mouse_position() const
+sf::Vector2i Eventsystem::get_mouse_position() const
 {
 	return m_mouse_position;
 }
 
-sf::Vector2f Eventsystem::get_mouse_offset() const
+sf::Vector2i Eventsystem::get_mouse_offset() const
 {
 	return m_mouse_offset;
 }

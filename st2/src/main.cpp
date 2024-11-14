@@ -13,7 +13,7 @@
 #include "Menu.h"
 #include "SFML/OpenGL.hpp"
 #include "Utils/Timer.h"
-
+#include "Button.h"
 
 int Main(int argc, char** argv);
 
@@ -52,6 +52,8 @@ int Main(int argc, char** argv)
     eventsystem->add_key_listener(sf::Keyboard::Key::Left);
     eventsystem->add_key_listener(sf::Keyboard::Key::Right);
 
+    eventsystem->add_mouse_button_listener(sf::Mouse::Button::Left);
+
 	GameWindow::init(720, 480, "window");
 	LOG_INFO("  OpenGL Info:");
     LOG_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
@@ -64,22 +66,25 @@ int Main(int argc, char** argv)
     window.setFramerateLimit(60);
     sf::Clock deltaClock;
 
-    std::vector<std::shared_ptr<Layer>> layers;
+	std::vector<std::shared_ptr<Layer>> layers;
 
     std::shared_ptr<Layer> current_layer = std::make_shared<Menu>();
 
     while (window.isOpen())
     {
-        eventsystem->update(window); //events updaten
+        eventsystem->update(window); 
         const double deltatime = static_cast<double>(deltaClock.getElapsedTime().asSeconds());
         ImGui::SFML::Update(window, deltaClock.restart());
-        current_layer->update(eventsystem);
+
+    	current_layer->update(eventsystem);
 
 
-        window.clear();
-        current_layer->render(window);
-        ImGui::SFML::Render(window);
-        window.display();
+    	window.clear();
+
+    	current_layer->render(window);
+    	ImGui::SFML::Render(window);
+
+    	window.display();
         
     }
 
