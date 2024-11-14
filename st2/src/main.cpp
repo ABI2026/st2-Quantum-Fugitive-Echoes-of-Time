@@ -11,7 +11,7 @@
 #include "Eventsystem.h"
 #include "SFML/OpenGL.hpp"
 #include "Utils/Timer.h"
-
+#include "Button.h"
 
 int Main(int argc, char** argv);
 
@@ -52,6 +52,19 @@ int Main(int argc, char** argv)
     init_sfml_imgui(window);
     window.setFramerateLimit(60);
     sf::Clock deltaClock;
+    //variablen
+
+
+        // Normaler Button mit Farbwechsel
+    Button button({ 100, 100 }, { 200, 50 }, "Click me",
+        sf::Color::White,      // Normal
+        sf::Color::Yellow,     // Hover
+        sf::Color::Red);       // Pressed
+
+    // Bildbutton mit verschiedenen Zuständen
+    ImageButton imgButton({ 100, 200 }, { 200, 50 }, "button_normal.png", "Image Button");
+    imgButton.setBackgroundTexture("button_normal.png", "button_hover.png", "button_pressed.png");
+
     while (window.isOpen())
     {
         sf::Event event{};
@@ -72,9 +85,15 @@ int Main(int argc, char** argv)
 
         const double deltatime = static_cast<double>(deltaClock.getElapsedTime().asSeconds());
         ImGui::SFML::Update(window, deltaClock.restart());
+        //logik
 
 
-        window.clear();
+        window.clear(sf::Color::Cyan);
+        //zeichnen
+
+        button.draw(window);
+        imgButton.draw(window);
+
         ImGui::SFML::Render(window);
         window.display();
         
