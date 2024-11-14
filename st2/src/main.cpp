@@ -70,16 +70,16 @@ int Main(int argc, char** argv)
 
     std::shared_ptr<Layer> current_layer = std::make_shared<Menu>();
 
-    while (window.isOpen())
+	while (window.isOpen())
     {
-        eventsystem->update(window); 
+        eventsystem->handle_updates(window); 
         const double deltatime = static_cast<double>(deltaClock.getElapsedTime().asSeconds());
         ImGui::SFML::Update(window, deltaClock.restart());
 
     	current_layer->update(eventsystem);
 
 
-    	window.clear();
+        window.clear();
 
     	current_layer->render(window);
     	ImGui::SFML::Render(window);

@@ -1,10 +1,11 @@
 #pragma once
 #include <functional>
 #include <unordered_map>
+
 #include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
-#include <SFML/Window/Window.hpp>
 
 class Eventsystem
 {
@@ -20,8 +21,8 @@ public:
 	Eventsystem();
 
 	//VLLT SOLL EVENTSYSTEM AUCH ALLES ANDERE MACHEN ALSO POLLEVENTS ETC.
-	void process_events(sf::Window& window,const sf::Event& event);
-	void update(sf::Window& window);
+	void process_events(sf::RenderWindow& window,const sf::Event& event);
+	void handle_updates(sf::RenderWindow& window);
 	void add_key_listener(sf::Keyboard::Key key);
 	[[nodiscard]] bool get_key_state(sf::Keyboard::Key key) const;
 	[[nodiscard]] action get_key_action(sf::Keyboard::Key key) const;
@@ -32,8 +33,8 @@ public:
 	[[nodiscard]] action get_mouse_button_action(sf::Mouse::Button button) const;
 	void set_mouse_button_callback(sf::Mouse::Button button, const std::function<void(sf::Mouse::Button, action)>& callback);
 
-	sf::Vector2i get_mouse_position() const;
-	sf::Vector2i get_mouse_offset() const;
+	sf::Vector2f get_mouse_position() const;
+	sf::Vector2f get_mouse_offset() const;
 
 private:
 
@@ -47,8 +48,8 @@ private:
 	std::unordered_map<sf::Mouse::Button, action> m_mouse_button_actions;
 	std::unordered_map<sf::Mouse::Button, std::function<void(sf::Mouse::Button, action)>> m_mouse_button_events_callbacks;
 
-	sf::Vector2i m_mouse_position;
-	sf::Vector2i m_mouse_offset;
+	sf::Vector2f m_mouse_position;
+	sf::Vector2f m_mouse_offset;
 
 
 };

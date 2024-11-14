@@ -21,7 +21,7 @@ public:
 
 	void update(std::shared_ptr<Eventsystem>& eventsystem) override
 	{
-		const sf::Vector2i mouse_pos = eventsystem->get_mouse_position();
+		const sf::Vector2f mouse_pos = eventsystem->get_mouse_position();
 
 		if (eventsystem->get_key_action(sf::Keyboard::Key::Down) == Eventsystem::action_pressed)
 			m_selected = m_selected + 1 == static_cast<int>(buttons.size()) ? 0 : m_selected + 1;
@@ -32,9 +32,9 @@ public:
 
 		for(auto& button:buttons)
 		{
-			button->update(mouse_pos, eventsystem->get_mouse_button_action(sf::Mouse::Button::Left) == Eventsystem::action_released);
+			button->update((sf::Vector2i)mouse_pos, eventsystem->get_mouse_button_action(sf::Mouse::Button::Left) == Eventsystem::action_released);
 		}
-
+		
 		//mouse over button needs to be handled
 
 	}

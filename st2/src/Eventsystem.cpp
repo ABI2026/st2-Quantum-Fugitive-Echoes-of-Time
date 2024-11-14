@@ -3,12 +3,13 @@
 #include <ranges>
 
 #include "imgui-SFML.h"
+#include "Utils/Log.h"
 
 Eventsystem::Eventsystem()
 {
 }
 
-void Eventsystem::process_events(sf::Window& window, const sf::Event& event)
+void Eventsystem::process_events(sf::RenderWindow& window, const sf::Event& event)
 {
 	if (event.type == sf::Event::LostFocus)
 		focus = false;
@@ -57,13 +58,7 @@ void Eventsystem::process_events(sf::Window& window, const sf::Event& event)
 			m_mouse_button_events_callbacks[button](button, action);
 	}
 	break;
-	case sf::Event::MouseMoved:
-	{
-		const sf::Vector2i new_mouse_position = {event.mouseMove.x,event.mouseMove.y};
-		m_mouse_offset = m_mouse_position - new_mouse_position;
-		m_mouse_position = new_mouse_position;
-	}
-		break;
+	//case sf::Event::MouseMoved: break; //handled seperatly
 	//case sf::Event::MouseEntered: break;
 	//case sf::Event::MouseLeft: break;
 	//case sf::Event::JoystickButtonPressed: break;
@@ -80,7 +75,7 @@ void Eventsystem::process_events(sf::Window& window, const sf::Event& event)
 	}
 }
 
-void Eventsystem::update(sf::Window& window)
+void Eventsystem::handle_updates(sf::RenderWindow& window)
 {
 	for (auto& action : m_key_actions | std::views::values)
 	{
@@ -100,6 +95,11 @@ void Eventsystem::update(sf::Window& window)
 		ImGui::SFML::ProcessEvent(window, event);
 		process_events(window, event);
 	}
+
+	const sf::Vector2f new_mouse_position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+	m_mouse_offset = m_mouse_position - new_mouse_position;
+	m_mouse_position = new_mouse_position;
+
 }
 
 void Eventsystem::add_key_listener(sf::Keyboard::Key key)
@@ -161,12 +161,12 @@ void Eventsystem::set_mouse_button_callback(sf::Mouse::Button button, const std:
 		m_mouse_button_states.insert({ button,sf::Mouse::isButtonPressed(button) });
 }
 
-sf::Vector2i Eventsystem::get_mouse_position() const
+sf::Vector2f Eventsystem::get_mouse_position() const
 {
 	return m_mouse_position;
 }
 
-sf::Vector2i Eventsystem::get_mouse_offset() const
+sf::Vector2f Eventsystem::get_mouse_offset() const
 {
 	return m_mouse_offset;
 }
