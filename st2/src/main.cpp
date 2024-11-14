@@ -9,6 +9,8 @@
 #include <cmath>
 
 #include "Eventsystem.h"
+#include "Layer.h"
+#include "Menu.h"
 #include "SFML/OpenGL.hpp"
 #include "Utils/Timer.h"
 
@@ -39,42 +41,43 @@ int Main(int argc, char** argv)
     Log::init(LOG_LEVEL_INFO,LOG_LEVEL_INFO);
     Random::init();
 
-    GameWindow::init(720, 480, "window");
+	std::shared_ptr<Eventsystem> eventsystem = std::make_shared<Eventsystem>();
 
-    LOG_INFO("  OpenGL Info:");
+	eventsystem->add_key_listener(sf::Keyboard::Key::W);
+    eventsystem->add_key_listener(sf::Keyboard::Key::A);
+    eventsystem->add_key_listener(sf::Keyboard::Key::S);
+    eventsystem->add_key_listener(sf::Keyboard::Key::D);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Up);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Down);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Left);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Right);
+
+	GameWindow::init(720, 480, "window");
+	LOG_INFO("  OpenGL Info:");
     LOG_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
     LOG_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
     LOG_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
 
 	sf::RenderWindow& window = SFwindowInstance;
-    DBL_MAX;
-	std::shared_ptr<Eventsystem> eventsystem = std::make_shared<Eventsystem>();
-    init_sfml_imgui(window);
+
+	init_sfml_imgui(window);
     window.setFramerateLimit(60);
     sf::Clock deltaClock;
+
+    std::vector<std::shared_ptr<Layer>> layers;
+
+    std::shared_ptr<Layer> current_layer = std::make_shared<Menu>();
+
     while (window.isOpen())
     {
-        sf::Event event{};
-        eventsystem->update(); //release events updaten
-        while (window.pollEvent(event))
-        {
-            ImGui::SFML::ProcessEvent(window, event);
-            eventsystem->process_events(window, event);
-            switch (event.type)
-            {
-            case sf::Event::Closed:
-                window.close();
-                break;
-            default:
-                break;
-            }
-        }
-
+        eventsystem->update(window); //events updaten
         const double deltatime = static_cast<double>(deltaClock.getElapsedTime().asSeconds());
         ImGui::SFML::Update(window, deltaClock.restart());
+        current_layer->update(eventsystem);
 
 
         window.clear();
+        current_layer->render(window);
         ImGui::SFML::Render(window);
         window.display();
         
@@ -91,7 +94,6 @@ bool init_sfml_imgui(sf::RenderWindow& window)
 
     if (!ImGui::SFML::Init(window, false))
         return false;
-
     ImGui::SFML::ProcessEvent(window, sf::Event{sf::Event::LostFocus});
     ImGui::SFML::ProcessEvent(window, sf::Event{sf::Event::GainedFocus});
 

@@ -2,11 +2,13 @@
 
 #include <ranges>
 
+#include "imgui-SFML.h"
+
 Eventsystem::Eventsystem()
 {
 }
 
-void Eventsystem::process_events(const sf::Window& window, const sf::Event& event)
+void Eventsystem::process_events(sf::Window& window, const sf::Event& event)
 {
 	if (event.type == sf::Event::LostFocus)
 		focus = false;
@@ -19,7 +21,9 @@ void Eventsystem::process_events(const sf::Window& window, const sf::Event& even
 	{
 		//ENTSCHEIDEN OB ANDERE EVENTS AUCH GETRACT WERDEN SOLLTEN WIE RESIZE ETC.
 
-		//case sf::Event::Closed: break;
+	case sf::Event::Closed:
+		window.close();
+		break;
 		//case sf::Event::Resized: break;
 		//case sf::Event::TextEntered: break;
 	case sf::Event::KeyPressed: //fallthrough
@@ -76,20 +80,26 @@ void Eventsystem::process_events(const sf::Window& window, const sf::Event& even
 	}
 }
 
-void Eventsystem::update()
+void Eventsystem::update(sf::Window& window)
 {
 	for (auto& action : m_key_actions | std::views::values)
 	{
-		if (action == action_released)
-			action = action_none;
+		action = action_none;
 	}
 
 	for (auto& action : m_mouse_button_actions | std::views::values)
 	{
-		if (action == action_released)
-			action = action_none;
+		action = action_none;
 	}
+
 	m_mouse_offset = { 0.f,0.f };
+
+	sf::Event event{};
+	while (window.pollEvent(event))
+	{
+		ImGui::SFML::ProcessEvent(window, event);
+		process_events(window, event);
+	}
 }
 
 void Eventsystem::add_key_listener(sf::Keyboard::Key key)

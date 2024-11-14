@@ -3,8 +3,6 @@
 #include <unordered_map>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
-#include <SFML/Window/Keyboard.hpp>
-#include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/Window.hpp>
 
@@ -22,8 +20,8 @@ public:
 	Eventsystem();
 
 	//VLLT SOLL EVENTSYSTEM AUCH ALLES ANDERE MACHEN ALSO POLLEVENTS ETC.
-	void process_events(const sf::Window& window,const sf::Event& event);
-	void update();
+	void process_events(sf::Window& window,const sf::Event& event);
+	void update(sf::Window& window);
 	void add_key_listener(sf::Keyboard::Key key);
 	[[nodiscard]] bool get_key_state(sf::Keyboard::Key key) const;
 	[[nodiscard]] action get_key_action(sf::Keyboard::Key key) const;
@@ -48,7 +46,10 @@ private:
 	std::unordered_map<sf::Mouse::Button, bool> m_mouse_button_states;
 	std::unordered_map<sf::Mouse::Button, action> m_mouse_button_actions;
 	std::unordered_map<sf::Mouse::Button, std::function<void(sf::Mouse::Button, action)>> m_mouse_button_events_callbacks;
+
 	sf::Vector2f m_mouse_position;
 	sf::Vector2f m_mouse_offset;
+
+
 };
 
