@@ -9,6 +9,7 @@
 class Menu : public Layer
 {
 	int m_selected = -1;
+	bool execute = false;
 	std::vector<std::shared_ptr<Button>> buttons;
 public:
 
@@ -23,10 +24,25 @@ public:
 	{
 		const sf::Vector2f mouse_pos = eventsystem->get_mouse_position();
 
-		if (eventsystem->get_key_action(sf::Keyboard::Key::Down) == Eventsystem::action_pressed)
+		if (eventsystem->get_key_action(sf::Keyboard::Key::Enter) == Eventsystem::action_pressed) {
+			execute = true;
+		}
+
+		if (eventsystem->get_key_action(sf::Keyboard::Key::Down) == Eventsystem::action_pressed) {
 			m_selected = m_selected + 1 == static_cast<int>(buttons.size()) ? 0 : m_selected + 1;
-		if (eventsystem->get_key_action(sf::Keyboard::Key::Up) == Eventsystem::action_pressed)
+			buttons[m_selected]->setColors(sf::Color(200, 200, 200), sf::Color(200, 200, 200), sf::Color(150, 150, 150));
+		}
+		else if (eventsystem->get_key_action(sf::Keyboard::Key::Up) == Eventsystem::action_pressed) {
 			m_selected = m_selected - 1 < 0 ? static_cast<int>(buttons.size()) - 1 : m_selected - 1;
+			buttons[m_selected]->setColors(sf::Color(200, 200, 200), sf::Color(200, 200, 200), sf::Color(150, 150, 150));
+		}
+		else {
+			for (auto& button : buttons) {
+				if (buttons[m_selected] != button) {
+					button->setColors(sf::Color::White, sf::Color(200, 200, 200), sf::Color(150, 150, 150));
+				}
+			}
+		}
 
 		LOG_INFO("selected {}", m_selected);
 
@@ -34,14 +50,27 @@ public:
 		{
 			button->update((sf::Vector2i)mouse_pos, eventsystem->get_mouse_button_action(sf::Mouse::Button::Left) == Eventsystem::action_released);
 		}
-		
-		//mouse over button needs to be handled
 
+		if (buttons[0]->isClicked(sf::Vector2i(mouse_pos))) {
+			LOG_INFO("Start");
+		}
+		else if (buttons[1]->isClicked(sf::Vector2i(mouse_pos))) {
+			LOG_INFO("Optionen");
+		}
+		else if (buttons[2]->isClicked(sf::Vector2i(mouse_pos))) {
+			m_selected = 2;
+			execute = true;
+		}
 	}
 
 	void render(sf::RenderWindow& window) override
 	{
 		//render buttons waiting for button class to be finished
+		if (execute == true && m_selected == 2) {
+			execute = false;
+			window.close();
+		}
+
 		for (auto& button : buttons)
 		{
 			button->draw(window);

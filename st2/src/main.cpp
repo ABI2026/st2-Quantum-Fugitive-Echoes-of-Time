@@ -51,6 +51,7 @@ int Main(int argc, char** argv)
     eventsystem->add_key_listener(sf::Keyboard::Key::Down);
     eventsystem->add_key_listener(sf::Keyboard::Key::Left);
     eventsystem->add_key_listener(sf::Keyboard::Key::Right);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Enter);
 
     eventsystem->add_mouse_button_listener(sf::Mouse::Button::Left);
 
