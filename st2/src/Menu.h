@@ -52,10 +52,12 @@ public:
 		}
 
 		if (buttons[0]->isClicked(sf::Vector2i(mouse_pos))) {
-			LOG_INFO("Start");
+			m_selected = 0;
+			execute = true;
 		}
 		else if (buttons[1]->isClicked(sf::Vector2i(mouse_pos))) {
-			LOG_INFO("Optionen");
+			m_selected = 1;
+			execute = true;
 		}
 		else if (buttons[2]->isClicked(sf::Vector2i(mouse_pos))) {
 			m_selected = 2;
@@ -66,7 +68,15 @@ public:
 	void render(sf::RenderWindow& window) override
 	{
 		//render buttons waiting for button class to be finished
-		if (execute == true && m_selected == 2) {
+		if (execute == true && m_selected == 0) {
+			execute = false;
+			LOG_INFO("Start");
+		}
+		else if (execute == true && m_selected == 1) {
+			execute = false;
+			LOG_INFO("Optionen");
+		}
+		else if (execute == true && m_selected == 2) {
 			execute = false;
 			window.close();
 		}
