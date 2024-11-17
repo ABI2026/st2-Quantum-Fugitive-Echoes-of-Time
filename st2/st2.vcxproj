@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\PauseMenu.h" />
     <ClInclude Include="src\LevelSelector.h" />
     <ClInclude Include="src\LayerManager.h" />
     <ClInclude Include="src\Button.h" />
@@ -265,6 +266,7 @@
     <ClInclude Include="src\Utils\spdlog\version.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\PauseMenu.cpp" />
     <ClCompile Include="src\LevelSelector.cpp" />
     <ClCompile Include="src\LayerManager.cpp" />
     <ClCompile Include="src\Button.cpp" />
