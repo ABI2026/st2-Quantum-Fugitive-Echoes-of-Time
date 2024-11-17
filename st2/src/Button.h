@@ -3,7 +3,8 @@
 #include <string>
 #include <functional>
 
-class Button {
+class Button
+{
 protected:
     sf::RectangleShape shape;
     sf::Texture texture;
@@ -24,7 +25,15 @@ public:
         const sf::Color& hover = sf::Color(200, 200, 200),
         const sf::Color& pressed = sf::Color(150, 150, 150));
 
-    virtual void setPosition(const sf::Vector2f& position) {};
+    virtual void setPosition(const sf::Vector2f& position)
+    {
+        shape.setPosition(position);
+        const sf::Vector2f size = shape.getSize();
+        const sf::FloatRect textBounds = text.getLocalBounds();
+        text.setOrigin(textBounds.left + textBounds.width / 2.0f,
+            textBounds.top + textBounds.height / 2.0f);
+        text.setPosition(position.x + size.x / 2.0f, position.y + size.y / 2.0f);
+    };
     virtual void setTexture(const std::string& texturePath) {};
     void setText(const std::string& buttonText) { text.setString(buttonText); }
     void setTextColor(const sf::Color& color) { text.setFillColor(color); }
@@ -33,7 +42,8 @@ public:
     void setColors(const sf::Color& normal, const sf::Color& hover, const sf::Color& pressed);
 
     virtual void update(const sf::Vector2i& mousePosition, bool isMousePressed);
-    virtual bool isClicked(const sf::Vector2i& mousePosition) { return isPressed; }
+    virtual bool isClicked() { return isPressed; }
+    virtual bool is_hovered() { return isHovered; }
 
     virtual void draw(sf::RenderWindow& window) const;
 };

@@ -148,13 +148,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\LayerManager.h" />
     <ClInclude Include="src\Button.h" />
     <ClInclude Include="src\Menu.h" />
     <ClInclude Include="src\Layer.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Eventsystem.h" />
     <ClInclude Include="src\Game.h" />
-    <ClInclude Include="src\GameWindow.h" />
     <ClInclude Include="src\Utils\Log.h" />
     <ClInclude Include="src\Utils\Random.h" />
     <ClInclude Include="src\Utils\Soundsystem.h" />
@@ -264,13 +264,13 @@
     <ClInclude Include="src\Utils\spdlog\version.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\LayerManager.cpp" />
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\Menu.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Eventsystem.cpp" />
     <ClCompile Include="src\Game.cpp" />
-    <ClCompile Include="src\GameWindow.cpp" />
     <ClCompile Include="src\Utils\Log.cpp" />
     <ClCompile Include="src\Utils\Random.cpp" />
     <ClCompile Include="src\Utils\Soundsystem.cpp" />

@@ -13,6 +13,7 @@
 #include "SFML/OpenGL.hpp"
 #include "Utils/Timer.h"
 #include "Button.h"
+#include "LayerManager.h"
 
 int Main(int argc, char** argv);
 
@@ -50,7 +51,7 @@ int Main(int argc, char** argv)
 
     std::shared_ptr<Eventsystem> eventsystem = std::make_shared<Eventsystem>(window);
 
-	eventsystem->add_key_listener(sf::Keyboard::Key::W);
+    eventsystem->add_key_listener(sf::Keyboard::Key::W);
     eventsystem->add_key_listener(sf::Keyboard::Key::A);
     eventsystem->add_key_listener(sf::Keyboard::Key::S);
     eventsystem->add_key_listener(sf::Keyboard::Key::D);
@@ -60,37 +61,42 @@ int Main(int argc, char** argv)
     eventsystem->add_key_listener(sf::Keyboard::Key::Right);
 
     eventsystem->add_mouse_button_listener(sf::Mouse::Button::Left);
-
+    
 
 	init_sfml_imgui(window);
     window.setFramerateLimit(60);
     sf::Clock deltaClock;
 
-	std::vector<std::shared_ptr<Layer>> layers;
-
-    std::shared_ptr<Layer> current_layer = std::make_shared<Menu>();
+    std::shared_ptr<LayerManager> layer_manager = std::make_shared<LayerManager>();
+    layer_manager->push_layer(std::make_shared<Menu>());
 
 	while (window.isOpen())
     {
-        eventsystem->handle_updates(window); 
-        const double deltatime = static_cast<double>(deltaClock.getElapsedTime().asSeconds());
-        ImGui::SFML::Update(window, deltaClock.restart());
+        eventsystem->handle_updates(window);
 
-    	current_layer->update(eventsystem);
+		const double deltatime = static_cast<double>(deltaClock.getElapsedTime().asSeconds());
 
+		ImGui::SFML::Update(window, deltaClock.restart());
+
+        const std::shared_ptr<Layer>& current_layer = layer_manager->get_top();
+    	current_layer->update(eventsystem,layer_manager,deltatime);
 
         window.clear();
-
-    	current_layer->render(window);
+		current_layer->render(window);
     	ImGui::SFML::Render(window);
+		window.display();
 
-    	window.display();
-        
+        if (layer_manager->is_empty())
+        {
+            window.close();
+        }
     }
 
     ImGui::SFML::Shutdown(window);
 	return 0;
 }
+
+
 
 #include "../Resources/Images/Roboto-Regular.embed"
 bool init_sfml_imgui(sf::RenderWindow& window)

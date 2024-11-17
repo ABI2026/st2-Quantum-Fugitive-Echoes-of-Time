@@ -15,9 +15,11 @@ public:
 		s_client_logger = spdlog::stdout_color_mt("client");
 		s_system_logger->set_level(client_level);
 	}
+
 	static std::shared_ptr<spdlog::logger>& get_logger() { return s_system_logger; }
 private:
 	inline static std::shared_ptr<spdlog::logger> s_system_logger;
+
 	inline static std::shared_ptr<spdlog::logger> s_client_logger;
 };
 
