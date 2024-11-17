@@ -7,7 +7,7 @@
 #include "Utils/Log.h"
 #include "Utils/Soundsystem.h"
 
-bool LevelSelector::button_action(int selected, std::shared_ptr<LayerManager>& layer_manager)
+bool LevelSelector::button_action(const int selected, const std::shared_ptr<LayerManager>& layer_manager)
 {
 	switch (selected)
 	{
@@ -48,19 +48,18 @@ void LevelSelector::update(std::shared_ptr<Eventsystem>& eventsystem, std::share
 
 	constexpr float padding = 20.0f;
 	constexpr float button_size = 50.f;
-	const float total_height = m_buttons.size() * button_size + (m_buttons.size() - 1) * padding;
-	const float start_y = (eventsystem->get_window_size().y - total_height) / 2.f;
+	const float total_height = static_cast<float>(m_buttons.size()) * button_size + (static_cast<float>(m_buttons.size()) - 1.f) * padding;
+	const float start_y = (static_cast<float>(eventsystem->get_window_size().y) - total_height) / 2.f;
 
 	for (uint8_t i = 0; i < m_buttons.size(); ++i)
 	{
-		m_buttons[i]->setPosition({ float(eventsystem->get_window_size().x / 2u) - 100.f,start_y + float(i * (50.f + padding)) });
+		m_buttons[i]->setPosition({ static_cast<float>(eventsystem->get_window_size().x) / 2.f - 100.f,start_y + static_cast<float>(i) * (50.f + padding) });
 		m_buttons[i]->update(static_cast<sf::Vector2i>(mouse_pos), eventsystem->get_mouse_button_action(sf::Mouse::Button::Left) == Eventsystem::action_released);
 		if (!m_buttons[i]->isClicked())
 			continue;
 
 		if (button_action(i, layer_manager))
 			return;
-
 	}
 
 
@@ -87,7 +86,7 @@ void LevelSelector::update(std::shared_ptr<Eventsystem>& eventsystem, std::share
 
 void LevelSelector::render(sf::RenderWindow& window)
 {
-	for (auto& button : m_buttons)
+	for (const auto& button : m_buttons)
 	{
 		button->draw(window);
 	}

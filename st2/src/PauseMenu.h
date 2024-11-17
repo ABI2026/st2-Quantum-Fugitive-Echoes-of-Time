@@ -10,7 +10,7 @@ class PauseMenu : public Layer
 
 	std::vector<std::shared_ptr<Button>> m_buttons;
 
-	bool button_action(int selected, std::shared_ptr<LayerManager>& layer_manager);
+	bool button_action(int selected, const std::shared_ptr<LayerManager>& layer_manager);
 	std::shared_ptr<Layer> background_layer;
 public:
 	PauseMenu(const std::shared_ptr<Layer>& background_layer);

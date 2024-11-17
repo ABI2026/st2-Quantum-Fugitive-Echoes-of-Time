@@ -35,7 +35,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
 
 #else
 
-int main(int argc, char** argv)
+int main(const int argc, char** argv)
 {
     return Main(argc, argv);
 }
@@ -44,17 +44,17 @@ int main(int argc, char** argv)
 
 
 
-int Main(int argc, char** argv)
+int Main(const int argc, char** argv)
 {
     Log::init(LOG_LEVEL_INFO,LOG_LEVEL_INFO);
     Random::init();
 
     sf::RenderWindow window(sf::VideoMode(720, 480), "window", sf::Style::Default);
 
-    LOG_INFO("  OpenGL Info:");
-    LOG_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
-    LOG_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
-    LOG_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
+    LOG_INFO("OpenGL Info:");
+    LOG_INFO("Vendor: {0}", reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
+    LOG_INFO("Renderer: {0}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
+    LOG_INFO("Version: {0}", reinterpret_cast<const char*>(glGetString(GL_VERSION)));
 
     std::shared_ptr<Eventsystem> eventsystem = init_eventsystem(window);
     std::shared_ptr<Soundsystem> soundsystem = init_soundsystem();
@@ -65,13 +65,10 @@ int Main(int argc, char** argv)
     window.setFramerateLimit(60);
     sf::Clock deltaClock;
 
-
 	while (window.isOpen())
     {
         eventsystem->handle_updates(window);
-
-		const double deltatime = static_cast<double>(deltaClock.getElapsedTime().asSeconds());
-
+		const double deltatime = static_cast<float>(deltaClock.getElapsedTime().asSeconds());
 		ImGui::SFML::Update(window, deltaClock.restart());
 
         const std::shared_ptr<Layer>& current_layer = layer_manager->get_top();
@@ -103,8 +100,9 @@ bool init_sfml_imgui(sf::RenderWindow& window)
 
     if (!ImGui::SFML::Init(window, false))
         return false;
-    ImGui::SFML::ProcessEvent(window, sf::Event{sf::Event::LostFocus});
-    ImGui::SFML::ProcessEvent(window, sf::Event{sf::Event::GainedFocus});
+    
+    ImGui::SFML::ProcessEvent(window, sf::Event{sf::Event::LostFocus,{}});
+    ImGui::SFML::ProcessEvent(window, sf::Event{sf::Event::GainedFocus,{} });
 
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
@@ -113,7 +111,7 @@ bool init_sfml_imgui(sf::RenderWindow& window)
 
     ImFontConfig font_config;
     font_config.FontDataOwnedByAtlas = false;
-    ImFont* roboto_font = io.Fonts->AddFontFromMemoryTTF((void*)g_RobotoRegular, sizeof(g_RobotoRegular), 20.0f, &font_config);
+    ImFont* roboto_font = io.Fonts->AddFontFromMemoryTTF(const_cast<uint8_t*>(g_RobotoRegular), sizeof g_RobotoRegular, 20.0f, &font_config);
     io.FontDefault = roboto_font;
     if (!ImGui::SFML::UpdateFontTexture())
         LOG_ERROR("failed to update font");
@@ -133,7 +131,7 @@ bool init_sfml_imgui(sf::RenderWindow& window)
 
 std::shared_ptr<Eventsystem> init_eventsystem(sf::RenderWindow& window)
 {
-    std::shared_ptr<Eventsystem> eventsystem = std::make_shared<Eventsystem>(window);
+    auto eventsystem = std::make_shared<Eventsystem>(window);
     eventsystem->add_key_listener(sf::Keyboard::Key::W);
     eventsystem->add_key_listener(sf::Keyboard::Key::A);
     eventsystem->add_key_listener(sf::Keyboard::Key::S);
@@ -153,7 +151,7 @@ std::shared_ptr<Eventsystem> init_eventsystem(sf::RenderWindow& window)
 
 std::shared_ptr<LayerManager> init_layer_manager()
 {
-    std::shared_ptr<LayerManager> layer_manager = std::make_shared<LayerManager>();
+    auto layer_manager = std::make_shared<LayerManager>();
     layer_manager->push_layer(std::make_shared<Menu>());
     return layer_manager;
 }
@@ -161,7 +159,7 @@ std::shared_ptr<LayerManager> init_layer_manager()
 
 std::shared_ptr<Soundsystem> init_soundsystem()
 {
-    std::shared_ptr<Soundsystem> soundsystem = std::make_shared<Soundsystem>(0.f, false);
+    auto soundsystem = std::make_shared<Soundsystem>(0.f, false);
     //TODO: ADD ADITIONAL SOUNDS
     soundsystem->add_group("ui_sounds");
     soundsystem->add_group("player_sounds");

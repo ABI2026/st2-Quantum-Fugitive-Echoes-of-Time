@@ -13,11 +13,11 @@ Eventsystem::Eventsystem(const sf::RenderWindow& window)
 void Eventsystem::process_events(sf::RenderWindow& window, const sf::Event& event)
 {
 	if (event.type == sf::Event::LostFocus)
-		focus = false;
+		m_focus = false;
 	else if (event.type == sf::Event::GainedFocus)
-		focus = true;
+		m_focus = true;
 
-	if (!focus)
+	if (!m_focus)
 		return;
 
 	switch (event.type)
@@ -189,4 +189,9 @@ sf::Vector2f Eventsystem::get_mouse_offset() const
 sf::Vector2u Eventsystem::get_window_size() const
 {
 	return m_window_size;
+}
+
+bool Eventsystem::has_focus() const
+{
+	return m_focus;
 }

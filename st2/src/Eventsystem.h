@@ -42,13 +42,16 @@ public:
 	void set_mouse_button_callback(sf::Mouse::Button button, const std::function<void(sf::Mouse::Button, action)>& callback);
 
 
-	sf::Vector2f get_mouse_position() const;
+	[[nodiscard]] sf::Vector2f get_mouse_position() const;
 
-	sf::Vector2f get_mouse_offset() const;
+	[[nodiscard]] sf::Vector2f get_mouse_offset() const;
 
-	sf::Vector2u get_window_size() const;
+	[[nodiscard]] sf::Vector2u get_window_size() const;
+
+	[[nodiscard]] bool has_focus() const;
+
 private:
-	bool focus = true;
+	bool m_focus = true;
 
 	std::unordered_map<sf::Keyboard::Key, bool> m_key_states;
 	std::unordered_map<sf::Keyboard::Key, action> m_key_actions;

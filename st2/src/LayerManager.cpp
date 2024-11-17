@@ -30,18 +30,18 @@ bool LayerManager::is_empty() const
 	return m_layers.empty();
 }
 
-void LayerManager::close_till_layer(LayerID targetLayerID)
+void LayerManager::close_till_layer(const LayerID target_layer_id)
 {
 	while (!m_layers.empty())
 	{
-		Layer* topLayer = m_layers.top().get();
+		Layer* top_layer = m_layers.top().get();
 
-		if (topLayer->get_layer_id() == targetLayerID) 
+		if (top_layer->get_layer_id() == target_layer_id)
 		{
 			break;  
 		}
 
-		topLayer->on_close();
+		top_layer->on_close();
 		m_layers.pop();
 	}
 }

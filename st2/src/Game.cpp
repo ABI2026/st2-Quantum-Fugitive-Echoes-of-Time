@@ -12,7 +12,7 @@ Game::Game(int level_id)
 
 void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, double deltatime)
 {
-	if(eventsystem->get_key_action(sf::Keyboard::Key::Escape) == Eventsystem::action_pressed)
+	if(eventsystem->get_key_action(sf::Keyboard::Key::Escape) == Eventsystem::action_pressed || !eventsystem->has_focus())
 	{
 		layer_manager->push_layer(std::make_shared<PauseMenu>(layer_manager->get_top())); 
 		return;

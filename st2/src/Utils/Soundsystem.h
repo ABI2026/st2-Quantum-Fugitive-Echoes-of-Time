@@ -13,7 +13,7 @@ public:
 		float attenuation{ 0 };
 		float mindistance{ 0 };
 		Soundmetadata() = default;
-		Soundmetadata(float i_attenuation, float i_mindistance)
+		Soundmetadata(const float i_attenuation, const float i_mindistance)
 			:attenuation(i_attenuation), mindistance(i_mindistance) {}
 	private:
 		friend class Soundsystem;
@@ -122,7 +122,7 @@ private:
 
 	void internal_add_sound(const std::string& group_id, int sound_id, sf::Vector3f pos, bool use_positioning);
 
-	void internal_set_volume(float volume, const int id);
+	void internal_set_volume(float volume, int id);
 
 	void internal_set_volume(float volume, const std::string& id);
 

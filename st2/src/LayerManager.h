@@ -10,7 +10,7 @@ class Layer;
 class LayerManager
 {
 public:
-	std::shared_ptr<Layer>& get_top();
+	[[nodiscard]] std::shared_ptr<Layer>& get_top();
 
 	void push_layer(const std::shared_ptr<Layer>& layer);
 
@@ -18,7 +18,7 @@ public:
 
 	[[nodiscard]] bool is_empty() const;
 
-	void close_till_layer(LayerID targetLayerID);
+	void close_till_layer(LayerID target_layer_id);
 private:
 	std::stack<std::shared_ptr<Layer>> m_layers;
 };
