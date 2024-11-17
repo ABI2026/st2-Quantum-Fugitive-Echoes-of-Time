@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 
-#include "GameWindow.h"
 #include "Utils/Soundsystem.h"
 #include "Utils/Log.h"
 #include "Utils/Random.h"
@@ -41,7 +40,15 @@ int Main(int argc, char** argv)
     Log::init(LOG_LEVEL_INFO,LOG_LEVEL_INFO);
     Random::init();
 
-	std::shared_ptr<Eventsystem> eventsystem = std::make_shared<Eventsystem>();
+    sf::RenderWindow window(sf::VideoMode(720,480),"window",sf::Style::Default);
+
+	LOG_INFO("  OpenGL Info:");
+    LOG_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
+    LOG_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
+    LOG_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
+
+
+    std::shared_ptr<Eventsystem> eventsystem = std::make_shared<Eventsystem>(window);
 
 	eventsystem->add_key_listener(sf::Keyboard::Key::W);
     eventsystem->add_key_listener(sf::Keyboard::Key::A);
@@ -54,13 +61,6 @@ int Main(int argc, char** argv)
 
     eventsystem->add_mouse_button_listener(sf::Mouse::Button::Left);
 
-	GameWindow::init(720, 480, "window");
-	LOG_INFO("  OpenGL Info:");
-    LOG_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
-    LOG_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
-    LOG_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
-
-	sf::RenderWindow& window = SFwindowInstance;
 
 	init_sfml_imgui(window);
     window.setFramerateLimit(60);
@@ -89,7 +89,6 @@ int Main(int argc, char** argv)
     }
 
     ImGui::SFML::Shutdown(window);
-    GameWindow::delete_instance();
 	return 0;
 }
 
