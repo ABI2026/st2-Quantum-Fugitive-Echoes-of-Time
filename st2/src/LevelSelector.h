@@ -7,7 +7,8 @@ class Button;
 
 class LevelSelector : public Layer
 {
-	int m_selected = -1;
+	int m_selected_x = -1;
+	int m_selected_y = -1;
 
 	std::vector<std::shared_ptr<Button>> m_buttons;
 

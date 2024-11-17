@@ -33,9 +33,9 @@ bool PauseMenu::button_action(const int selected, const std::shared_ptr<LayerMan
 PauseMenu::PauseMenu(const std::shared_ptr<Layer>& background_layer)
 	:background_layer(background_layer)
 {
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,100.f }, sf::Vector2f{ 200.f,50.f }, "continue", sf::Color::Yellow));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,200.f }, sf::Vector2f{ 200.f,50.f }, "options", sf::Color::Yellow));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,300.f }, sf::Vector2f{ 200.f,50.f }, "main menu", sf::Color::Yellow));
+	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 260.f,145.f }, sf::Vector2f{ 200.f,50.f }, "continue", sf::Color::Yellow));
+	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 260.f,215.f }, sf::Vector2f{ 200.f,50.f }, "options", sf::Color::Yellow));
+	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 260.f,285.f }, sf::Vector2f{ 200.f,50.f }, "main menu", sf::Color::Yellow));
 }
 
 void PauseMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager,

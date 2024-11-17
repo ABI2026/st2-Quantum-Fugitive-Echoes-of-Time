@@ -30,9 +30,9 @@ bool Menu::button_action(const int selected, const std::shared_ptr<LayerManager>
 
 Menu::Menu()
 {
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,100.f }, sf::Vector2f{ 200.f,50.f }, "start"));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,200.f }, sf::Vector2f{ 200.f,50.f }, "optionen"));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,300.f }, sf::Vector2f{ 200.f,50.f }, "schlieﬂen"));
+	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 260.f,145.f }, sf::Vector2f{ 200.f,50.f }, "start"));
+	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 260.f,215.f }, sf::Vector2f{ 200.f,50.f }, "optionen"));
+	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 260.f,285.f }, sf::Vector2f{ 200.f,50.f }, "schlieﬂen"));
 }
 
 void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, 
