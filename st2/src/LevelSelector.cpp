@@ -2,19 +2,20 @@
 
 #include "Button.h"
 #include "Eventsystem.h"
-#include "Game.h"
 #include "LayerManager.h"
+#include "Game.h"
 #include "Utils/Log.h"
+#include "Utils/Soundsystem.h"
 
 bool LevelSelector::button_action(int selected, std::shared_ptr<LayerManager>& layer_manager)
 {
 	switch (selected)
 	{
 	case 0:
-		layer_manager->push_layer(std::make_shared<Game>());
+		layer_manager->push_layer(std::make_shared<Game>(1));
 		break;
 	case 1:
-		layer_manager->push_layer(std::make_shared<Game>());
+		layer_manager->push_layer(std::make_shared<Game>(2));
 		break;
 	case 2:
 		layer_manager->pop_layer();
@@ -94,6 +95,8 @@ void LevelSelector::render(sf::RenderWindow& window)
 
 void LevelSelector::on_close()
 {
+	LOG_INFO("closed LevelSelector");
+
 }
 
 LayerID LevelSelector::get_layer_id()

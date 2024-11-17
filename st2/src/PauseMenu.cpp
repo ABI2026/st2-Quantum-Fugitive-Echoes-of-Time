@@ -1,4 +1,4 @@
-#include "Menu.h"
+#include "PauseMenu.h"
 
 #include "Button.h"
 #include "Eventsystem.h"
@@ -7,18 +7,20 @@
 #include "Utils/Log.h"
 #include "Utils/Soundsystem.h"
 
-bool Menu::button_action(int selected, std::shared_ptr<LayerManager>& layer_manager)
+
+
+bool PauseMenu::button_action(int selected, std::shared_ptr<LayerManager>& layer_manager)
 {
 	switch (selected)
 	{
 	case 0:
-		layer_manager->push_layer(std::make_shared<LevelSelector>());
+		layer_manager->pop_layer();
 		break;
 	case 1:
 		//layer_manager->push_layer(std::make_shared<Options>());
 		break;
 	case 2:
-		layer_manager->pop_layer();
+		layer_manager->close_till_layer(LayerID::main_menu);
 		break;
 	default:
 		return false;
@@ -28,14 +30,15 @@ bool Menu::button_action(int selected, std::shared_ptr<LayerManager>& layer_mana
 	return true;
 }
 
-Menu::Menu()
+PauseMenu::PauseMenu(const std::shared_ptr<Layer>& background_layer)
+	:background_layer(background_layer)
 {
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,100.f }, sf::Vector2f{ 200.f,50.f }, "start"));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,200.f }, sf::Vector2f{ 200.f,50.f }, "optionen"));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,300.f }, sf::Vector2f{ 200.f,50.f }, "schlieﬂen"));
+	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,100.f }, sf::Vector2f{ 200.f,50.f }, "continue", sf::Color::Yellow));
+	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,200.f }, sf::Vector2f{ 200.f,50.f }, "options", sf::Color::Yellow));
+	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,300.f }, sf::Vector2f{ 200.f,50.f }, "main menu", sf::Color::Yellow));
 }
 
-void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, 
+void PauseMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager,
 	std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, double deltatime)
 {
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Escape) == Eventsystem::action_pressed)
@@ -51,12 +54,11 @@ void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 	const float total_height = m_buttons.size() * button_size + (m_buttons.size() - 1) * padding;
 	const float start_y = (eventsystem->get_window_size().y - total_height) / 2.f;
 
-	for(uint8_t i = 0; i < m_buttons.size(); ++i )
+	for (uint8_t i = 0; i < m_buttons.size(); ++i)
 	{
-		m_buttons[i]->setPosition({float(eventsystem->get_window_size().x / 2u) - 100.f,start_y + float(i*(50.f + padding))});
+		m_buttons[i]->setPosition({ float(eventsystem->get_window_size().x / 2u) - 100.f,start_y + float(i * (50.f + padding)) });
 		m_buttons[i]->update(static_cast<sf::Vector2i>(mouse_pos), eventsystem->get_mouse_button_action(sf::Mouse::Button::Left) == Eventsystem::action_released);
-
-		if(!m_buttons[i]->isClicked())
+		if (!m_buttons[i]->isClicked())
 			continue;
 
 		if (button_action(i, layer_manager))
@@ -85,20 +87,27 @@ void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 	}
 }
 
-void Menu::render(sf::RenderWindow& window)
+void PauseMenu::render(sf::RenderWindow& window)
 {
-	for (auto& button : m_buttons)
+	background_layer->render(window);
+
+	sf::RectangleShape shape(sf::Vector2f(window.getSize()));
+	shape.setPosition(0, 0);
+	shape.setFillColor(sf::Color(128,128,128,128));
+	window.draw(shape);
+
+	for (const auto& button :m_buttons)
 	{
 		button->draw(window);
 	}
 }
 
-void Menu::on_close()
+void PauseMenu::on_close()
 {
-	LOG_INFO("closed menu");
+	LOG_INFO("closed pause_menu");
 }
 
-LayerID Menu::get_layer_id()
+LayerID PauseMenu::get_layer_id()
 {
-	return LayerID::main_menu;
+	return LayerID::pause_menu;
 }

@@ -1,13 +1,20 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-
+#include "Game.h"
 #include "Layer.h"
 
-class Game : public Layer
+class Button;
+
+class PauseMenu : public Layer
 {
+	int m_selected = -1;
+
+	std::vector<std::shared_ptr<Button>> m_buttons;
+
+	bool button_action(int selected, std::shared_ptr<LayerManager>& layer_manager);
+	std::shared_ptr<Layer> background_layer;
 public:
-	Game() = default;
-	Game(int level_id);
+	PauseMenu(const std::shared_ptr<Layer>& background_layer);
+
 	void update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, double deltatime) override;
 
 	void render(sf::RenderWindow& window) override;
@@ -15,5 +22,5 @@ public:
 	void on_close() override;
 
 	LayerID get_layer_id() override;
-};
 
+};
