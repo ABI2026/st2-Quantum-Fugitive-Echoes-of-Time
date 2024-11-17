@@ -5,7 +5,7 @@
 
 class Button;
 
-class Menu : public Layer
+class LevelSelector : public Layer
 {
 	int m_selected = -1;
 
@@ -13,9 +13,10 @@ class Menu : public Layer
 
 	bool button_action(int selected, std::shared_ptr<LayerManager>& layer_manager);
 public:
-	Menu();
+	LevelSelector();
 
-	void update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, double deltatime) override;
+	void update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, 
+		std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, double deltatime) override;
 
 	void render(sf::RenderWindow& window) override;
 

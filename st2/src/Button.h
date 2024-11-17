@@ -47,8 +47,7 @@ public:
     void set_is_hovered(bool i_is_hovered)
     {
 	    isHovered = i_is_hovered;
-        shape.setFillColor(isHovered?hoverColor:defaultColor);
-
+        shape.setFillColor(isHovered ? hoverColor:defaultColor);
     }
 
 	virtual void draw(sf::RenderWindow& window) const;

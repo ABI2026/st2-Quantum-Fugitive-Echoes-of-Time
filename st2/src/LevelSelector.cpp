@@ -1,21 +1,20 @@
-#include "Menu.h"
+#include "LevelSelector.h"
 
 #include "Button.h"
 #include "Eventsystem.h"
+#include "Game.h"
 #include "LayerManager.h"
-#include "LevelSelector.h"
 #include "Utils/Log.h"
-#include "Utils/Soundsystem.h"
 
-bool Menu::button_action(int selected, std::shared_ptr<LayerManager>& layer_manager)
+bool LevelSelector::button_action(int selected, std::shared_ptr<LayerManager>& layer_manager)
 {
 	switch (selected)
 	{
 	case 0:
-		layer_manager->push_layer(std::make_shared<LevelSelector>());
+		layer_manager->push_layer(std::make_shared<Game>());
 		break;
 	case 1:
-		//layer_manager->push_layer(std::make_shared<Options>());
+		layer_manager->push_layer(std::make_shared<Game>());
 		break;
 	case 2:
 		layer_manager->pop_layer();
@@ -28,14 +27,14 @@ bool Menu::button_action(int selected, std::shared_ptr<LayerManager>& layer_mana
 	return true;
 }
 
-Menu::Menu()
+LevelSelector::LevelSelector()
 {
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,100.f }, sf::Vector2f{ 200.f,50.f }, "start"));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,200.f }, sf::Vector2f{ 200.f,50.f }, "optionen"));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,300.f }, sf::Vector2f{ 200.f,50.f }, "schließen"));
+	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,100.f }, sf::Vector2f{ 200.f,50.f }, "level 1", sf::Color::Yellow));
+	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,200.f }, sf::Vector2f{ 200.f,50.f }, "level 2", sf::Color::Yellow));
+	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 100.f,300.f }, sf::Vector2f{ 200.f,50.f }, "zurrück", sf::Color::Yellow));
 }
 
-void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, 
+void LevelSelector::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager,
 	std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, double deltatime)
 {
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Escape) == Eventsystem::action_pressed)
@@ -51,12 +50,11 @@ void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 	const float total_height = m_buttons.size() * button_size + (m_buttons.size() - 1) * padding;
 	const float start_y = (eventsystem->get_window_size().y - total_height) / 2.f;
 
-	for(uint8_t i = 0; i < m_buttons.size(); ++i )
+	for (uint8_t i = 0; i < m_buttons.size(); ++i)
 	{
-		m_buttons[i]->setPosition({float(eventsystem->get_window_size().x / 2u) - 100.f,start_y + float(i*(50.f + padding))});
+		m_buttons[i]->setPosition({ float(eventsystem->get_window_size().x / 2u) - 100.f,start_y + float(i * (50.f + padding)) });
 		m_buttons[i]->update(static_cast<sf::Vector2i>(mouse_pos), eventsystem->get_mouse_button_action(sf::Mouse::Button::Left) == Eventsystem::action_released);
-
-		if(!m_buttons[i]->isClicked())
+		if (!m_buttons[i]->isClicked())
 			continue;
 
 		if (button_action(i, layer_manager))
@@ -85,7 +83,8 @@ void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 	}
 }
 
-void Menu::render(sf::RenderWindow& window)
+
+void LevelSelector::render(sf::RenderWindow& window)
 {
 	for (auto& button : m_buttons)
 	{
@@ -93,12 +92,11 @@ void Menu::render(sf::RenderWindow& window)
 	}
 }
 
-void Menu::on_close()
+void LevelSelector::on_close()
 {
-
 }
 
-LayerID Menu::get_layer_id()
+LayerID LevelSelector::get_layer_id()
 {
-	return LayerID::main_menu;
+	return LayerID::level_selector;
 }

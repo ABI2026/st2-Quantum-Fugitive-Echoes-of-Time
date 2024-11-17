@@ -19,6 +19,12 @@ int Main(int argc, char** argv);
 
 bool init_sfml_imgui(sf::RenderWindow& window);
 
+std::shared_ptr<Eventsystem> init_eventsystem(sf::RenderWindow& window);
+
+std::shared_ptr<LayerManager> init_layer_manager();
+
+std::shared_ptr<Soundsystem> init_soundsystem();
+
 #if (defined(PLATFORM_WINDOWS) || defined (_WIN64)) && defined(DIST)
 #include <windows.h>
 
@@ -36,40 +42,29 @@ int main(int argc, char** argv)
 
 #endif
 
+
+
 int Main(int argc, char** argv)
 {
     Log::init(LOG_LEVEL_INFO,LOG_LEVEL_INFO);
     Random::init();
 
-    sf::RenderWindow window(sf::VideoMode(720,480),"window",sf::Style::Default);
+    sf::RenderWindow window(sf::VideoMode(720, 480), "window", sf::Style::Default);
 
-	LOG_INFO("  OpenGL Info:");
+    LOG_INFO("  OpenGL Info:");
     LOG_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
     LOG_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
     LOG_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
 
-
-    std::shared_ptr<Eventsystem> eventsystem = std::make_shared<Eventsystem>(window);
-
-    eventsystem->add_key_listener(sf::Keyboard::Key::W);
-    eventsystem->add_key_listener(sf::Keyboard::Key::A);
-    eventsystem->add_key_listener(sf::Keyboard::Key::S);
-    eventsystem->add_key_listener(sf::Keyboard::Key::D);
-    eventsystem->add_key_listener(sf::Keyboard::Key::Up);
-    eventsystem->add_key_listener(sf::Keyboard::Key::Down);
-    eventsystem->add_key_listener(sf::Keyboard::Key::Left);
-    eventsystem->add_key_listener(sf::Keyboard::Key::Right);
-    eventsystem->add_key_listener(sf::Keyboard::Key::Enter);
-
-    eventsystem->add_mouse_button_listener(sf::Mouse::Button::Left);
-    
+    std::shared_ptr<Eventsystem> eventsystem = init_eventsystem(window);
+    std::shared_ptr<Soundsystem> soundsystem = init_soundsystem();
+    std::shared_ptr<LayerManager> layer_manager = init_layer_manager();
 
 	init_sfml_imgui(window);
+
     window.setFramerateLimit(60);
     sf::Clock deltaClock;
 
-    std::shared_ptr<LayerManager> layer_manager = std::make_shared<LayerManager>();
-    layer_manager->push_layer(std::make_shared<Menu>());
 
 	while (window.isOpen())
     {
@@ -80,9 +75,12 @@ int Main(int argc, char** argv)
 		ImGui::SFML::Update(window, deltaClock.restart());
 
         const std::shared_ptr<Layer>& current_layer = layer_manager->get_top();
-    	current_layer->update(eventsystem,layer_manager,deltatime);
 
-        window.clear();
+    	current_layer->update(eventsystem,layer_manager,soundsystem,window,deltatime);
+
+        soundsystem->update();
+
+		window.clear();
 		current_layer->render(window);
     	ImGui::SFML::Render(window);
 		window.display();
@@ -130,4 +128,44 @@ bool init_sfml_imgui(sf::RenderWindow& window)
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
     return true;
+}
+
+
+std::shared_ptr<Eventsystem> init_eventsystem(sf::RenderWindow& window)
+{
+    std::shared_ptr<Eventsystem> eventsystem = std::make_shared<Eventsystem>(window);
+    eventsystem->add_key_listener(sf::Keyboard::Key::W);
+    eventsystem->add_key_listener(sf::Keyboard::Key::A);
+    eventsystem->add_key_listener(sf::Keyboard::Key::S);
+    eventsystem->add_key_listener(sf::Keyboard::Key::D);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Up);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Down);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Left);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Right);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Enter);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Escape);
+
+    eventsystem->add_mouse_button_listener(sf::Mouse::Button::Left);
+
+    return eventsystem;
+}
+
+std::shared_ptr<LayerManager> init_layer_manager()
+{
+    std::shared_ptr<LayerManager> layer_manager = std::make_shared<LayerManager>();
+    layer_manager->push_layer(std::make_shared<Menu>());
+    return layer_manager;
+}
+
+
+std::shared_ptr<Soundsystem> init_soundsystem()
+{
+    std::shared_ptr<Soundsystem> soundsystem = std::make_shared<Soundsystem>(0.f, false);
+    //TODO: ADD ADITIONAL SOUNDS
+    soundsystem->add_group("ui_sounds");
+    soundsystem->add_group("player_sounds");
+    soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", true, "ui_sounds");
+    soundsystem->load_buffer("Resources/Sounds/record.wav",false,"music");
+    soundsystem->set_should_play_music(false);
+    return soundsystem;
 }

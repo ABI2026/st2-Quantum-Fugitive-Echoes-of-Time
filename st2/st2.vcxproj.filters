@@ -352,6 +352,7 @@
     <ClInclude Include="src\Button.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\LayerManager.h" />
+    <ClInclude Include="src\LevelSelector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp" />
@@ -371,5 +372,6 @@
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\LayerManager.cpp" />
+    <ClCompile Include="src\LevelSelector.cpp" />
   </ItemGroup>
 </Project>
