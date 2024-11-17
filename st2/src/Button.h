@@ -44,8 +44,14 @@ public:
     virtual void update(const sf::Vector2i& mousePosition, bool isMousePressed);
     virtual bool isClicked() { return isPressed; }
     virtual bool is_hovered() { return isHovered; }
+    void set_is_hovered(bool i_is_hovered)
+    {
+	    isHovered = i_is_hovered;
+        shape.setFillColor(isHovered?hoverColor:defaultColor);
 
-    virtual void draw(sf::RenderWindow& window) const;
+    }
+
+	virtual void draw(sf::RenderWindow& window) const;
 };
 
 class ImageButton : public Button {

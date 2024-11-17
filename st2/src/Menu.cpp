@@ -22,6 +22,7 @@ bool Menu::button_action(int selected, std::shared_ptr<LayerManager>& layer_mana
 		return false;
 		break;
 	}
+	m_selected = -1;
 	return true;
 }
 
@@ -41,14 +42,6 @@ void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Up) == Eventsystem::action_pressed)
 		m_selected = m_selected - 1 < 0 ? static_cast<int>(buttons.size()) - 1 : m_selected - 1;
 
-	LOG_INFO("m_selected {}",m_selected);
-	if(eventsystem->get_key_action(sf::Keyboard::Key::Enter) == Eventsystem::action_released)
-	{
-		if (button_action(m_selected, layer_manager))
-			return;
-	}
-
-
 	const float padding = 20.0f;
 	const float total_height = 3 * 50.f + 2 * padding;
 	const float start_y = (eventsystem->get_window_size().y - total_height) / 2.f;
@@ -64,6 +57,21 @@ void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 			return;
 
 	}
+
+	if (eventsystem->get_mouse_button_action(sf::Mouse::Button::Left) == Eventsystem::action_pressed)
+		m_selected = -1;
+
+	if (m_selected != -1)
+	{
+		buttons[m_selected]->set_is_hovered(true);
+	}
+
+	if (eventsystem->get_key_action(sf::Keyboard::Key::Enter) == Eventsystem::action_released)
+	{
+		if (button_action(m_selected, layer_manager))
+			return;
+	}
+
 }
 
 void Menu::render(sf::RenderWindow& window)
