@@ -5,8 +5,9 @@
 #include "imgui-SFML.h"
 #include "Utils/Log.h"
 
-Eventsystem::Eventsystem()
+Eventsystem::Eventsystem(const sf::RenderWindow& window)
 {
+	m_window_size = window.getSize();
 }
 
 void Eventsystem::process_events(sf::RenderWindow& window, const sf::Event& event)
@@ -18,6 +19,7 @@ void Eventsystem::process_events(sf::RenderWindow& window, const sf::Event& even
 
 	if (!focus)
 		return;
+
 	switch (event.type)
 	{
 		//ENTSCHEIDEN OB ANDERE EVENTS AUCH GETRACT WERDEN SOLLTEN WIE RESIZE ETC.
@@ -25,7 +27,16 @@ void Eventsystem::process_events(sf::RenderWindow& window, const sf::Event& even
 	case sf::Event::Closed:
 		window.close();
 		break;
-		//case sf::Event::Resized: break;
+	case sf::Event::Resized: 
+	{
+		m_window_size.x = event.size.width;
+		m_window_size.y = event.size.height;
+		sf::View new_view = window.getView();
+		new_view.setCenter(m_window_size.x/2.f, m_window_size.y/2.f);
+		new_view.setSize(static_cast<float>(m_window_size.x), static_cast<float>(m_window_size.y));
+		window.setView(new_view);
+	}
+		break;
 		//case sf::Event::TextEntered: break;
 	case sf::Event::KeyPressed: //fallthrough
 	case sf::Event::KeyReleased:
@@ -58,9 +69,18 @@ void Eventsystem::process_events(sf::RenderWindow& window, const sf::Event& even
 			m_mouse_button_events_callbacks[button](button, action);
 	}
 	break;
-	//case sf::Event::MouseMoved: break; //handled seperatly
+	case sf::Event::MouseMoved:
+	{
+		const sf::Vector2f new_mouse_position = window.mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
+		m_mouse_offset = m_mouse_position - new_mouse_position;
+		m_mouse_position = new_mouse_position;
+	}
+		break;
 	//case sf::Event::MouseEntered: break;
-	//case sf::Event::MouseLeft: break;
+	case sf::Event::MouseLeft:
+		m_mouse_offset = {0.f,0.f};
+		m_mouse_position = {-1.f,-1.f};
+		break;
 	//case sf::Event::JoystickButtonPressed: break;
 	//case sf::Event::JoystickButtonReleased: break;
 	//case sf::Event::JoystickMoved: break;
@@ -95,11 +115,6 @@ void Eventsystem::handle_updates(sf::RenderWindow& window)
 		ImGui::SFML::ProcessEvent(window, event);
 		process_events(window, event);
 	}
-
-	const sf::Vector2f new_mouse_position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-	m_mouse_offset = m_mouse_position - new_mouse_position;
-	m_mouse_position = new_mouse_position;
-
 }
 
 void Eventsystem::add_key_listener(sf::Keyboard::Key key)
@@ -169,4 +184,9 @@ sf::Vector2f Eventsystem::get_mouse_position() const
 sf::Vector2f Eventsystem::get_mouse_offset() const
 {
 	return m_mouse_offset;
+}
+
+sf::Vector2u Eventsystem::get_window_size() const
+{
+	return m_window_size;
 }
