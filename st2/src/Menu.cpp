@@ -40,7 +40,9 @@ void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 		m_selected = m_selected + 1 == static_cast<int>(buttons.size()) ? 0 : m_selected + 1;
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Up) == Eventsystem::action_pressed)
 		m_selected = m_selected - 1 < 0 ? static_cast<int>(buttons.size()) - 1 : m_selected - 1;
-	if(eventsystem->get_key_action(sf::Keyboard::Key::Up) == Eventsystem::action_released)
+
+	LOG_INFO("m_selected {}",m_selected);
+	if(eventsystem->get_key_action(sf::Keyboard::Key::Enter) == Eventsystem::action_released)
 	{
 		if (button_action(m_selected, layer_manager))
 			return;

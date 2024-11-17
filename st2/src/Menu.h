@@ -12,7 +12,6 @@ class Menu : public Layer
 	std::vector<std::shared_ptr<Button>> buttons;
 
 	bool button_action(int selected, std::shared_ptr<LayerManager>& layer_manager);
-
 public:
 	Menu();
 
