@@ -148,6 +148,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Buttons\ButtonLayout.h" />
+    <ClInclude Include="src\Buttons\ButtonBehaviour.h" />
+    <ClInclude Include="src\Buttons\Button.h" />
     <ClInclude Include="src\PauseMenu.h" />
     <ClInclude Include="src\LevelSelector.h" />
     <ClInclude Include="src\LayerManager.h" />
@@ -266,6 +269,9 @@
     <ClInclude Include="src\Utils\spdlog\version.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Buttons\ButtonLayout.cpp" />
+    <ClCompile Include="src\Buttons\ButtonBehaviour.cpp" />
+    <ClCompile Include="src\Buttons\Button.cpp" />
     <ClCompile Include="src\PauseMenu.cpp" />
     <ClCompile Include="src\LevelSelector.cpp" />
     <ClCompile Include="src\LayerManager.cpp" />
