@@ -11,6 +11,7 @@ private:
 	std::shared_ptr<ButtonBehaviour> m_button_behaviour;
 public:
 	Buttons(){}
+
 	void set_layout(const std::shared_ptr<ButtonLayout>& i_layout)
 	{
 		m_layout = i_layout;

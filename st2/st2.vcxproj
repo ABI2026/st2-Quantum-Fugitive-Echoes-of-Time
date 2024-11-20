@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SFML_STATIC;PLATFORM_WINDOWS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\SFML\SFML-2.6.1\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\spdlog\include;..\vendor\SFML\SFML-2.6.1\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -99,7 +99,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SFML_STATIC;PLATFORM_WINDOWS;RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\SFML\SFML-2.6.1\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\spdlog\include;..\vendor\SFML\SFML-2.6.1\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -123,9 +123,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SFML_STATIC;PLATFORM_WINDOWS;DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\SFML\SFML-2.6.1\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\spdlog\include;..\vendor\SFML\SFML-2.6.1\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -136,7 +136,6 @@
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -148,139 +147,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Buttons\ButtonLayout.h" />
-    <ClInclude Include="src\Buttons\ButtonBehaviour.h" />
-    <ClInclude Include="src\Buttons\Buttons.h" />
-    <ClInclude Include="src\PauseMenu.h" />
-    <ClInclude Include="src\LevelSelector.h" />
-    <ClInclude Include="src\LayerManager.h" />
     <ClInclude Include="src\Button.h" />
-    <ClInclude Include="src\Menu.h" />
-    <ClInclude Include="src\Layer.h" />
-    <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\Buttons\ButtonBehaviour.h" />
+    <ClInclude Include="src\Buttons\ButtonLayout.h" />
+    <ClInclude Include="src\Buttons\Buttons.h" />
     <ClInclude Include="src\Eventsystem.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\Layer.h" />
+    <ClInclude Include="src\LayerManager.h" />
+    <ClInclude Include="src\LevelSelector.h" />
+    <ClInclude Include="src\Menu.h" />
+    <ClInclude Include="src\PauseMenu.h" />
+    <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Utils\Log.h" />
     <ClInclude Include="src\Utils\Random.h" />
     <ClInclude Include="src\Utils\Soundsystem.h" />
     <ClInclude Include="src\Utils\Timer.h" />
-    <ClInclude Include="src\Utils\spdlog\async.h" />
-    <ClInclude Include="src\Utils\spdlog\async_logger-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\async_logger.h" />
-    <ClInclude Include="src\Utils\spdlog\cfg\argv.h" />
-    <ClInclude Include="src\Utils\spdlog\cfg\env.h" />
-    <ClInclude Include="src\Utils\spdlog\cfg\helpers-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\cfg\helpers.h" />
-    <ClInclude Include="src\Utils\spdlog\common-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\common.h" />
-    <ClInclude Include="src\Utils\spdlog\details\backtracer-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\details\backtracer.h" />
-    <ClInclude Include="src\Utils\spdlog\details\circular_q.h" />
-    <ClInclude Include="src\Utils\spdlog\details\console_globals.h" />
-    <ClInclude Include="src\Utils\spdlog\details\file_helper-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\details\file_helper.h" />
-    <ClInclude Include="src\Utils\spdlog\details\fmt_helper.h" />
-    <ClInclude Include="src\Utils\spdlog\details\log_msg-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\details\log_msg.h" />
-    <ClInclude Include="src\Utils\spdlog\details\log_msg_buffer-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\details\log_msg_buffer.h" />
-    <ClInclude Include="src\Utils\spdlog\details\mpmc_blocking_q.h" />
-    <ClInclude Include="src\Utils\spdlog\details\null_mutex.h" />
-    <ClInclude Include="src\Utils\spdlog\details\os-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\details\os.h" />
-    <ClInclude Include="src\Utils\spdlog\details\periodic_worker-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\details\periodic_worker.h" />
-    <ClInclude Include="src\Utils\spdlog\details\registry-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\details\registry.h" />
-    <ClInclude Include="src\Utils\spdlog\details\synchronous_factory.h" />
-    <ClInclude Include="src\Utils\spdlog\details\tcp_client-windows.h" />
-    <ClInclude Include="src\Utils\spdlog\details\tcp_client.h" />
-    <ClInclude Include="src\Utils\spdlog\details\thread_pool-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\details\thread_pool.h" />
-    <ClInclude Include="src\Utils\spdlog\details\udp_client-windows.h" />
-    <ClInclude Include="src\Utils\spdlog\details\udp_client.h" />
-    <ClInclude Include="src\Utils\spdlog\details\windows_include.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bin_to_hex.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\args.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\chrono.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\color.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\compile.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\core.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\format-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\format.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\locale.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\os.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\ostream.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\printf.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\ranges.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\std.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\bundled\xchar.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\chrono.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\compile.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\fmt.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\ostr.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\ranges.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\std.h" />
-    <ClInclude Include="src\Utils\spdlog\fmt\xchar.h" />
-    <ClInclude Include="src\Utils\spdlog\formatter.h" />
-    <ClInclude Include="src\Utils\spdlog\fwd.h" />
-    <ClInclude Include="src\Utils\spdlog\logger-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\logger.h" />
-    <ClInclude Include="src\Utils\spdlog\pattern_formatter-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\pattern_formatter.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\android_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\ansicolor_sink-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\ansicolor_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\base_sink-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\base_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\basic_file_sink-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\basic_file_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\callback_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\daily_file_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\dist_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\dup_filter_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\hourly_file_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\kafka_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\mongo_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\msvc_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\null_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\ostream_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\qt_sinks.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\ringbuffer_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\rotating_file_sink-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\rotating_file_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\sink-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\stdout_color_sinks-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\stdout_color_sinks.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\stdout_sinks-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\stdout_sinks.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\syslog_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\systemd_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\tcp_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\udp_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\win_eventlog_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\wincolor_sink-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\sinks\wincolor_sink.h" />
-    <ClInclude Include="src\Utils\spdlog\spdlog-inl.h" />
-    <ClInclude Include="src\Utils\spdlog\spdlog.h" />
-    <ClInclude Include="src\Utils\spdlog\stopwatch.h" />
-    <ClInclude Include="src\Utils\spdlog\tweakme.h" />
-    <ClInclude Include="src\Utils\spdlog\version.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Buttons\ButtonLayout.cpp" />
-    <ClCompile Include="src\Buttons\ButtonBehaviour.cpp" />
-    <ClCompile Include="src\Buttons\Buttons.cpp" />
-    <ClCompile Include="src\PauseMenu.cpp" />
-    <ClCompile Include="src\LevelSelector.cpp" />
-    <ClCompile Include="src\LayerManager.cpp" />
     <ClCompile Include="src\Button.cpp" />
-    <ClCompile Include="src\Menu.cpp" />
-    <ClCompile Include="src\Layer.cpp" />
-    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\Buttons\ButtonBehaviour.cpp" />
+    <ClCompile Include="src\Buttons\ButtonLayout.cpp" />
+    <ClCompile Include="src\Buttons\Buttons.cpp" />
     <ClCompile Include="src\Eventsystem.cpp" />
     <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\Layer.cpp" />
+    <ClCompile Include="src\LayerManager.cpp" />
+    <ClCompile Include="src\LevelSelector.cpp" />
+    <ClCompile Include="src\Menu.cpp" />
+    <ClCompile Include="src\PauseMenu.cpp" />
+    <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Utils\Log.cpp" />
     <ClCompile Include="src\Utils\Random.cpp" />
     <ClCompile Include="src\Utils\Soundsystem.cpp" />
