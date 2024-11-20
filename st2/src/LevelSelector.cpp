@@ -1,47 +1,43 @@
 #include "LevelSelector.h"
 
-#include "Button.h"
+#include "Buttons/Buttons.h"
+
 #include "Eventsystem.h"
 #include "LayerManager.h"
 #include "Game.h"
 #include "Utils/Log.h"
 #include "Utils/Soundsystem.h"
 
-bool LevelSelector::button_action(const int selected, const std::shared_ptr<LayerManager>& layer_manager)
-{
-	switch (selected)
-	{
-	case 0: //fallthrough
-	case 1:	//fallthrough
-	case 2:	//fallthrough
-	case 3:	//fallthrough
-	case 4:	
-		layer_manager->push_layer(std::make_shared<Game>(selected+1));
-		break;
-	case 5:
-		layer_manager->push_layer(std::make_shared<Game>(-1));
-		break;
-	case 6:
-		layer_manager->pop_layer();
-		break;
-	default:
-		return false;
-		break;
-	}
-	m_selected_x = -1;
-	m_selected_y = -1;
-	return true;
-}
-
 LevelSelector::LevelSelector()
 {
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 40.f,145.f }, sf::Vector2f{ 200.f,50.f }, "level 1", sf::Color::Yellow));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 260.f,145.f }, sf::Vector2f{ 200.f,50.f }, "level 2", sf::Color::Yellow));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 480.f,145.f }, sf::Vector2f{ 200.f,50.f }, "level 3", sf::Color::Yellow));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 40.f,215.f }, sf::Vector2f{ 200.f,50.f }, "level 4", sf::Color::Yellow));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 260.f,215.f }, sf::Vector2f{ 200.f,50.f }, "level 5", sf::Color::Yellow));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 480.f,215.f }, sf::Vector2f{ 200.f,50.f }, "endlos", sf::Color::Yellow));
-	m_buttons.emplace_back(std::make_shared<Button>(sf::Vector2f{ 260.f,285.f }, sf::Vector2f{ 200.f,50.f }, "zurrück", sf::Color::Yellow));
+	m_buttons.emplace_back(std::make_shared<Buttons>());
+	m_buttons.emplace_back(std::make_shared<Buttons>());
+	m_buttons.emplace_back(std::make_shared<Buttons>());
+	m_buttons.emplace_back(std::make_shared<Buttons>());
+	m_buttons.emplace_back(std::make_shared<Buttons>());
+	m_buttons.emplace_back(std::make_shared<Buttons>());
+	m_buttons.emplace_back(std::make_shared<Buttons>());
+
+	m_buttons[0]->set_layout(std::make_shared<TextLayout>("level 1", sf::Vector2f{ 40.f ,145.f }, sf::Vector2f{ 200.f,50.f }, sf::Color::Yellow));
+	m_buttons[0]->set_behaviour(std::make_shared<AddGameLayer>(1));
+
+	m_buttons[1]->set_layout(std::make_shared<TextLayout>("level 2", sf::Vector2f{ 260.f,145.f }, sf::Vector2f{ 200.f,50.f }, sf::Color::Yellow));
+	m_buttons[1]->set_behaviour(std::make_shared<AddGameLayer>(2));
+
+	m_buttons[2]->set_layout(std::make_shared<TextLayout>("level 3", sf::Vector2f{ 480.f,145.f }, sf::Vector2f{ 200.f,50.f }, sf::Color::Yellow));
+	m_buttons[2]->set_behaviour(std::make_shared<AddGameLayer>(3));
+
+	m_buttons[3]->set_layout(std::make_shared<TextLayout>("level 4", sf::Vector2f{ 40.f ,215.f }, sf::Vector2f{ 200.f,50.f }, sf::Color::Yellow));
+	m_buttons[3]->set_behaviour(std::make_shared<AddGameLayer>(4));
+
+	m_buttons[4]->set_layout(std::make_shared<TextLayout>("level 5", sf::Vector2f{ 260.f,215.f }, sf::Vector2f{ 200.f,50.f }, sf::Color::Yellow));
+	m_buttons[4]->set_behaviour(std::make_shared<AddGameLayer>(5));
+
+	m_buttons[5]->set_layout(std::make_shared<TextLayout>("endlos" , sf::Vector2f{ 480.f,215.f }, sf::Vector2f{ 200.f,50.f }, sf::Color::Yellow));
+	m_buttons[5]->set_behaviour(std::make_shared<AddGameLayer>(-1));
+
+	m_buttons[6]->set_layout(std::make_shared<TextLayout>("zurrück", sf::Vector2f{ 260.f,285.f }, sf::Vector2f{ 200.f,50.f }, sf::Color::Yellow));
+	m_buttons[6]->set_behaviour(std::make_shared<PopLayer>());
 }
 
 void LevelSelector::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager,
@@ -65,17 +61,20 @@ void LevelSelector::update(std::shared_ptr<Eventsystem>& eventsystem, std::share
 
 	for (uint8_t i = 0; i < m_buttons.size(); ++i)
 	{
-		m_buttons[i]->setPosition(
+		m_buttons[i]->set_position(
 			{
 			i == 6 ? start_x + (button_size_x + padding) : start_x + static_cast<float>(i % 3) * (button_size_x + padding),
 			start_y + static_cast<float>(std::floor(i/3)) * (button_size_y + padding)
 			});
-		m_buttons[i]->update(static_cast<sf::Vector2i>(mouse_pos), eventsystem->get_mouse_button_action(sf::Mouse::Button::Left) == Eventsystem::action_released);
-		if (!m_buttons[i]->isClicked())
+		m_buttons[i]->update(mouse_pos, eventsystem->get_mouse_button_action(sf::Mouse::Button::Left) == Eventsystem::action_released);
+		if (!m_buttons[i]->is_clicked())
 			continue;
-
-		if (button_action(i, layer_manager))
+		if(m_buttons[i]->on_click(layer_manager, soundsystem, window))
+		{
+			m_selected_x = -1;
+			m_selected_y = -1;
 			return;
+		}
 	}
 
 
@@ -104,15 +103,21 @@ void LevelSelector::update(std::shared_ptr<Eventsystem>& eventsystem, std::share
 	const int selected = m_selected_y == 2 ? 6 : m_selected_x + m_selected_y * 3;
 
 
-	if (m_selected_x != -1 && m_selected_y != -1)
+	if (m_selected_x == -1 || m_selected_y == -1)
 	{
-		m_buttons[selected]->set_is_hovered(true);
+		return;
 	}
+
+	m_buttons[selected]->set_is_hovered(true);
 
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Enter) == Eventsystem::action_released)
 	{
-		if (button_action(selected, layer_manager))
+		if(m_buttons[selected]->on_click(layer_manager,soundsystem,window))
+		{
+			m_selected_x = -1;
+			m_selected_y = -1;
 			return;
+		}
 	}
 }
 
@@ -121,7 +126,7 @@ void LevelSelector::render(sf::RenderWindow& window)
 {
 	for (const auto& button : m_buttons)
 	{
-		button->draw(window);
+		button->render(window);
 	}
 }
 

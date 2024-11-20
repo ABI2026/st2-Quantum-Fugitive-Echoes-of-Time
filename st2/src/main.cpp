@@ -71,7 +71,7 @@ int Main(const int argc, char** argv)
 		const double deltatime = static_cast<float>(deltaClock.getElapsedTime().asSeconds());
 		ImGui::SFML::Update(window, deltaClock.restart());
 
-		const std::shared_ptr<Layer>& current_layer = layer_manager->get_top();
+		const std::shared_ptr<Layer> current_layer = layer_manager->get_top();
 		current_layer->update(eventsystem,layer_manager,soundsystem,window,deltatime);
 
 		soundsystem->update();

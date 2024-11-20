@@ -2,15 +2,14 @@
 #include "Game.h"
 #include "Layer.h"
 
-class Button;
+class Buttons;
 
 class PauseMenu : public Layer
 {
 	int m_selected = -1;
 
-	std::vector<std::shared_ptr<Button>> m_buttons;
+	std::vector<std::shared_ptr<Buttons>> m_buttons;
 
-	bool button_action(int selected, const std::shared_ptr<LayerManager>& layer_manager);
 	std::shared_ptr<Layer> background_layer;
 public:
 	PauseMenu(const std::shared_ptr<Layer>& background_layer);

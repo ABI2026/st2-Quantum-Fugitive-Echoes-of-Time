@@ -3,15 +3,10 @@
 
 #include "Layer.h"
 
-class Button;
+class Buttons;
 
 class Menu : public Layer
 {
-	int m_selected = -1;
-
-	std::vector<std::shared_ptr<Button>> m_buttons;
-
-	bool button_action(int selected, const std::shared_ptr<LayerManager>& layer_manager);
 public:
 	Menu();
 
@@ -22,5 +17,9 @@ public:
 	void on_close() override;
 
 	LayerID get_layer_id() override;
+private:
+	int m_selected = -1;
+
+	std::vector<std::shared_ptr<Buttons>> m_buttons;
 };
 

@@ -2,7 +2,6 @@
 #include <memory>
 #include <stack>
 
-#include "Eventsystem.h"
 #include "Layer.h"
 
 class Layer;
