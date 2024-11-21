@@ -3889,7 +3889,7 @@ FMT_CONSTEXPR20 auto write(OutputIt out, T value) -> OutputIt {
   constexpr auto specs = format_specs<Char>();
   using floaty = conditional_t<std::is_same<T, long double>::value, double, T>;
   using floaty_uint = typename dragonbox::float_info<floaty>::carrier_uint;
-  constepxr floaty_uint mask = exponent_mask<floaty>();
+  constexpr floaty_uint mask = exponent_mask<floaty>();
   if ((bit_cast<floaty_uint>(value) & mask) == mask)
     return write_nonfinite(out, std::isnan(value), specs, fspecs);
 
