@@ -16,5 +16,7 @@ public:
 	void on_close() override;
 
 	LayerID get_layer_id() override;
+private:
+	sf::View m_view;
 };
 

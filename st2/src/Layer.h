@@ -19,6 +19,12 @@ enum class LayerID
 class Layer
 {
 public:
+	Layer() = default;
+	Layer& operator=(const Layer&) = default;
+	Layer(const Layer&) = default;
+	Layer& operator=(Layer&&) noexcept = default;
+	Layer(Layer&&) noexcept = default;
+
 	virtual ~Layer() = default;
 
 	virtual void update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager,

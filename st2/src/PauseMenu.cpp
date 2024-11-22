@@ -39,10 +39,12 @@ void PauseMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_pt
 	constexpr float button_size = 50.f;
 	const float total_height = static_cast<float>(m_buttons.size()) * button_size + (static_cast<float>(m_buttons.size()) - 1.f) * padding;
 	const float start_y = (static_cast<float>(eventsystem->get_window_size().y) - total_height) / 2.f;
+	const float start_x = static_cast<float>(eventsystem->get_window_size().x) / 2.f - 100.f;
+	//const sf::Vector2f difference_to_center = sf::Vector2f{ start_x,start_y } - window.getView().getCenter();
 
 	for (uint8_t i = 0; i < m_buttons.size(); ++i)
 	{
-		m_buttons[i]->set_position({ static_cast<float>(eventsystem->get_window_size().x) / 2.f - 100.f,start_y + static_cast<float>(i) * (50.f + padding) });
+		m_buttons[i]->set_position({ start_x ,start_y + static_cast<float>(i) * (50.f + padding) });
 		m_buttons[i]->update(mouse_pos, eventsystem->get_mouse_button_action(sf::Mouse::Button::Left) == Eventsystem::action_released);
 		if (!m_buttons[i]->is_clicked())
 			continue;
