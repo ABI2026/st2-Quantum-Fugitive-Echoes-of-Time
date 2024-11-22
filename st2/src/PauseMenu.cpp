@@ -18,7 +18,7 @@ PauseMenu::PauseMenu(const std::shared_ptr<Layer>& background_layer)
 	m_buttons[0]->set_behaviour(std::make_shared<PopLayer>());
 
 	m_buttons[1]->set_layout(std::make_shared<TextLayout>("options", sf::Vector2f{ 260.f,215.f }, sf::Vector2f{ 200.f,50.f }, sf::Color::Yellow));
-	m_buttons[1]->set_behaviour(std::make_shared<EmptyLayer>());
+	m_buttons[1]->set_behaviour(std::make_shared<AddOptionsMenu>());
 
 	m_buttons[2]->set_layout(std::make_shared<TextLayout>("main menu", sf::Vector2f{ 260.f,285.f }, sf::Vector2f{ 200.f,50.f },  sf::Color::Yellow));
 	m_buttons[2]->set_behaviour(std::make_shared<GoBackTillLayer>(LayerID::main_menu));

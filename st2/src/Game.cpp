@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include <glm/glm.hpp>
+
 #include "Button.h"
 #include "Eventsystem.h"
 #include "LayerManager.h"
@@ -23,7 +25,7 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 		layer_manager->pop_layer(); 
 		return;
 	}
-
+	//float blend = 1-pow(lerp_speed,deltatime);
 }
 
 void Game::render(sf::RenderWindow& window)

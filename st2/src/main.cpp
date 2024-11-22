@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-
+#include <glm/glm.hpp>
 #include "Utils/Soundsystem.h"
 #include "Utils/Log.h"
 #include "Utils/Random.h"
@@ -64,11 +64,10 @@ int Main(const int argc, char** argv)
 
     window.setFramerateLimit(60);
     sf::Clock deltaClock;
-
 	while (window.isOpen())
     {
         eventsystem->handle_updates(window);
-		const double deltatime = static_cast<float>(deltaClock.getElapsedTime().asSeconds());
+		const double deltatime = static_cast<double>(deltaClock.getElapsedTime().asSeconds());
 		ImGui::SFML::Update(window, deltaClock.restart());
 
 		const std::shared_ptr<Layer> current_layer = layer_manager->get_top();

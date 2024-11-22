@@ -71,3 +71,8 @@ private:
 	int m_level_id{ 0 };
 };
 
+class AddOptionsMenu : public ButtonBehaviour
+{
+public:
+	bool on_click(std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window) override;
+};

@@ -39,6 +39,7 @@
     <ClInclude Include="src\Utils\Timer.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\OptionsMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Button.cpp" />
@@ -69,5 +70,6 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\OptionsMenu.cpp" />
   </ItemGroup>
 </Project>

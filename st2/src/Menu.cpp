@@ -12,13 +12,11 @@ Menu::Menu()
 	m_buttons.emplace_back(std::make_shared<Buttons>());
 	m_buttons.emplace_back(std::make_shared<Buttons>());
 
-
-
 	m_buttons[0]->set_layout(std::make_shared<TextLayout>("start", sf::Vector2f{ 260.f,145.f }, sf::Vector2f{ 200.f,50.f }));
 	m_buttons[0]->set_behaviour(std::make_shared<AddLevelSelectLayer>());
 
 	m_buttons[1]->set_layout(std::make_shared<TextLayout>("optionen", sf::Vector2f{ 260.f,215.f }, sf::Vector2f{ 200.f,50.f }));
-	m_buttons[1]->set_behaviour(std::make_shared<EmptyLayer>());
+	m_buttons[1]->set_behaviour(std::make_shared<AddOptionsMenu>());
 
 
 	m_buttons[2]->set_layout(std::make_shared<TextLayout>("schließen", sf::Vector2f{ 260.f,285.f }, sf::Vector2f{ 200.f,50.f }));
