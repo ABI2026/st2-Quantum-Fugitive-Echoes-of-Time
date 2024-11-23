@@ -3,7 +3,7 @@
 
 #include "Layer.h"
 
-class Buttons;
+class Button;
 
 class Menu : public Layer
 {
@@ -20,6 +20,6 @@ public:
 private:
 	int m_selected = -1;
 
-	std::vector<std::shared_ptr<Buttons>> m_buttons;
+	std::vector<std::shared_ptr<Button>> m_buttons;
 };
 

@@ -4,13 +4,13 @@
 #include "ButtonBehaviour.h"
 #include "ButtonLayout.h"
 
-class Buttons
+class Button
 {
 private:
 	std::shared_ptr<ButtonLayout> m_layout;
 	std::shared_ptr<ButtonBehaviour> m_button_behaviour;
 public:
-	Buttons(){}
+	Button(){}
 
 	void set_layout(const std::shared_ptr<ButtonLayout>& i_layout)
 	{
@@ -26,6 +26,7 @@ public:
 	{
 		return m_layout->is_clicked();
 	}
+
 	bool is_hovered() const
 	{
 		return m_layout->is_hovered();
