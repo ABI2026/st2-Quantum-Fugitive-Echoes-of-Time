@@ -1,19 +1,21 @@
+#include <cmath>
+
 #include <SFML/Graphics.hpp>
+#include <SFML/OpenGL.hpp>
 #include <glm/glm.hpp>
+#include <imgui-SFML.h>
+#include <imgui.h>
+
+
 #include "Utils/Soundsystem.h"
 #include "Utils/Log.h"
 #include "Utils/Random.h"
-#include "imgui-SFML.h"
-#include "imgui.h"
-#include <cmath>
+#include "Utils/Timer.h"
 
 #include "Eventsystem.h"
 #include "Layer.h"
-#include "Menu.h"
-#include "SFML/OpenGL.hpp"
-#include "Utils/Timer.h"
-#include "Button.h"
 #include "LayerManager.h"
+#include "Menu.h"
 
 int Main(int argc, char** argv);
 
