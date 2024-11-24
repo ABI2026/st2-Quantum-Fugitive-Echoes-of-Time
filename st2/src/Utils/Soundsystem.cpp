@@ -283,7 +283,7 @@ void Soundsystem::internal_set_volumes(const std::unordered_map<std::string, flo
 			if (global_sound_changed)
 			{
 				const float final_volume = (volume * global_music_lvl) / 100.f;
-				LOG_TRACE("group volume: {}", volume_groups.second);
+				LOG_TRACE("group volume: {}", volume);
 				LOG_TRACE("final_volume: {}", final_volume);
 				set_volume_for_group(final_volume, group);
 			}
@@ -544,7 +544,7 @@ size_t Soundsystem::get_group_size(const int group_id) const
 	if (!validate_group_id(group_id))
 	{
 		LOG_WARN("group_id: {} doesnt exist", group_id);
-		return -1;
+		return 0;
 	}
 	return internal_get_group_size(m_mapping.at(group_id));
 }
