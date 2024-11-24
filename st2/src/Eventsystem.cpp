@@ -32,7 +32,7 @@ void Eventsystem::process_events(sf::RenderWindow& window, const sf::Event& even
 		m_window_size.x = event.size.width;
 		m_window_size.y = event.size.height;
 		sf::View new_view = window.getView();
-		new_view.setCenter(m_window_size.x/2.f, m_window_size.y/2.f);
+		new_view.setCenter(static_cast<float>(m_window_size.x)/2.f, static_cast<float>(m_window_size.y)/2.f);
 		new_view.setSize(static_cast<float>(m_window_size.x), static_cast<float>(m_window_size.y));
 		window.setView(new_view);
 	}
@@ -44,8 +44,8 @@ void Eventsystem::process_events(sf::RenderWindow& window, const sf::Event& even
 		const sf::Keyboard::Key key = event.key.code;
 		if (!m_key_states.contains(key))
 			break;
-		const bool down = (event.type == sf::Event::KeyPressed);
-		const action action = (down) ? (m_key_states[key] ? action_repeat : action_pressed) : (action_released);
+		const bool down = event.type == sf::Event::KeyPressed;
+		const action action = down ? (m_key_states[key] ? action_repeat : action_pressed) : action_released;
 		m_key_actions[key] = action;
 		m_key_states[key] = down;
 		if (m_key_events_callbacks[key])
@@ -61,8 +61,8 @@ void Eventsystem::process_events(sf::RenderWindow& window, const sf::Event& even
 		const sf::Mouse::Button button = event.mouseButton.button;
 		if (!m_mouse_button_states.contains(button))
 			break;
-		const bool down = (event.type == sf::Event::MouseButtonPressed);
-		const action action = (down) ? (m_mouse_button_states[button] ? action_repeat : action_pressed) : (action_released);
+		const bool down = event.type == sf::Event::MouseButtonPressed;
+		const action action = down ? (m_mouse_button_states[button] ? action_repeat : action_pressed) : action_released;
 		m_mouse_button_actions[button] = action;
 		m_mouse_button_states[button] = down;
 		if (m_mouse_button_events_callbacks[button])

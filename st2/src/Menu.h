@@ -16,7 +16,7 @@ public:
 
 	void on_close() override;
 
-	LayerID get_layer_id() override;
+	[[nodiscard]] LayerID get_layer_id() override;
 private:
 	int m_selected = -1;
 

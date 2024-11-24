@@ -17,20 +17,19 @@
 #include "LayerManager.h"
 #include "Menu.h"
 
-int Main(int argc, char** argv);
+static int Main(int argc, char** argv);
 
-bool init_sfml_imgui(sf::RenderWindow& window);
+static [[nodiscard]] bool init_sfml_imgui(sf::RenderWindow& window);
 
-std::shared_ptr<Eventsystem> init_eventsystem(sf::RenderWindow& window);
+static [[nodiscard]] std::shared_ptr<Eventsystem> init_eventsystem(sf::RenderWindow& window);
 
-std::shared_ptr<LayerManager> init_layer_manager();
+static [[nodiscard]] std::shared_ptr<LayerManager> init_layer_manager();
 
-std::shared_ptr<Soundsystem> init_soundsystem();
+static [[nodiscard]] std::shared_ptr<Soundsystem> init_soundsystem();
 
 #if (defined(PLATFORM_WINDOWS) || defined (_WIN64)) && defined(DIST)
 #include <windows.h>
-
-int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
     return Main(__argc, __argv);
 }
@@ -53,6 +52,11 @@ int Main(const int argc, char** argv)
 
     sf::RenderWindow window(sf::VideoMode(720, 480), "window", sf::Style::Default);
 
+	if (!init_sfml_imgui(window))
+    {
+        LOG_ERROR("failed to initialize imgui");
+    }
+
     LOG_INFO("OpenGL Info:");
     LOG_INFO("Vendor: {0}", reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
     LOG_INFO("Renderer: {0}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
@@ -62,15 +66,14 @@ int Main(const int argc, char** argv)
     std::shared_ptr<Soundsystem> soundsystem = init_soundsystem();
     std::shared_ptr<LayerManager> layer_manager = init_layer_manager();
 
-	init_sfml_imgui(window);
 
     window.setFramerateLimit(60);
-    sf::Clock deltaClock;
+    sf::Clock delta_clock;
 	while (window.isOpen())
     {
         eventsystem->handle_updates(window);
-		const double deltatime = static_cast<double>(deltaClock.getElapsedTime().asSeconds());
-		ImGui::SFML::Update(window, deltaClock.restart());
+		const double deltatime = static_cast<double>(delta_clock.getElapsedTime().asSeconds());
+		ImGui::SFML::Update(window, delta_clock.restart());
 
 		const std::shared_ptr<Layer> current_layer = layer_manager->get_top();
 		current_layer->update(eventsystem,layer_manager,soundsystem,window,deltatime);
@@ -113,8 +116,10 @@ bool init_sfml_imgui(sf::RenderWindow& window)
     font_config.FontDataOwnedByAtlas = false;
     ImFont* roboto_font = io.Fonts->AddFontFromMemoryTTF(const_cast<uint8_t*>(g_RobotoRegular), sizeof g_RobotoRegular, 20.0f, &font_config);
     io.FontDefault = roboto_font;
-    if (!ImGui::SFML::UpdateFontTexture())
+    if (!ImGui::SFML::UpdateFontTexture()) 
+    {
         LOG_ERROR("failed to update font");
+    }
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 

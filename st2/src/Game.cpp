@@ -13,21 +13,9 @@ Game::Game(int level_id)
 {
 }
 
-void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, double deltatime)
+void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window,const double deltatime)
 {
 	static sf::Vector2f position = sf::Vector2f(eventsystem->get_window_size());
-	if (eventsystem->get_key_action(sf::Keyboard::Key::Escape) == Eventsystem::action_pressed || !eventsystem->has_focus())
-	{
-		layer_manager->push_layer(std::make_shared<PauseMenu>(layer_manager->get_top()));
-		return;
-	}
-
-	if (eventsystem->get_key_action(sf::Keyboard::Key::Q) == Eventsystem::action_pressed)
-	{
-		layer_manager->pop_layer();
-		return;
-
-	}
 	glm::vec2 movement = { 0.f,0.f };
 
 	if (eventsystem->get_key_state(sf::Keyboard::Key::W))
@@ -44,11 +32,15 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 		movement = glm::normalize(movement);
 	}
 	ImGui::Begin("Debug");
-	ImGui::Text("fps: %f", 1 / deltatime);
+	ImGui::Text("fps: %f", 1.0 / deltatime);
 	ImGui::Text("movement: x:%f y:%f", movement.x, movement.y);
+
+	movement = movement * 600.f * static_cast<float>(deltatime);
+	position = { position.x + movement.x, position.y + movement.y };
+
+	ImGui::Text("position: x:%f y:%f", position.x, position.y);
 	ImGui::End();
-	movement = movement * 300.f * static_cast<float>(deltatime);
-	position = {position.x + movement.x, position.y + movement.y};
+
 
 	const sf::View backup = window.getView();
 	m_view = backup;
@@ -57,6 +49,18 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 
 
 	window.setView(backup);
+
+	if (eventsystem->get_key_action(sf::Keyboard::Key::Escape) == Eventsystem::action_pressed || !eventsystem->has_focus())
+	{
+		layer_manager->push_layer(std::make_shared<PauseMenu>(layer_manager->get_top()));
+		return;
+	}
+
+	if (eventsystem->get_key_action(sf::Keyboard::Key::Q) == Eventsystem::action_pressed)
+	{
+		layer_manager->pop_layer();
+	}
+
 	//float blend = 1-pow(lerp_speed,deltatime);
 }
 

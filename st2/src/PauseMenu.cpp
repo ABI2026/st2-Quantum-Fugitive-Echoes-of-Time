@@ -1,6 +1,6 @@
 #include "PauseMenu.h"
 
-#include "Buttons\Button.h"
+#include "Buttons/Button.h"
 #include "Eventsystem.h"
 #include "LayerManager.h"
 #include "Utils/Log.h"
@@ -8,7 +8,7 @@
 
 
 PauseMenu::PauseMenu(const std::shared_ptr<Layer>& background_layer)
-	:background_layer(background_layer)
+	:m_background_layer(background_layer)
 {
 	m_buttons.emplace_back(std::make_shared<Button>());
 	m_buttons.emplace_back(std::make_shared<Button>());
@@ -81,7 +81,7 @@ void PauseMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_pt
 
 void PauseMenu::render(sf::RenderWindow& window)
 {
-	background_layer->render(window);
+	m_background_layer->render(window);
 
 	sf::RectangleShape shape(sf::Vector2f(window.getSize()));
 	shape.setPosition(0, 0);

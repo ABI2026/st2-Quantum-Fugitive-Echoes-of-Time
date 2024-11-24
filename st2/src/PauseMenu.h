@@ -6,11 +6,6 @@ class Button;
 
 class PauseMenu : public Layer
 {
-	int m_selected = -1;
-
-	std::vector<std::shared_ptr<Button>> m_buttons;
-
-	std::shared_ptr<Layer> background_layer;
 public:
 	PauseMenu(const std::shared_ptr<Layer>& background_layer);
 
@@ -20,6 +15,11 @@ public:
 
 	void on_close() override;
 
-	LayerID get_layer_id() override;
+	[[nodiscard]] LayerID get_layer_id() override;
+private:
+	int m_selected = -1;
 
+	std::vector<std::shared_ptr<Button>> m_buttons;
+
+	std::shared_ptr<Layer> m_background_layer;
 };
