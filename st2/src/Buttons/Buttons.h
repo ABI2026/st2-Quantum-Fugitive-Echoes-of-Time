@@ -56,5 +56,9 @@ public:
 	{
 		m_layout->set_is_hovered(hovered);
 	}
+
+	void set_text(std::string ini_string) {
+		m_layout->set_text(ini_string);
+	}
 };
 

@@ -115,6 +115,11 @@ void Eventsystem::handle_updates(sf::RenderWindow& window)
 		ImGui::SFML::ProcessEvent(window, event);
 		process_events(window, event);
 	}
+
+	if (window.getSize() != m_window_size)
+	{
+		m_window_size = window.getSize();
+	}
 }
 
 void Eventsystem::add_key_listener(sf::Keyboard::Key key)

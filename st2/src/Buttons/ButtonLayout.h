@@ -17,6 +17,7 @@ public:
 	virtual bool is_clicked() = 0;
 	virtual void set_is_hovered(bool hovered) = 0;
 	virtual void render(sf::RenderWindow& window) = 0;
+	virtual void set_text(std::string ini_string) = 0;
 };
 
 class TextLayout : public ButtonLayout
@@ -38,6 +39,7 @@ public:
 	bool is_clicked() override;
 	void set_is_hovered(bool hovered) override;
 	void render(sf::RenderWindow& window) override;
+	void set_text(std::string ini_text);
 private:
 	sf::Text m_text;
 	sf::Font m_font;
