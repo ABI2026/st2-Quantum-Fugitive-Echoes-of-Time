@@ -34,6 +34,6 @@ public:
 
 	virtual void on_close() {}
 
-	virtual LayerID get_layer_id() = 0;
+	[[nodiscard]] virtual LayerID get_layer_id() = 0;
 };
 

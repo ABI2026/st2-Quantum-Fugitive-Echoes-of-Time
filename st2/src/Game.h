@@ -5,7 +5,6 @@
 
 class Game : public Layer
 {
-
 public:
 	Game() = default;
 	Game(int level_id);
@@ -15,7 +14,7 @@ public:
 
 	void on_close() override;
 
-	LayerID get_layer_id() override;
+	[[nodiscard]] LayerID get_layer_id() override;
 private:
 	sf::View m_view;
 };

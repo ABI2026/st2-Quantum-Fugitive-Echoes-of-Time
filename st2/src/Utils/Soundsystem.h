@@ -17,7 +17,7 @@ public:
 			:attenuation(i_attenuation), mindistance(i_mindistance) {}
 	private:
 		friend class Soundsystem;
-		sf::SoundBuffer buffer;
+		sf::SoundBuffer m_buffer;
 	};
 
 
@@ -82,7 +82,7 @@ public:
 	void add_sound(int group_id, int sound_id, sf::Vector3f pos);
 
 
-	void set_volume(float volume, int id);
+	void set_volume(float volume, int group_id);
 
 	void set_volume(float volume, const std::string& group_id);
 
@@ -124,7 +124,7 @@ private:
 
 	void internal_set_volume(float volume, int id);
 
-	void internal_set_volume(float volume, const std::string& id);
+	void internal_set_volume(float volume, const std::string& group_id);
 
 	void internal_increment_volume(float increase, int id);
 
@@ -134,12 +134,7 @@ private:
 
 	void internal_load_buffer(const std::string& location, bool only_one_sound, const std::string& group, const Soundmetadata& metadata);
 
-	void internal_load_buffer(const std::string& location, bool only_one_sound, int group, const Soundmetadata& metadata);
-
-
-
-
-
+	void internal_load_buffer(const std::string& location, bool only_one_sound, int group_id, const Soundmetadata& metadata);
 private:
 
 	void play_music();

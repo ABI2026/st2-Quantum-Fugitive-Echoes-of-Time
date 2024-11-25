@@ -1,6 +1,6 @@
 #include "OptionsMenu.h"
 
-#include "Buttons/Buttons.h"
+#include "Buttons/Button.h"
 #include "Eventsystem.h"
 #include "LayerManager.h"
 #include "Utils/Log.h"

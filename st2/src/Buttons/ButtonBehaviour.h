@@ -15,17 +15,22 @@ class Soundsystem;
 class ButtonBehaviour
 {
 public:
+	ButtonBehaviour() = default;
+	ButtonBehaviour& operator=(const ButtonBehaviour&) = default;
+	ButtonBehaviour(const ButtonBehaviour&) = default;
+	ButtonBehaviour& operator=(ButtonBehaviour&&) noexcept = default;
+	ButtonBehaviour(ButtonBehaviour&&) noexcept = default;
 	virtual ~ButtonBehaviour() = default;
-	virtual bool on_click(std::shared_ptr<LayerManager>& layer_manager,
+	[[nodiscard]] virtual bool on_click(std::shared_ptr<LayerManager>& layer_manager,
 		std::shared_ptr<Soundsystem>& soundsystem,
 		sf::RenderWindow& window
 		) = 0;
 };
 
-class EmptyLayer : public ButtonBehaviour
+class EmptyBehaviour : public ButtonBehaviour
 {
 public:
-	bool on_click(std::shared_ptr<LayerManager>& layer_manager,
+	[[nodiscard]] bool on_click(std::shared_ptr<LayerManager>& layer_manager,
 		std::shared_ptr<Soundsystem>& soundsystem,
 		sf::RenderWindow& window) override
 	{
@@ -36,8 +41,8 @@ public:
 class GoBackTillLayer : public ButtonBehaviour
 {
 public:
-	GoBackTillLayer(LayerID id): m_layer_id(id){}
-	bool on_click(std::shared_ptr<LayerManager>& layer_manager,
+	GoBackTillLayer(const LayerID id): m_layer_id(id){}
+	[[nodiscard]] bool on_click(std::shared_ptr<LayerManager>& layer_manager,
 		std::shared_ptr<Soundsystem>& soundsystem, 
 		sf::RenderWindow& window) override;
 private:
@@ -47,7 +52,7 @@ private:
 class PopLayer : public ButtonBehaviour
 {
 public:
-	bool on_click(std::shared_ptr<LayerManager>& layer_manager,
+	[[nodiscard]] bool on_click(std::shared_ptr<LayerManager>& layer_manager,
 		std::shared_ptr<Soundsystem>& soundsystem, 
 		sf::RenderWindow& window) override;
 };
@@ -55,7 +60,7 @@ public:
 class AddLevelSelectLayer : public ButtonBehaviour
 {
 public:
-	bool on_click(std::shared_ptr<LayerManager>& layer_manager, 
+	[[nodiscard]] bool on_click(std::shared_ptr<LayerManager>& layer_manager,
 		std::shared_ptr<Soundsystem>& soundsystem,
 		sf::RenderWindow& window) override;
 };
@@ -63,7 +68,7 @@ public:
 class AddGameLayer : public ButtonBehaviour
 {
 public:
-	AddGameLayer(int i_level_id):m_level_id(i_level_id){}
+	[[nodiscard]] AddGameLayer(const int i_level_id):m_level_id(i_level_id){}
 	bool on_click(std::shared_ptr<LayerManager>& layer_manager, 
 		std::shared_ptr<Soundsystem>& soundsystem,
 		sf::RenderWindow& window) override;
@@ -74,5 +79,5 @@ private:
 class AddOptionsMenu : public ButtonBehaviour
 {
 public:
-	bool on_click(std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window) override;
+	[[nodiscard]] bool on_click(std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window) override;
 };

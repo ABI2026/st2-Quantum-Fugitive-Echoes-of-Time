@@ -3,7 +3,7 @@
 
 #include "Layer.h"
 
-class Buttons;
+class Button;
 
 class Menu : public Layer
 {
@@ -16,10 +16,10 @@ public:
 
 	void on_close() override;
 
-	LayerID get_layer_id() override;
+	[[nodiscard]] LayerID get_layer_id() override;
 private:
 	int m_selected = -1;
 
-	std::vector<std::shared_ptr<Buttons>> m_buttons;
+	std::vector<std::shared_ptr<Button>> m_buttons;
 };
 

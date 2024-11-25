@@ -9,14 +9,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Button.h" />
     <ClInclude Include="src\Buttons\ButtonBehaviour.h">
       <Filter>Buttons</Filter>
     </ClInclude>
     <ClInclude Include="src\Buttons\ButtonLayout.h">
       <Filter>Buttons</Filter>
     </ClInclude>
-    <ClInclude Include="src\Buttons\Buttons.h">
+    <ClInclude Include="src\Buttons\Button.h">
       <Filter>Buttons</Filter>
     </ClInclude>
     <ClInclude Include="src\Eventsystem.h" />
@@ -42,14 +41,13 @@
     <ClInclude Include="src\OptionsMenu.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\Buttons\ButtonBehaviour.cpp">
       <Filter>Buttons</Filter>
     </ClCompile>
     <ClCompile Include="src\Buttons\ButtonLayout.cpp">
       <Filter>Buttons</Filter>
     </ClCompile>
-    <ClCompile Include="src\Buttons\Buttons.cpp">
+    <ClCompile Include="src\Buttons\Button.cpp">
       <Filter>Buttons</Filter>
     </ClCompile>
     <ClCompile Include="src\Eventsystem.cpp" />

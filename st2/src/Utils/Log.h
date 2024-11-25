@@ -7,7 +7,7 @@
 class Log
 {
 public:
-	static void init(spdlog::level::level_enum client_level,spdlog::level::level_enum system_level)
+	static void init(const spdlog::level::level_enum client_level,const spdlog::level::level_enum system_level)
 	{
 		spdlog::set_pattern("%^[%T] [thread %t] %n: %v%$");
 		s_system_logger = spdlog::stdout_color_mt("st2");
@@ -16,7 +16,7 @@ public:
 		s_system_logger->set_level(client_level);
 	}
 
-	static std::shared_ptr<spdlog::logger>& get_logger() { return s_system_logger; }
+	[[nodiscard]] static std::shared_ptr<spdlog::logger>& get_logger() { return s_system_logger; }
 private:
 	inline static std::shared_ptr<spdlog::logger> s_system_logger;
 
@@ -30,7 +30,7 @@ private:
 #define LOG_WARN(...)       
 #define LOG_ERROR(...)      
 #define LOG_CRITICAL(...)
-#define GET_LOG_LEVEL -1
+#define GET_LOG_LEVEL() (-1)
 #define SET_LOG_LEVEL(...)
 #else
 #define LOG_TRACE(...)         ::Log::get_logger()->trace(__VA_ARGS__)
@@ -39,7 +39,7 @@ private:
 #define LOG_WARN(...)          ::Log::get_logger()->warn(__VA_ARGS__)
 #define LOG_ERROR(...)         ::Log::get_logger()->error(__VA_ARGS__)
 #define LOG_CRITICAL(...)      ::Log::get_logger()->critical(__VA_ARGS__)
-#define GET_LOG_LEVEL		   ::Log::get_logger()->level()
+#define GET_LOG_LEVEL()		   ::Log::get_logger()->level()
 #define SET_LOG_LEVEL(...)	   ::Log::get_logger()->set_level(__VA_ARGS__)
 #endif
 
