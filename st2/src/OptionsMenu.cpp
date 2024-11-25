@@ -11,6 +11,12 @@ void OptionsMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_
 {
 	sf::Vector2f mouse_pos = eventsystem->get_mouse_position();
 
+	for (int i = 0; i < m_buttons.size(); i++) 
+	{
+		m_buttons[i]->update(mouse_pos, 
+			eventsystem->get_mouse_button_action(sf::Mouse::Button::Left) == Eventsystem::action_released);
+	}
+
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Escape) == Eventsystem::action_pressed || m_buttons[0]->is_clicked() == true)
 	{
 		layer_manager->pop_layer();
@@ -25,11 +31,11 @@ void OptionsMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_
 			m_buttons[1]->set_text("windowmode");
 			window.create(sf::VideoMode(720, 480), "window", sf::Style::Default);
 		}
-		else {
+		else{
 			m_buttons[1]->set_text("fullscreen");
-			window.create(sf::VideoMode(1920, 1080), "window", sf::Style::Fullscreen);
+			window.create(sf::VideoMode(1920,1080), "window", sf::Style::Fullscreen);
 		}
-		
+		window.setFramerateLimit(60);
 	}
 	else if (m_buttons[3]->is_clicked() == true) {
 		if (m_windowselect > 0) 
@@ -44,18 +50,18 @@ void OptionsMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_
 			m_buttons[1]->set_text("fullscreen");
 			window.create(sf::VideoMode(1920, 1080), "window", sf::Style::Fullscreen);
 		}
-		LOG_INFO("windowselect: " + m_windowselect);
+		window.setFramerateLimit(60);
+		LOG_INFO("windowselect: {}", m_windowselect);
 	}
-	/*else if (m_buttons[5]->is_clicked() == true) {
-		for (int i = 0; i < soundsystem->get_group_size(); i++) {
-			soundsystem->increament(5, i);
-		}
-		m_buttons[4]->set_text(soundsystem->get_volumes());
-	}*/
-
-	for (int i = 0; i < m_buttons.size(); i++) {
-		m_buttons[i]->update(mouse_pos, eventsystem->get_mouse_button_action(sf::Mouse::Button::Left) == Eventsystem::action_released);
+	else if (m_buttons[5]->is_clicked() == true) {
+		soundsystem->decrement_volume(5.f, "global");
+		m_buttons[4]->set_text(std::format("{}",soundsystem->get_volumes().at("global")));
 	}
+	else if (m_buttons[6]->is_clicked() == true) {
+		soundsystem->increment_volume(5.f, "global");
+		m_buttons[4]->set_text(std::format("{}",soundsystem->get_volumes().at("global")));
+	}
+	m_buttons[4]->set_text(std::format("{}", soundsystem->get_volumes().at("global")));
 }
 
 LayerID OptionsMenu::get_layer_id()
