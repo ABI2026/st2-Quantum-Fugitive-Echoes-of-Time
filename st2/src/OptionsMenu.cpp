@@ -65,7 +65,7 @@ LayerID OptionsMenu::get_layer_id()
 
 OptionsMenu::OptionsMenu() {
 	for (int i = 0; i < 7; i++) {
-		m_buttons.emplace_back(std::make_shared<Buttons>());
+		m_buttons.emplace_back(std::make_shared<Button>());
 	}
 
 	m_buttons[0]->set_layout(std::make_shared<TextLayout>("back", sf::Vector2f{ 260.f,145.f }, sf::Vector2f{ 200.f,50.f }, sf::Color::White));

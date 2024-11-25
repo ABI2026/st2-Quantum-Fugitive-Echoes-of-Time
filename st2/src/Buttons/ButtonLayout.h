@@ -35,6 +35,7 @@ public:
 	[[nodiscard]] bool is_clicked()  override {return false;}
 	void set_is_hovered(bool hovered)  override {}
 	void render(sf::RenderWindow& window)  override {}
+	void set_text(std::string ini_text) override {}
 };
 
 class TextLayout : public ButtonLayout
@@ -56,7 +57,7 @@ public:
 	[[nodiscard]] bool is_clicked() override;
 	void set_is_hovered(bool hovered) override;
 	void render(sf::RenderWindow& window) override;
-	void set_text(std::string ini_text);
+	void set_text(std::string ini_text) override;
 private:
 	sf::Text m_text;
 	sf::Font m_font;

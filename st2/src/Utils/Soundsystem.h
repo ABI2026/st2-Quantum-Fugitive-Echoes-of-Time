@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <SFML/Audio.hpp>
 
-class Soundsystem 
+class Soundsystem
 {
 public:
 

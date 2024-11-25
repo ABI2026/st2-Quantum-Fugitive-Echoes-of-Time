@@ -1,7 +1,7 @@
 #pragma once
 #include "Layer.h"
 
-class Buttons;
+class Button;
 
 class OptionsMenu : public Layer
 {
@@ -13,7 +13,7 @@ public:
 	void on_close() override;
 private:
 	int m_selected = -1;
-	std::vector<std::shared_ptr<Buttons>> m_buttons;
+	std::vector<std::shared_ptr<Button>> m_buttons;
 	int m_windowselect = 0;
 
 };
