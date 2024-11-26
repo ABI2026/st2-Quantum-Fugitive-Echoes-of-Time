@@ -81,3 +81,13 @@ class AddOptionsMenu : public ButtonBehaviour
 public:
 	[[nodiscard]] bool on_click(std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window) override;
 };
+
+class IncrementVolume : public ButtonBehaviour
+{
+public:
+	IncrementVolume(const std::string& i_group_id,float i_volume): m_group_id(i_group_id), m_volume(i_volume){}
+	[[nodiscard]] bool on_click(std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window) override;
+private:
+	std::string m_group_id;
+	float m_volume{5.f};
+};

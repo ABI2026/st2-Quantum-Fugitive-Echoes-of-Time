@@ -5,11 +5,12 @@
 TextLayout::TextLayout(const std::string& i_text,
     const sf::Vector2f& i_position,
     const sf::Vector2f& i_size,
+    const float i_outline_thickness,
     const sf::Color& i_default_color,
     const sf::Color& i_hovered_color,
     const sf::Color& i_pressed_color,
-    const sf::Color& i_outline_color,
-    const float i_outline_thickness )
+    const sf::Color& i_outline_color
+     )
 {
 
     m_default_color = i_default_color;
@@ -103,4 +104,5 @@ void TextLayout::set_is_hovered(const bool hovered)
 
 void TextLayout::set_text(std::string ini_string) {
     m_text.setString(ini_string);
+    set_position(m_shape.getPosition());
 }

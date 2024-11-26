@@ -15,6 +15,7 @@ private:
 	int m_selected = -1;
 	std::vector<std::shared_ptr<Button>> m_buttons;
 	int m_windowselect = 0;
-
+	int m_selected_y{-1};
+	int m_selected_x{-1};
 };
 

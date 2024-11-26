@@ -6,6 +6,7 @@
 #include "LayerManager.h"
 #include "LevelSelector.h"
 #include "OptionsMenu.h"
+#include "Utils/Log.h"
 #include "Utils/Soundsystem.h"
 
 bool GoBackTillLayer::on_click(std::shared_ptr<LayerManager>& layer_manager,
@@ -45,4 +46,11 @@ bool AddOptionsMenu::on_click(std::shared_ptr<LayerManager>& layer_manager, std:
 {
 	layer_manager->push_layer(std::make_shared<OptionsMenu>());
 	return true;
+}
+
+bool IncrementVolume::on_click(std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem,
+	sf::RenderWindow& window)
+{
+	soundsystem->increment_volume(m_volume, m_group_id);
+	return false;
 }

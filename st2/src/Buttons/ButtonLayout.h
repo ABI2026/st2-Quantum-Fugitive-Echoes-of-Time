@@ -45,11 +45,11 @@ public:
 		const std::string& i_text,
 		const sf::Vector2f& i_position,
 		const sf::Vector2f& i_size,
+		float i_outline_thickness = 2.f,
 		const sf::Color& i_default_color = sf::Color::White,
 		const sf::Color& i_hovered_color = sf::Color(200, 200, 200),
 		const sf::Color& i_pressed_color = sf::Color(150,150,150),
-		const sf::Color& i_outline_color = sf::Color::Black,
-		float i_outline_thickness = 2.f
+		const sf::Color& i_outline_color = sf::Color::Black
 	);
 	void update(const sf::Vector2f& mouse_position, bool mouse_pressed) override;
 	void set_position(const sf::Vector2f& position) override;

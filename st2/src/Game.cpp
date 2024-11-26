@@ -71,12 +71,15 @@ void Game::render(sf::RenderWindow& window)
 	static sf::RectangleShape shape(sf::Vector2f(window.getSize()));
 	shape.setPosition(0, 0);
 	shape.setFillColor(sf::Color::Cyan);
+
 	sf::RectangleShape shape2({ 100.f,100.f });
 	shape2.setOrigin(50.f,50.f);
 	shape2.setPosition(window.getView().getCenter());
 	shape2.setFillColor(sf::Color::Magenta);
+
 	window.draw(shape);
 	window.draw(shape2);
+
 	window.setView(backup);
 }
 
