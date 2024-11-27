@@ -174,7 +174,7 @@ void OptionsMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_
 	const int selected = m_selected_y == 0 ? 0 : m_selected_x + 1 + (m_selected_y-1) * 3;
 
 	m_buttons[selected]->set_is_hovered(true);
-	static const int* const&& a = reinterpret_cast<int*>(5);
+
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Enter) == Eventsystem::action_released)
 	{
 		if (selected == 1 || selected == 3) 
