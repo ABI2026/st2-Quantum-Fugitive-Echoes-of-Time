@@ -21,6 +21,17 @@ public:
 		m_button_behaviour = i_behaviour;
 	}
 
+	std::shared_ptr<ButtonLayout> get_layout() const
+	{
+		return m_layout;
+	}
+
+	std::shared_ptr<ButtonBehaviour> get_behaviour() const
+	{
+		return m_button_behaviour;
+	}
+
+
 	[[nodiscard]] bool is_clicked() const
 	{
 		return m_layout->is_clicked();
@@ -57,9 +68,9 @@ public:
 		m_layout->set_is_hovered(hovered);
 	}
 
-	void set_text(std::string ini_string) 
+	void set_text(const std::string& i_string) const
 	{
-		m_layout->set_text(ini_string);
+		m_layout->set_text(i_string);
 	}
 
 private:

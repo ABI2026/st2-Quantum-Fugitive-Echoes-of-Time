@@ -102,7 +102,8 @@ void TextLayout::set_is_hovered(const bool hovered)
     m_shape.setFillColor(hovered ? m_hovered_color : m_default_color);
 }
 
-void TextLayout::set_text(std::string ini_string) {
-    m_text.setString(ini_string);
+void TextLayout::set_text(const std::string& i_text)
+{
+    m_text.setString(i_text);
     set_position(m_shape.getPosition());
 }
