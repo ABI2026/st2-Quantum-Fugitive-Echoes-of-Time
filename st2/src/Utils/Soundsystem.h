@@ -1,6 +1,8 @@
 #pragma once
+#include <array>
 #include <deque>
 #include <mutex>
+#include <optional>
 #include <unordered_map>
 #include <SFML/Audio.hpp>
 
@@ -37,6 +39,18 @@ public:
 	//getter and setter
 public:
 
+	[[nodiscard]] std::unordered_map<std::string, std::deque<std::pair<std::deque<sf::Sound>, bool>>>& get_all_sounds();
+
+	[[nodiscard]] const std::unordered_map<std::string, std::deque<std::pair<std::deque<sf::Sound>, bool>>>& get_all_sounds() const;
+
+	[[nodiscard]] std::deque<std::pair<std::deque<sf::Sound>, bool>>* get_sounds_by_group(const std::string& group_id);
+
+	[[nodiscard]] const std::deque<std::pair<std::deque<sf::Sound>, bool>>* get_sounds_by_group(const std::string& group_id) const;
+
+	[[nodiscard]] std::deque<sf::Sound>* get_sound_by_group_and_id(const std::string& group_id,const uint32_t sound_id);
+
+	[[nodiscard]] const std::deque<sf::Sound>* get_sound_by_group_and_id(const std::string& group_id,const uint32_t sound_id) const;
+
 	[[nodiscard]] std::unordered_map<std::string, float> get_volumes() const;
 
 	void set_should_play_music(bool should_play_music);
@@ -60,6 +74,8 @@ public:
 	[[nodiscard]] size_t get_group_size(const std::string& group_id) const;
 
 	[[nodiscard]] std::unordered_map<std::string, size_t> get_group_names() const;
+
+	void set_music_indices(const std::array<int, 3>& i_music_indices);
 
 public:
 	void add_group(const std::string& group);
@@ -186,7 +202,7 @@ private:
 	std::unordered_map<std::string, sound_group> m_sounds;
 
 	int m_current_music = -1;
-
+	int m_current_music_index = -1;
 	inline static size_t s_current_playing_sounds = 0;
-
+	std::array<int, 3> m_music_indices{0};
 };

@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Level.h" />
     <ClInclude Include="src\OptionsMenu.h" />
     <ClInclude Include="src\Buttons\ButtonBehaviour.h" />
     <ClInclude Include="src\Buttons\ButtonLayout.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="src\Utils\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Level.cpp" />
     <ClCompile Include="src\OptionsMenu.cpp" />
     <ClCompile Include="src\Buttons\ButtonBehaviour.cpp" />
     <ClCompile Include="src\Buttons\ButtonLayout.cpp" />

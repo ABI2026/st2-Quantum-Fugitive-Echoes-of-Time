@@ -37,7 +37,7 @@ bool AddGameLayer::on_click(std::shared_ptr<LayerManager>& layer_manager,
 	std::shared_ptr<Soundsystem>& soundsystem,
 	sf::RenderWindow& window)
 {
-	layer_manager->push_layer(std::make_shared<Game>(m_level_id));
+	layer_manager->push_layer(std::make_shared<Game>(m_level_id,soundsystem));
 	return true;
 }
 

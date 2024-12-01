@@ -75,7 +75,7 @@ int Main(const int argc, char** argv)
 		const double deltatime = static_cast<double>(delta_clock.getElapsedTime().asSeconds());
 		ImGui::SFML::Update(window, delta_clock.restart());
 
-		const std::shared_ptr<Layer> current_layer = layer_manager->get_top();
+    	const std::shared_ptr<Layer> current_layer = layer_manager->get_top();
 		current_layer->update(eventsystem,layer_manager,soundsystem,window,deltatime);
 
 		soundsystem->update();
@@ -169,7 +169,10 @@ std::shared_ptr<Soundsystem> init_soundsystem()
     soundsystem->add_group("ui_sounds");
     soundsystem->add_group("player_sounds");
     soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", true, "ui_sounds");
-    soundsystem->load_buffer("Resources/Sounds/record.wav",false,"music");
-    soundsystem->set_should_play_music(false);
+    soundsystem->load_buffer("Resources/Sounds/background_menu_music_1.mp3",false,"music");
+    soundsystem->load_buffer("Resources/Sounds/background_menu_music_2.mp3",false,"music");
+    soundsystem->load_buffer("Resources/Sounds/background_menu_music_3.mp3",false,"music");
+    soundsystem->set_music_indices({0, 1, 2});
+    soundsystem->set_should_play_music(true);
     return soundsystem;
 }

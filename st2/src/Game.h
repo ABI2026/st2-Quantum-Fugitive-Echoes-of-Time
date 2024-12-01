@@ -2,12 +2,13 @@
 #include <SFML/Graphics.hpp>
 
 #include "Layer.h"
+#include "Level.h"
 
 class Game : public Layer
 {
 public:
-	Game() = default;
-	Game(int level_id);
+	Game(int level_id, std::shared_ptr<Soundsystem>& soundsystem);
+
 	void update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, double deltatime) override;
 
 	void render(sf::RenderWindow& window) override;
@@ -17,5 +18,8 @@ public:
 	[[nodiscard]] LayerID get_layer_id() override;
 private:
 	sf::View m_view;
+	sf::Texture m_background_texture;
+	std::shared_ptr<Level> m_level;
 };
+
 

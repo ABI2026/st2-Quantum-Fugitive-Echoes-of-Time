@@ -14,27 +14,32 @@ void Soundsystem::change_music()
 {
 	LOG_TRACE("change music called");
 	LOG_TRACE("current music: {}", m_current_music);
-	const int m_sounds_size = static_cast<signed>(m_sounds_meta_data[Soundsystem_MusicStr].size()) - 1;
-	LOG_TRACE("amount of music sounds available: {}", m_sounds_size);
+	const int sounds_size = static_cast<signed>(m_sounds_meta_data[Soundsystem_MusicStr].size()) - 1;
+	constexpr int music_indices_size = 3;
+	LOG_TRACE("amount of music sounds available: {}", sounds_size);
 	sf::Sound& music_sound = m_sounds[Soundsystem_MusicStr][0].first.back();
-	if (m_sounds_size == 0)
+	if (sounds_size == 0)
 	{
 		LOG_INFO("only 1 sound available");
 		music_sound.play();
 		return;
 	}
 
-	int new_current_music;
-#ifdef NO_SEQUENTIAL_MUSIC
-	new_current_music = Random::uint(0, m_sounds_size);
-#else
-	new_current_music = m_current_music + 1;
-	LOG_TRACE("next music id: {}", new_current_music);
-	if (new_current_music > m_sounds_size)
+	int new_music_index = m_current_music_index + 1;
+	if(new_music_index >= music_indices_size)
 	{
+		new_music_index = 0;
+	}
+	m_current_music_index = new_music_index;
+
+	int new_current_music = m_music_indices[new_music_index];
+
+	LOG_TRACE("next music id: {}", new_current_music);
+	if (new_current_music > sounds_size || new_current_music < 0)
+	{
+		LOG_WARN("index {} of music indices {} is outside of the scope of the amount of music sounds",new_music_index,new_current_music);
 		new_current_music = 0;
 	}
-#endif
 	LOG_TRACE("change buffer to that of the new music");
 	music_sound.setBuffer(m_sounds_meta_data[Soundsystem_MusicStr][new_current_music].m_buffer);
 	LOG_TRACE("playing music");
@@ -318,6 +323,7 @@ void Soundsystem::internal_load_buffer(const std::string& location, bool only_on
 	if(!temp_buffer.loadFromFile(location))
 	{
 		LOG_ERROR("Failed to load sound from location: {}", location);
+		return;
 	}
 	Soundmetadata temp_metadata{ metadata };
 
@@ -365,6 +371,55 @@ Soundsystem::Soundsystem(const float tilesize, const bool use_tile_size) : m_use
 	add_group(Soundsystem_MusicStr);
 	LOG_INFO("starting sound thread");
 	start_thread();
+}
+
+std::unordered_map<std::string, std::deque<std::pair<std::deque<sf::Sound>, bool>>>& Soundsystem::get_all_sounds()
+{
+	return m_sounds;
+}
+
+const std::unordered_map<std::string, std::deque<std::pair<std::deque<sf::Sound>, bool>>>& Soundsystem::
+get_all_sounds() const
+{
+	return m_sounds;
+}
+
+std::deque<std::pair<std::deque<sf::Sound>, bool>>* Soundsystem::get_sounds_by_group(const std::string& group_id)
+{
+	if (validate_group_id(group_id))
+		return &m_sounds.at(group_id);
+	return nullptr;
+}
+
+const std::deque<std::pair<std::deque<sf::Sound>, bool>>* Soundsystem::get_sounds_by_group(
+	const std::string& group_id) const
+{
+	if (validate_group_id(group_id))
+		return &m_sounds.at(group_id);
+	return nullptr;
+}
+
+std::deque<sf::Sound>* Soundsystem::get_sound_by_group_and_id(const std::string& group_id, const uint32_t sound_id)
+{
+	auto group_sounds = get_sounds_by_group(group_id);
+	if (!group_sounds)
+		return nullptr;
+	const size_t group_sounds_size = group_sounds->size();
+	if (sound_id >= group_sounds_size || sound_id < 0)
+		return nullptr;	
+	return &group_sounds->at(sound_id).first;
+}
+
+const std::deque<sf::Sound>* Soundsystem::get_sound_by_group_and_id(const std::string& group_id,
+	const uint32_t sound_id) const
+{
+	auto group_sounds = get_sounds_by_group(group_id);
+	if (!group_sounds)
+		return nullptr;
+	const size_t group_sounds_size = group_sounds->size();
+	if (sound_id >= group_sounds_size || sound_id < 0)
+		return nullptr;
+	return &group_sounds->at(sound_id).first;
 }
 
 void Soundsystem::run()
@@ -564,6 +619,17 @@ std::unordered_map<std::string, size_t> Soundsystem::get_group_names() const
 	return return_val;
 }
 
+void Soundsystem::set_music_indices(const std::array<int, 3>& i_music_indices)
+{
+	std::lock_guard lock(m_mutex);
+	if(m_music_indices == i_music_indices)
+		return;
+	m_music_indices = i_music_indices;
+	m_new_data = true;
+	m_current_music_index = 0;
+	m_current_music = -1;
+}
+
 
 /**
  * @brief Adds a new group to the Soundsystem.
@@ -659,11 +725,13 @@ void Soundsystem::play_music()
 	{
 		music_sounds.emplace_back(m_sounds_meta_data[Soundsystem_MusicStr][0].m_buffer);
 		music_sounds.back().setVolume(m_volumes[Soundsystem_GlobalStr] * m_volumes[Soundsystem_MusicStr] / 100);
+		s_current_playing_sounds++;
 	}
+
 	if (m_current_music == -1)
 	{
 		music_sounds.back().setBuffer(m_sounds_meta_data[Soundsystem_MusicStr][0].m_buffer);
-		s_current_playing_sounds++;
+		m_current_music = 0;
 	}
 	sf::Sound& music_sound = music_sounds.back();
 	music_sound.play();
@@ -701,19 +769,20 @@ bool Soundsystem::music()
 		return false;
 	}
 	auto& music_sounds = m_sounds[Soundsystem_MusicStr][0].first;
+
 	if (m_current_music == -1)
 	{
 		if (music_sounds.empty())
 		{
-			music_sounds.emplace_back(m_sounds_meta_data[Soundsystem_MusicStr][0].m_buffer);
-			music_sounds.back().setVolume(m_volumes[Soundsystem_MusicStr] * m_volumes[Soundsystem_MusicStr] / 100);
+			music_sounds.emplace_back(m_sounds_meta_data[Soundsystem_MusicStr][m_music_indices[0]].m_buffer);
+			music_sounds.back().setVolume(m_volumes[Soundsystem_GlobalStr] * m_volumes[Soundsystem_MusicStr] / 100);
+			s_current_playing_sounds++;
 		}
-		music_sounds.back().setBuffer(m_sounds_meta_data[Soundsystem_MusicStr][0].m_buffer);
+		music_sounds.back().setBuffer(m_sounds_meta_data[Soundsystem_MusicStr][m_music_indices[0]].m_buffer);
 		music_sounds.back().play();
 
 		m_current_music = 0;
-
-		s_current_playing_sounds++;
+		m_current_music_index = 0;
 	}
 	if (music_sounds.back().getStatus() == sf::SoundSource::Stopped)
 	{
@@ -749,8 +818,10 @@ void Soundsystem::cleanup()
 		
 		};
 
-	for (auto& all_sounds : m_sounds | std::views::values)
+	for (auto& [group,all_sounds] : m_sounds)
 	{
+		if (group == Soundsystem_MusicStr)
+			continue;
 		for (auto& sounds : all_sounds | std::views::keys)
 		{
 			manual_erase(sounds);
