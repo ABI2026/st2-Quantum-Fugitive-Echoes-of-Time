@@ -25,10 +25,12 @@ void Soundsystem::change_music()
 		return;
 	}
 
-	int new_music_index = m_current_music_index + 1;
+	int new_music_index = m_current_music_index + (signed)Random::uint(1,2);
+	LOG_INFO("new_music_index {}", new_music_index);
 	if(new_music_index >= music_indices_size)
 	{
-		new_music_index = 0;
+		new_music_index -= music_indices_size;
+		LOG_INFO("new_music_index {}", new_music_index);
 	}
 	m_current_music_index = new_music_index;
 
@@ -37,7 +39,7 @@ void Soundsystem::change_music()
 	LOG_TRACE("next music id: {}", new_current_music);
 	if (new_current_music > sounds_size || new_current_music < 0)
 	{
-		LOG_WARN("index {} of music indices {} is outside of the scope of the amount of music sounds",new_music_index,new_current_music);
+		LOG_WARN("music indices[{}]: {} is outside of the scope of the amount of music sounds({})",new_music_index,new_current_music, sounds_size);
 		new_current_music = 0;
 	}
 	LOG_TRACE("change buffer to that of the new music");
@@ -772,17 +774,27 @@ bool Soundsystem::music()
 
 	if (m_current_music == -1)
 	{
+ 		m_current_music_index = (signed)Random::uint(0, 2);
+		LOG_INFO("m_current_music_index {}", m_current_music_index);
+		m_current_music = m_music_indices[m_current_music_index];
+		LOG_INFO("m_current_music {}", m_current_music);
+		if(m_current_music >= m_sounds_meta_data[Soundsystem_MusicStr].size() || m_current_music < 0)
+		{
+			m_current_music = 0;
+			LOG_INFO("m_current_music {}", m_current_music);
+		}
+
 		if (music_sounds.empty())
 		{
-			music_sounds.emplace_back(m_sounds_meta_data[Soundsystem_MusicStr][m_music_indices[0]].m_buffer);
+			music_sounds.emplace_back(m_sounds_meta_data[Soundsystem_MusicStr][m_current_music].m_buffer);
 			music_sounds.back().setVolume(m_volumes[Soundsystem_GlobalStr] * m_volumes[Soundsystem_MusicStr] / 100);
 			s_current_playing_sounds++;
 		}
-		music_sounds.back().setBuffer(m_sounds_meta_data[Soundsystem_MusicStr][m_music_indices[0]].m_buffer);
+		else
+			music_sounds.back().setBuffer(m_sounds_meta_data[Soundsystem_MusicStr][m_current_music].m_buffer);
 		music_sounds.back().play();
 
-		m_current_music = 0;
-		m_current_music_index = 0;
+
 	}
 	if (music_sounds.back().getStatus() == sf::SoundSource::Stopped)
 	{

@@ -29,6 +29,7 @@ void PauseMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_pt
 {
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Escape) == Eventsystem::action_pressed)
 	{
+		soundsystem->set_music_indices({ 0,1,2 });
 		layer_manager->pop_layer();
 		return;
 	}
@@ -50,9 +51,14 @@ void PauseMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_pt
 			continue;
 
 		if (m_buttons[i]->on_click(layer_manager, soundsystem, window)) 
+		{
+			if(i == 2)
+			{
+				soundsystem->set_music_indices({ 0,1,2 });
+			}
 			m_selected = -1;
-		
-		return;
+			return;
+		}
 	}
 
 

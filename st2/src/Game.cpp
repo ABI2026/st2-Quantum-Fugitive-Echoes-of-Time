@@ -29,21 +29,27 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 		movement.y += 1;
 	if (eventsystem->get_key_state(sf::Keyboard::Key::D))
 		movement.x += 1;
-
+	ImGui::Begin("Debug");
+	ImGui::Text("fps: %f", 1.0 / deltatime);
 	if (movement != glm::vec2{ 0.f,0.f })
 	{
 		movement = glm::normalize(movement);
+
+		ImGui::Text("direction: x:%f y:%f", movement.x, movement.y);
+		movement = movement * 600.f * static_cast<float>(deltatime);
+		ImGui::Text("movement: x:%f y:%f", movement.x, movement.y);
+
+		glm::vec2 new_pos = { position.x + movement.x, position.y + movement.y };
+		new_pos = clamp(new_pos, { 50.f,50.f }, { m_background_texture.getSize().x - 50.f,m_background_texture.getSize().y - 50.f });
+		position = { new_pos.x, new_pos.y };
+
+	}
+	else
+	{
+		ImGui::Text("direction: x:0.000000 y:0.000000");
+		ImGui::Text("movement: x:0.000000 y:0.000000");
 	}
 
-	ImGui::Begin("Debug");
-	ImGui::Text("fps: %f", 1.0 / deltatime);
-	ImGui::Text("direction: x:%f y:%f", movement.x, movement.y);
-
-	movement = movement * 600.f * static_cast<float>(deltatime);
-	glm::vec2 new_pos = { position.x + movement.x, position.y + movement.y };
-	new_pos = clamp(new_pos, { 50.f,50.f }, { m_background_texture.getSize().x-50.f,m_background_texture.getSize().y-50.f});
-	position = { new_pos.x, new_pos.y};
-	ImGui::Text("movement: x:%f y:%f", movement.x, movement.y);
 	ImGui::Text("position: x:%f y:%f", position.x, position.y);
 	ImGui::End();
 
@@ -64,6 +70,7 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Q) == Eventsystem::action_pressed)
 	{
+		soundsystem->set_music_indices({ 0,1,2 });
 		layer_manager->pop_layer();
 	}
 
