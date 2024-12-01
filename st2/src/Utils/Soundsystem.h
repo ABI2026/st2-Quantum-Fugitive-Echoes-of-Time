@@ -89,13 +89,13 @@ public:
 	void load_buffer(const std::string& location, bool only_one_sound, int group_id, const Soundmetadata& metadata);
 
 
-	void add_sound(const std::string& group_id, int sound_id);
+	void play_sound(const std::string& group_id, int sound_id);
 
-	void add_sound(int group_id, int sound_id);
+	void play_sound(int group_id, int sound_id);
 
-	void add_sound(const std::string& group_id, int sound_id, sf::Vector3f pos);
+	void play_sound(const std::string& group_id, int sound_id, sf::Vector3f pos);
 
-	void add_sound(int group_id, int sound_id, sf::Vector3f pos);
+	void play_sound(int group_id, int sound_id, sf::Vector3f pos);
 
 
 	void set_volume(float volume, int group_id);
@@ -134,9 +134,9 @@ private:
 
 	//private methods to have one location for logic
 private:
-	void internal_add_sound(int group_id, int sound_id, sf::Vector3f pos, bool use_positioning);
+	void internal_play_sound(int group_id, int sound_id, sf::Vector3f pos, bool use_positioning);
 
-	void internal_add_sound(const std::string& group_id, int sound_id, sf::Vector3f pos, bool use_positioning);
+	void internal_play_sound(const std::string& group_id, int sound_id, sf::Vector3f pos, bool use_positioning);
 
 	void internal_set_volume(float volume, int id);
 

@@ -76,7 +76,7 @@ size_t Soundsystem::internal_get_group_size(const std::string& group_id) const
 	return m_sounds.at(group_id).size();
 }
 
-void Soundsystem::internal_add_sound(const int group_id, const int sound_id, const sf::Vector3f pos, const bool use_positioning)
+void Soundsystem::internal_play_sound(const int group_id, const int sound_id, const sf::Vector3f pos, const bool use_positioning)
 {
 	LOG_TRACE("internal add sound called with: group_id: {} sound_id: {} pos: {{x: {} y: {}}} use_positioning: {}", group_id, sound_id, pos.x, pos.y, use_positioning);
 	if (!validate_group_id(group_id))
@@ -85,7 +85,7 @@ void Soundsystem::internal_add_sound(const int group_id, const int sound_id, con
 		return;
 	}
 	LOG_TRACE("forwarding arguments to internal_add_sound");
-	internal_add_sound(m_mapping[group_id], sound_id, pos, use_positioning);
+	internal_play_sound(m_mapping[group_id], sound_id, pos, use_positioning);
 }
 
 /**
@@ -97,7 +97,7 @@ void Soundsystem::internal_add_sound(const int group_id, const int sound_id, con
  * @note the sound ID is based on the order you added them via load_buffer.
  * Audio spatialization also only works with mono audio.
  */
-void Soundsystem::internal_add_sound(const std::string& group_id, const int sound_id, const sf::Vector3f pos, const bool use_positioning)
+void Soundsystem::internal_play_sound(const std::string& group_id, const int sound_id, const sf::Vector3f pos, const bool use_positioning)
 {
 	LOG_TRACE("internal add sound called with: group_id: {} sound_id: {} pos: {{x: {} y: {}}} use_positioning: {}", group_id, sound_id, pos.x, pos.y, use_positioning);
 	LOG_TRACE("checking if new sounds can be added");
@@ -661,12 +661,12 @@ void Soundsystem::add_group(const std::string& group)
  * @note the group ID and sound ID are based on the order
  * you added them via add_group and load_buffer respectedly.
  */
-void Soundsystem::add_sound(const int group_id, const int sound_id)
+void Soundsystem::play_sound(const int group_id, const int sound_id)
 {
 	LOG_TRACE("add_sound called with parameters: group_id: {} sound_id: {}", group_id, sound_id);
 	std::lock_guard lock(m_mutex);
 	LOG_TRACE("forwarding arguments to internal_add_sound");
-	internal_add_sound(group_id, sound_id, {}, false);
+	internal_play_sound(group_id, sound_id, {}, false);
 }
 
 /**
@@ -675,12 +675,12 @@ void Soundsystem::add_sound(const int group_id, const int sound_id)
  * @param sound_id The sound ID.
  * @note the sound ID is based on the order you added sounds to the group via load_buffer
  */
-void Soundsystem::add_sound(const std::string& group_id, const int sound_id)
+void Soundsystem::play_sound(const std::string& group_id, const int sound_id)
 {
 	LOG_TRACE("add_sound called with parameters: group_id: {} sound_id: {}", group_id, sound_id);
 	std::lock_guard lock(m_mutex);
 	LOG_TRACE("forwarding arguments to internal_add_sound");
-	internal_add_sound(group_id, sound_id, {}, false);
+	internal_play_sound(group_id, sound_id, {}, false);
 }
 
 /**
@@ -691,12 +691,12 @@ void Soundsystem::add_sound(const std::string& group_id, const int sound_id)
  * @note the group ID and sound ID are based on the order you added them via add_group and load_buffer respectedly.
  * Audio spatialization also only works with mono audio.
  */
-void Soundsystem::add_sound(const int group_id, const int sound_id, const sf::Vector3f pos)
+void Soundsystem::play_sound(const int group_id, const int sound_id, const sf::Vector3f pos)
 {
 	LOG_TRACE("add_sound called with parameters: group_id: {} sound_id: {} pos: {{x: {}, y: {}}}", group_id, sound_id, pos.x, pos.y);
 	std::lock_guard lock(m_mutex);
 	LOG_TRACE("forwarding arguments to internal_add_sound");
-	internal_add_sound(group_id, sound_id, pos, true);
+	internal_play_sound(group_id, sound_id, pos, true);
 }
 
 /**
@@ -707,12 +707,12 @@ void Soundsystem::add_sound(const int group_id, const int sound_id, const sf::Ve
  * @note the sound ID is based on the order you added them via load_buffer.
  * Audio spatialization also only works with mono audio.
  */
-void Soundsystem::add_sound(const std::string& group_id, const int sound_id, const sf::Vector3f pos)
+void Soundsystem::play_sound(const std::string& group_id, const int sound_id, const sf::Vector3f pos)
 {
 	LOG_TRACE("add_sound called with parameters: group_id: {} sound_id: {} pos: {{x: {}, y: {}}}", group_id, sound_id, pos.x, pos.y);
 	std::lock_guard lock(m_mutex);
 	LOG_TRACE("forwarding arguments to internal_add_sound");
-	internal_add_sound(group_id, sound_id, pos, true);
+	internal_play_sound(group_id, sound_id, pos, true);
 }
 
 void Soundsystem::play_music()
