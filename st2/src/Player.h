@@ -7,10 +7,10 @@ public:
 
 
 
-	enum stats
+	/*enum stats
 	{
 
-	};
+	};*/
 	struct stats
 	{							//standartwerte
 		//Leben
@@ -58,17 +58,17 @@ public:
 
 	};
 
-	enum weaponClass
-	{
+	//enum weaponClass
+	//{
 
-	};
-	struct weaponClass
-	{
+	//};
+	//struct weaponClass
+	//{
 
-	};
+	//};
 
 private:
 protected:
-	Player() : 
+
 
 };
