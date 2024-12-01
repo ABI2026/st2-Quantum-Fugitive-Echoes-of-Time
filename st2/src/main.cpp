@@ -1,108 +1,101 @@
-#include <SFML/Graphics.hpp>
+#include <cmath>
 
-#include "GameWindow.h"
+#include <SFML/Graphics.hpp>
+#include <SFML/OpenGL.hpp>
+#include <glm/glm.hpp>
+#include <imgui-SFML.h>
+#include <imgui.h>
+
+
 #include "Utils/Soundsystem.h"
 #include "Utils/Log.h"
 #include "Utils/Random.h"
-#include "imgui-SFML.h"
-#include "imgui.h"
-#include <cmath>
+#include "Utils/Timer.h"
 
 #include "Eventsystem.h"
-#include "SFML/OpenGL.hpp"
-#include "Utils/Timer.h"
-#include "Button.h"
+#include "Layer.h"
+#include "LayerManager.h"
+#include "Menu.h"
 
-int Main(int argc, char** argv);
+static int Main(int argc, char** argv);
 
-bool init_sfml_imgui(sf::RenderWindow& window);
+static [[nodiscard]] bool init_sfml_imgui(sf::RenderWindow& window);
+
+static [[nodiscard]] std::shared_ptr<Eventsystem> init_eventsystem(sf::RenderWindow& window);
+
+static [[nodiscard]] std::shared_ptr<LayerManager> init_layer_manager();
+
+static [[nodiscard]] std::shared_ptr<Soundsystem> init_soundsystem();
 
 #if (defined(PLATFORM_WINDOWS) || defined (_WIN64)) && defined(DIST)
 #include <windows.h>
-
-int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
     return Main(__argc, __argv);
 }
 
 #else
 
-int main(int argc, char** argv)
+int main(const int argc, char** argv)
 {
     return Main(argc, argv);
 }
 
 #endif
 
-int Main(int argc, char** argv)
+
+
+int Main(const int argc, char** argv)
 {
     Log::init(LOG_LEVEL_INFO,LOG_LEVEL_INFO);
     Random::init();
 
-    GameWindow::init(720, 480, "window");
+    sf::RenderWindow window(sf::VideoMode(720, 480), "window", sf::Style::Default);
 
-    LOG_INFO("  OpenGL Info:");
-    LOG_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
-    LOG_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
-    LOG_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
-
-	sf::RenderWindow& window = SFwindowInstance;
-    DBL_MAX;
-	std::shared_ptr<Eventsystem> eventsystem = std::make_shared<Eventsystem>();
-    init_sfml_imgui(window);
-    window.setFramerateLimit(60);
-    sf::Clock deltaClock;
-    //variablen
-
-
-        // Normaler Button mit Farbwechsel
-    Button button({ 100, 100 }, { 200, 50 }, "Click me",
-        sf::Color::White,      // Normal
-        sf::Color::Yellow,     // Hover
-        sf::Color::Red);       // Pressed
-
-    // Bildbutton mit verschiedenen Zuständen
-    ImageButton imgButton({ 100, 200 }, { 200, 50 }, "button_normal.png", "Image Button");
-    imgButton.setBackgroundTexture("button_normal.png", "button_hover.png", "button_pressed.png");
-
-    while (window.isOpen())
+	if (!init_sfml_imgui(window))
     {
-        sf::Event event{};
-        eventsystem->update(); //release events updaten
-        while (window.pollEvent(event))
+        LOG_ERROR("failed to initialize imgui");
+    }
+
+    LOG_INFO("OpenGL Info:");
+    LOG_INFO("Vendor: {0}", reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
+    LOG_INFO("Renderer: {0}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
+    LOG_INFO("Version: {0}", reinterpret_cast<const char*>(glGetString(GL_VERSION)));
+
+    std::shared_ptr<Eventsystem> eventsystem = init_eventsystem(window);
+    std::shared_ptr<Soundsystem> soundsystem = init_soundsystem();
+    std::shared_ptr<LayerManager> layer_manager = init_layer_manager();
+
+
+	window.setFramerateLimit(60);
+    sf::Clock delta_clock;
+	while (window.isOpen())
+    {
+        eventsystem->handle_updates(window);
+		const double deltatime = static_cast<double>(delta_clock.getElapsedTime().asSeconds());
+		ImGui::SFML::Update(window, delta_clock.restart());
+
+    	const std::shared_ptr<Layer> current_layer = layer_manager->get_top();
+		current_layer->update(eventsystem,layer_manager,soundsystem,window,deltatime);
+
+		soundsystem->update();
+
+		window.clear();
+		current_layer->render(window);
+		ImGui::SFML::Render(window);
+		window.display();
+
+        if (layer_manager->is_empty())
         {
-            ImGui::SFML::ProcessEvent(window, event);
-            eventsystem->process_events(window, event);
-            switch (event.type)
-            {
-            case sf::Event::Closed:
-                window.close();
-                break;
-            default:
-                break;
-            }
+            window.close();
         }
-
-        const double deltatime = static_cast<double>(deltaClock.getElapsedTime().asSeconds());
-        ImGui::SFML::Update(window, deltaClock.restart());
-        //logik
-
-
-        window.clear(sf::Color::Cyan);
-        //zeichnen
-
-        button.draw(window);
-        imgButton.draw(window);
-
-        ImGui::SFML::Render(window);
-        window.display();
-        
     }
 
     ImGui::SFML::Shutdown(window);
-    GameWindow::delete_instance();
 	return 0;
 }
+
+
 
 #include "../Resources/Images/Roboto-Regular.embed"
 bool init_sfml_imgui(sf::RenderWindow& window)
@@ -110,9 +103,9 @@ bool init_sfml_imgui(sf::RenderWindow& window)
 
     if (!ImGui::SFML::Init(window, false))
         return false;
-
-    ImGui::SFML::ProcessEvent(window, sf::Event{sf::Event::LostFocus});
-    ImGui::SFML::ProcessEvent(window, sf::Event{sf::Event::GainedFocus});
+    
+    ImGui::SFML::ProcessEvent(window, sf::Event{sf::Event::LostFocus,{}});
+    ImGui::SFML::ProcessEvent(window, sf::Event{sf::Event::GainedFocus,{} });
 
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
@@ -121,10 +114,12 @@ bool init_sfml_imgui(sf::RenderWindow& window)
 
     ImFontConfig font_config;
     font_config.FontDataOwnedByAtlas = false;
-    ImFont* roboto_font = io.Fonts->AddFontFromMemoryTTF((void*)g_RobotoRegular, sizeof(g_RobotoRegular), 20.0f, &font_config);
+    ImFont* roboto_font = io.Fonts->AddFontFromMemoryTTF(const_cast<uint8_t*>(g_RobotoRegular), sizeof g_RobotoRegular, 20.0f, &font_config);
     io.FontDefault = roboto_font;
-    if (!ImGui::SFML::UpdateFontTexture())
+    if (!ImGui::SFML::UpdateFontTexture()) 
+    {
         LOG_ERROR("failed to update font");
+    }
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 
@@ -136,4 +131,48 @@ bool init_sfml_imgui(sf::RenderWindow& window)
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
     return true;
+}
+
+
+std::shared_ptr<Eventsystem> init_eventsystem(sf::RenderWindow& window)
+{
+    auto eventsystem = std::make_shared<Eventsystem>(window);
+    eventsystem->add_key_listener(sf::Keyboard::Key::W);
+    eventsystem->add_key_listener(sf::Keyboard::Key::A);
+    eventsystem->add_key_listener(sf::Keyboard::Key::S);
+    eventsystem->add_key_listener(sf::Keyboard::Key::D);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Q);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Up);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Down);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Left);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Right);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Enter);
+    eventsystem->add_key_listener(sf::Keyboard::Key::Escape);
+
+    eventsystem->add_mouse_button_listener(sf::Mouse::Button::Left);
+
+    return eventsystem;
+}
+
+std::shared_ptr<LayerManager> init_layer_manager()
+{
+    auto layer_manager = std::make_shared<LayerManager>();
+    layer_manager->push_layer(std::make_shared<Menu>());
+    return layer_manager;
+}
+
+
+std::shared_ptr<Soundsystem> init_soundsystem()
+{
+    auto soundsystem = std::make_shared<Soundsystem>(0.f, false);
+    //TODO: ADD ADITIONAL SOUNDS
+    soundsystem->add_group("ui_sounds");
+    soundsystem->add_group("player_sounds");
+    soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", true, "ui_sounds");
+    soundsystem->load_buffer("Resources/Sounds/background_menu_music_1.mp3",false,"music");
+    soundsystem->load_buffer("Resources/Sounds/background_menu_music_2.mp3",false,"music");
+    soundsystem->load_buffer("Resources/Sounds/background_menu_music_3.mp3",false,"music");
+    soundsystem->set_music_indices({0, 1, 2});
+    soundsystem->set_should_play_music(true);
+    return soundsystem;
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <SFML/System/Vector2.hpp>
 
 class Player {
 public:
@@ -68,7 +69,6 @@ public:
 	//};
 
 private:
-protected:
-
 
 };
+// push_back() emplace_back()  []  clear() pop_back()

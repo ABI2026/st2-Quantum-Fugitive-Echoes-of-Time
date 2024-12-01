@@ -10,27 +10,24 @@ public:
 
 	Timer()
 	{
-		Reset();
+		reset();
 	}
-	//resets the timer to 0
-	void Reset()
+
+	void reset()
 	{
 		m_start = std::chrono::high_resolution_clock::now();
 	}
 
-	//returns the amount of time passed since the last time reset has been called in seconds
-	float Elapsed()
+	[[nodiscard]] double elapsed() const
 	{
-		return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - m_start).count() * 0.001f * 0.001f * 0.001f;
+		return static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - m_start).count()) * 0.001 * 0.001;
 	}
 
-	//returns the amount of time passed since the last time reset has been called in seconds
-	float ElapsedMillis()
+	[[nodiscard]] double elapsed_millis() const
 	{
-		return Elapsed() * 1000.0f;
+		return elapsed() * 1000.0;
 	}
 private:
-	//zeitpunkt
 	std::chrono::time_point<std::chrono::high_resolution_clock> m_start;
 };
 
@@ -42,7 +39,7 @@ public:
 		: m_name(name) {}
 	~ScopedTimer()
 	{
-		float time = m_timer.ElapsedMillis();
+		double time = m_timer.elapsed_millis();
 		LOG_INFO("[TIMER] {} - {} ms", m_name, time);
 	}
 private:

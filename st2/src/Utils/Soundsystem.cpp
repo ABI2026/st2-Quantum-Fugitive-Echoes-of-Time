@@ -9,36 +9,39 @@
 static const std::string Soundsystem_MusicStr = "music";
 static const std::string Soundsystem_GlobalStr = "global";
 
-/**
- * @brief Changes the current music track to a new one, either randomly or sequentially.
- */
+
 void Soundsystem::change_music()
 {
 	LOG_TRACE("change music called");
 	LOG_TRACE("current music: {}", m_current_music);
-	const int m_sounds_size = static_cast<signed>(m_sounds_meta_data[Soundsystem_MusicStr].size()) - 1;
-	LOG_TRACE("amount of music sounds available: {}", m_sounds_size);
+	const int sounds_size = static_cast<signed>(m_sounds_meta_data[Soundsystem_MusicStr].size()) - 1;
+	constexpr int music_indices_size = 3;
+	LOG_TRACE("amount of music sounds available: {}", sounds_size);
 	sf::Sound& music_sound = m_sounds[Soundsystem_MusicStr][0].first.back();
-	if (m_sounds_size == 0)
+	if (sounds_size == 0)
 	{
 		LOG_INFO("only 1 sound available");
 		music_sound.play();
 		return;
 	}
 
-	int new_current_music;
-#ifdef NO_SEQUENTIAL_MUSIC
-	new_current_music = Random::UInt(0, m_sounds_size);
-#else
-	new_current_music = m_current_music + 1;
-	LOG_TRACE("next music id: {}", new_current_music);
-	if (new_current_music > m_sounds_size)
+	int new_music_index = m_current_music_index + 1;
+	if(new_music_index >= music_indices_size)
 	{
+		new_music_index = 0;
+	}
+	m_current_music_index = new_music_index;
+
+	int new_current_music = m_music_indices[new_music_index];
+
+	LOG_TRACE("next music id: {}", new_current_music);
+	if (new_current_music > sounds_size || new_current_music < 0)
+	{
+		LOG_WARN("index {} of music indices {} is outside of the scope of the amount of music sounds",new_music_index,new_current_music);
 		new_current_music = 0;
 	}
-#endif
 	LOG_TRACE("change buffer to that of the new music");
-	music_sound.setBuffer(m_sounds_meta_data[Soundsystem_MusicStr][new_current_music].buffer);
+	music_sound.setBuffer(m_sounds_meta_data[Soundsystem_MusicStr][new_current_music].m_buffer);
 	LOG_TRACE("playing music");
 	music_sound.play();
 	LOG_TRACE("current_music changed");
@@ -46,29 +49,18 @@ void Soundsystem::change_music()
 
 }
 
-/**
- * @brief Validates whether the given group ID exists.
- * @param input The group ID to validate.
- * @return True if the group ID is valid, false otherwise.
- */
-bool Soundsystem::validate_group_id(int input) const
+bool Soundsystem::validate_group_id(const int input) const
 {
 	LOG_TRACE("Validating if group id: {} exists", input);
-	// Check if the group ID is valid and mapped
 	if (!m_mapping.contains(input))
 		return false;
 	return true;
 }
 
-/**
- * @brief Validates whether the given group name exists in both the sounds and buffer maps.
- * @param input The group name to validate.
- * @return True if the group name exists, false otherwise.
- */
+
 bool Soundsystem::validate_group_id(const std::string& input) const
 {
 	LOG_TRACE("Validating if group id: {} exists", input);
-	// Check if the group ID is valid and mapped
 	if (!m_sounds.contains(input) || !m_sounds_meta_data.contains(input))
 		return false;
 	return true;
@@ -84,16 +76,7 @@ size_t Soundsystem::internal_get_group_size(const std::string& group_id) const
 	return m_sounds.at(group_id).size();
 }
 
-/**
- * @brief Adds a sound to a group, with optional positioning.
- * @param group_id The id of the group.
- * @param sound_id The sound ID.
- * @param pos The 2D position of the sound.
- * @param use_positioning Whether to apply positioning to the sound.
- * @note the group ID and sound ID are based on the order you added them via add_group and load_buffer respectedly.
- * Audio spatialization also only works with mono audio.
- */
-void Soundsystem::internal_add_sound(int group_id, int sound_id, sf::Vector3f pos, bool use_positioning)
+void Soundsystem::internal_play_sound(const int group_id, const int sound_id, const sf::Vector3f pos, const bool use_positioning)
 {
 	LOG_TRACE("internal add sound called with: group_id: {} sound_id: {} pos: {{x: {} y: {}}} use_positioning: {}", group_id, sound_id, pos.x, pos.y, use_positioning);
 	if (!validate_group_id(group_id))
@@ -102,7 +85,7 @@ void Soundsystem::internal_add_sound(int group_id, int sound_id, sf::Vector3f po
 		return;
 	}
 	LOG_TRACE("forwarding arguments to internal_add_sound");
-	internal_add_sound(m_mapping[group_id], sound_id, pos, use_positioning);
+	internal_play_sound(m_mapping[group_id], sound_id, pos, use_positioning);
 }
 
 /**
@@ -114,7 +97,7 @@ void Soundsystem::internal_add_sound(int group_id, int sound_id, sf::Vector3f po
  * @note the sound ID is based on the order you added them via load_buffer.
  * Audio spatialization also only works with mono audio.
  */
-void Soundsystem::internal_add_sound(const std::string& group_id, int sound_id, sf::Vector3f pos, bool use_positioning)
+void Soundsystem::internal_play_sound(const std::string& group_id, const int sound_id, const sf::Vector3f pos, const bool use_positioning)
 {
 	LOG_TRACE("internal add sound called with: group_id: {} sound_id: {} pos: {{x: {} y: {}}} use_positioning: {}", group_id, sound_id, pos.x, pos.y, use_positioning);
 	LOG_TRACE("checking if new sounds can be added");
@@ -131,7 +114,6 @@ void Soundsystem::internal_add_sound(const std::string& group_id, int sound_id, 
 		LOG_WARN("too many sounds: {}", s_current_playing_sounds);
 		return;
 	}
-	// Check if the group is "music" because music is handled seperatly
 	if (group_id == Soundsystem_MusicStr || group_id == Soundsystem_GlobalStr)
 	{
 		LOG_INFO("You cant add sounds to the global group!");
@@ -139,54 +121,38 @@ void Soundsystem::internal_add_sound(const std::string& group_id, int sound_id, 
 		LOG_INFO("the given id is: {}", group_id);
 		return;
 	}
-	// Check if the group has associated sounds and buffers
 	if (!validate_group_id(group_id))
 	{
 		LOG_WARN("Group_id {} has no associated sounds or buffers", group_id);
 		return;
 	}
-	// Check if the sound ID is within the valid range
 	if (sound_id < 0 || sound_id >= m_sounds_meta_data[group_id].size())
 	{
 		LOG_WARN("Sound id is outside the valid range from: 0 to {}", m_sounds_meta_data[group_id].size());
 		LOG_WARN("Sound id is: {}", sound_id);
 		return;
 	}
-	//wir holen uns die sound queue di zu der sound gruppe und sound id passt
 	auto& current_sounds = m_sounds[group_id][sound_id].first;
-	//wir holen uns ob dieser sound priorität hat
-	const bool has_priority = m_sounds[group_id][sound_id].second;
-	LOG_TRACE("has_priority: {}", has_priority);
-	//globale lautstärke holen
+	const bool only_one_sound = m_sounds[group_id][sound_id].second;
+	LOG_TRACE("only_one_sound: {}", only_one_sound);
 	const float allgemeiner_volume = m_volumes[m_mapping[-1]];
 	LOG_TRACE("global volume: {}", allgemeiner_volume);
-	//gruppen lautstärke holen
 	const float group_volume = m_volumes[group_id];
 	LOG_TRACE("group volume: {}", group_volume);
 
-	// If no priority or sound list is empty (with priority), add and play the sound
-	if (!has_priority || (current_sounds.empty() && has_priority))
+	if (!only_one_sound || (current_sounds.empty() && only_one_sound))
 	{
 		LOG_TRACE("all checks passed adding and playing sound");
-		//sound buffer holen
 		const Soundmetadata& metadata = m_sounds_meta_data[group_id][sound_id];
-		const sf::SoundBuffer& sound_buffer = metadata.buffer;
-		//sound wird zu queue hinzugefügt und soundbuffer wird hinzugefügt
+		const sf::SoundBuffer& sound_buffer = metadata.m_buffer;
 		current_sounds.emplace_back(sound_buffer);
-		//der gerade hinzugefügter sound wird geholt
 		sf::Sound& current_sound = current_sounds.back();
-
-		//sagen ob der sound relativ zum hörer ist
 		current_sound.setRelativeToListener(!use_positioning);
 
-		//sound wird abgespielt
 		current_sound.play();
-		//lautstärke wird angepasst
 		current_sound.setVolume(allgemeiner_volume * group_volume / 100.f);
-		//soll der sound 3d audio sein
 		if (use_positioning)
 		{
-			//setze die position für den sound
 			if (m_use_tile_size && m_tilesize > 0.f)
 			{
 				current_sound.setPosition(pos.x / m_tilesize, pos.y / m_tilesize, pos.z / m_tilesize);
@@ -195,27 +161,16 @@ void Soundsystem::internal_add_sound(const std::string& group_id, int sound_id, 
 			{
 				current_sound.setPosition(pos.x, pos.y, pos.z);
 			}
-			//distanz ab wann der sound nicht mehr komplett gehört wird
 			current_sound.setMinDistance(metadata.mindistance);
-			//faktor festlegen wie stark die lautstärke verändert wird wenn man weiter weg ist
 			current_sound.setAttenuation(metadata.attenuation);
 		}
-		//menge der momentan spielenden sounds erhöhen
 		s_current_playing_sounds++;
 		LOG_TRACE("now {} sounds are playing", s_current_playing_sounds);
 		m_new_data = true;
 	}
 }
 
-/**
- * @brief Sets the volume for a specific group.
- * @param volume The volume level to set (0.0f to 100.0f).
- * @param id The id of the group.
- * @note The input value will be clamped if it exceeds the bounds. Users should
- * be aware that if their value is outside this range, it will be automatically
- * adjusted to fit within 0.0f to 100.0f.
- */
-void Soundsystem::internal_set_volume(float volume, const int id)
+void Soundsystem::internal_set_volume(const float volume, const int id)
 {
 	LOG_TRACE("internal_set_volume called with parameters: volumes: {} id: {}", volume, id);
 	if (!validate_group_id(id))
@@ -227,25 +182,15 @@ void Soundsystem::internal_set_volume(float volume, const int id)
 	internal_set_volume(volume, m_mapping[id]);
 }
 
-/**
- * @brief Sets the volume for a specific group.
- * @param volume The volume level to set (0.0f to 100.0f).
- * @param group_id The name of the group.
- * @note The input value will be clamped if it exceeds the bounds. Users should
- * be aware that if their value is outside this range, it will be automatically
- * adjusted to fit within 0.0f to 100.0f.
- */
 void Soundsystem::internal_set_volume(float volume, const std::string& group_id)
 {
 	LOG_TRACE("internal_set_volume called with parameters: volume: {} group_id: {}", volume, group_id);
-	// Sicherstellen, dass die Lautstärke im gültigen Bereich [0.0, 100.0] liegt
 	if (volume < 0.0f || volume > 100.0f)
 	{
 		LOG_INFO("Volume: {} is not in between the limit of 0.f to 100.f. The value will be clamped", volume);
 		volume = std::clamp(volume, 0.f, 100.f);
 	}
 
-	// Überprüfen, ob die ID in der Zuordnung existiert
 	if (!validate_group_id(group_id))
 	{
 		LOG_WARN("Group: {} doesnt exist", group_id);
@@ -261,15 +206,7 @@ void Soundsystem::internal_set_volume(float volume, const std::string& group_id)
 	m_new_data = true;
 }
 
-/**
- * @brief Increments the volume for a specific group	.
- * @param increase The amount to increment the volume by (0.0f to 100.0f).
- * @param id The id of the group.
- * @note The input value will be clamped if it exceeds the bounds. Users should
- * be aware that if their value is outside this range, it will be automatically
- * adjusted to fit within 0.0f to 100.0f.
- */
-void Soundsystem::internal_increment_volume(float increase, int id)
+void Soundsystem::internal_increment_volume(const float increase, const int id)
 {
 	LOG_TRACE("internal_increment_volume called with parameters: increase: {} id: {}", increase, id);
 	if (!validate_group_id(id))
@@ -281,15 +218,7 @@ void Soundsystem::internal_increment_volume(float increase, int id)
 	internal_set_volume(increase + m_volumes[m_mapping[id]], id);
 }
 
-/**
- * @brief Increments the volume for a specific group.
- * @param increase The amount to increment the volume by (0.0f to 100.0f).
- * @param group_id The name of the group.
- * @note The input value will be clamped if it exceeds the bounds. Users should
- * be aware that if their value is outside this range, it will be automatically
- * adjusted to fit within 0.0f to 100.0f.
- */
-void Soundsystem::internal_increment_volume(float increase, const std::string& group_id)
+void Soundsystem::internal_increment_volume(const float increase, const std::string& group_id)
 {
 	LOG_TRACE("internal_increment_volume called with parameters: increase: {} id: {}", increase, group_id);
 	if (!validate_group_id(group_id))
@@ -310,7 +239,7 @@ void Soundsystem::internal_set_volumes(const std::unordered_map<std::string, flo
 		return;
 	}
 
-	if (GET_LOG_LEVEL == LOG_LEVEL_TRACE)
+	if (GET_LOG_LEVEL() == LOG_LEVEL_TRACE)
 	{
 		LOG_TRACE("incoming volumes: ");
 		for (auto& volume_groups : volumes)
@@ -350,35 +279,35 @@ void Soundsystem::internal_set_volumes(const std::unordered_map<std::string, flo
 	}
 	const float global_music_lvl = m_volumes[Soundsystem_GlobalStr];
 
-	for (auto& volume_groups : m_volumes)
+	for (auto& [group, volume] : m_volumes)
 	{
-		if (volume_groups.first == Soundsystem_GlobalStr)
+		if (group == Soundsystem_GlobalStr)
 			continue;
-		if (!volumes.contains(volume_groups.first))
+		if (!volumes.contains(group))
 		{
 			if (global_sound_changed)
 			{
-				const float final_volume = (volume_groups.second * global_music_lvl) / 100.f;
-				LOG_TRACE("group volume: {}", volume_groups.second);
+				const float final_volume = (volume * global_music_lvl) / 100.f;
+				LOG_TRACE("group volume: {}", volume);
 				LOG_TRACE("final_volume: {}", final_volume);
-				set_volume_for_group(final_volume, volume_groups.first);
+				set_volume_for_group(final_volume, group);
 			}
 			continue;
 		}
-		const float group_volume = volumes.at(volume_groups.first);
+		const float group_volume = volumes.at(group);
 		const float final_volume = (group_volume * global_music_lvl) / 100.f;
 		LOG_TRACE("group volume: {}", group_volume);
 		LOG_TRACE("final_volume: {}", final_volume);
-		volume_groups.second = group_volume;
-		set_volume_for_group(final_volume, volume_groups.first);
+		volume = group_volume;
+		set_volume_for_group(final_volume, group);
 	}
 }
 
-void Soundsystem::internal_load_buffer(const std::string& location, bool priority, const std::string& group_id,
+void Soundsystem::internal_load_buffer(const std::string& location, bool only_one_sound, const std::string& group_id,
 	const Soundmetadata& metadata)
 {
-	LOG_TRACE("internal_load_buffer called with parameters: location: {} priority: {} group: {} metadata: {{min_distance: {} attenuation: {}}}",
-		location, priority, group_id, metadata.mindistance, metadata.attenuation);
+	LOG_TRACE("internal_load_buffer called with parameters: location: {} only_one_sound: {} group: {} metadata: {{min_distance: {} attenuation: {}}}",
+		location, only_one_sound, group_id, metadata.mindistance, metadata.attenuation);
 	if (!validate_group_id(group_id))
 	{
 		LOG_WARN("Group id: {} doesnt exist", group_id);
@@ -394,10 +323,11 @@ void Soundsystem::internal_load_buffer(const std::string& location, bool priorit
 	if(!temp_buffer.loadFromFile(location))
 	{
 		LOG_ERROR("Failed to load sound from location: {}", location);
+		return;
 	}
 	Soundmetadata temp_metadata{ metadata };
 
-	temp_metadata.buffer = temp_buffer;
+	temp_metadata.m_buffer = temp_buffer;
 	if (temp_metadata.attenuation == 0.f)
 	{
 		temp_metadata.attenuation = 1.f;
@@ -414,29 +344,26 @@ void Soundsystem::internal_load_buffer(const std::string& location, bool priorit
 	}
 	else
 	{
-		m_sounds[group_id].emplace_back(temp_vector, priority);
+		m_sounds[group_id].emplace_back(temp_vector, only_one_sound);
 	}
 }
 
-void Soundsystem::internal_load_buffer(const std::string& location, bool priority, int group_id,
+void Soundsystem::internal_load_buffer(const std::string& location, const bool only_one_sound, const int group_id,
 	const Soundmetadata& metadata)
 {
-	LOG_TRACE("load_buffer called with parameters: location: {} priority: {} group: {} metadata: {{min_distance: {} attenuation: {}}}",
-		location, priority, group_id, metadata.mindistance, metadata.attenuation);
+	LOG_TRACE("load_buffer called with parameters: location: {} only_one_sound: {} group: {} metadata: {{min_distance: {} attenuation: {}}}",
+		location, only_one_sound, group_id, metadata.mindistance, metadata.attenuation);
 	if (!validate_group_id(group_id))
 	{
 		LOG_INFO("Group id: {} doesnt exist", group_id);
 		return;
 	}
 	LOG_TRACE("forwarding arguments to internal_set_volume");
-	internal_load_buffer(location, priority, m_mapping[group_id], metadata);
+	internal_load_buffer(location, only_one_sound, m_mapping[group_id], metadata);
 }
 
-/**
- * @brief Constructor for the Soundsystem class.
- * @note Adds Groups "global" and "music"
- */
-Soundsystem::Soundsystem(float tilesize, bool use_tile_size) : m_use_tile_size(use_tile_size), m_tilesize(tilesize)
+
+Soundsystem::Soundsystem(const float tilesize, const bool use_tile_size) : m_use_tile_size(use_tile_size), m_tilesize(tilesize)
 {
 	sf::Listener::setPosition(0.f, 0.f, 0.f);
 	add_group(Soundsystem_GlobalStr);
@@ -444,6 +371,55 @@ Soundsystem::Soundsystem(float tilesize, bool use_tile_size) : m_use_tile_size(u
 	add_group(Soundsystem_MusicStr);
 	LOG_INFO("starting sound thread");
 	start_thread();
+}
+
+std::unordered_map<std::string, std::deque<std::pair<std::deque<sf::Sound>, bool>>>& Soundsystem::get_all_sounds()
+{
+	return m_sounds;
+}
+
+const std::unordered_map<std::string, std::deque<std::pair<std::deque<sf::Sound>, bool>>>& Soundsystem::
+get_all_sounds() const
+{
+	return m_sounds;
+}
+
+std::deque<std::pair<std::deque<sf::Sound>, bool>>* Soundsystem::get_sounds_by_group(const std::string& group_id)
+{
+	if (validate_group_id(group_id))
+		return &m_sounds.at(group_id);
+	return nullptr;
+}
+
+const std::deque<std::pair<std::deque<sf::Sound>, bool>>* Soundsystem::get_sounds_by_group(
+	const std::string& group_id) const
+{
+	if (validate_group_id(group_id))
+		return &m_sounds.at(group_id);
+	return nullptr;
+}
+
+std::deque<sf::Sound>* Soundsystem::get_sound_by_group_and_id(const std::string& group_id, const uint32_t sound_id)
+{
+	auto group_sounds = get_sounds_by_group(group_id);
+	if (!group_sounds)
+		return nullptr;
+	const size_t group_sounds_size = group_sounds->size();
+	if (sound_id >= group_sounds_size || sound_id < 0)
+		return nullptr;	
+	return &group_sounds->at(sound_id).first;
+}
+
+const std::deque<sf::Sound>* Soundsystem::get_sound_by_group_and_id(const std::string& group_id,
+	const uint32_t sound_id) const
+{
+	auto group_sounds = get_sounds_by_group(group_id);
+	if (!group_sounds)
+		return nullptr;
+	const size_t group_sounds_size = group_sounds->size();
+	if (sound_id >= group_sounds_size || sound_id < 0)
+		return nullptr;
+	return &group_sounds->at(sound_id).first;
 }
 
 void Soundsystem::run()
@@ -464,16 +440,15 @@ void Soundsystem::run()
 		if (m_stop)
 		{
 			LOG_INFO("shutting down soundsystem");
-			break;  // Exit the thread loop if stopping is requested
+			break;
 		}
 
-		//update volumes
 		internal_set_volumes(m_new_volumes);
 
 		if (m_stop_playing_sounds != m_prev_stop_playing_sounds)
 		{
 			if (m_stop_playing_sounds)
-				pause_all(true);
+				pause_all();
 			else
 				play_all();
 			m_prev_stop_playing_sounds = m_stop_playing_sounds;
@@ -489,56 +464,18 @@ void Soundsystem::run()
 			m_prev_should_play_music = m_should_play_music;
 		}
 
-		// Reset the condition flag (i.e., new data has been handled)
 		m_new_data = false;
 		m_new_volumes.clear();
 	}
 }
-#ifdef use_singleton_for_soundsystem
-/**
- * @brief Initializes the sound system singleton instance.
- * @note Constructor Adds Groups "global" and "music". should be called before get_instance
- */
-void Soundsystem::init(float tilesize, bool use_tile_size)
-{
-	LOG_TRACE("init called");
-	if (!s_instance)
-	{
-		LOG_INFO("Instance doesnt exist creating a new one");
-		s_instance = new Soundsystem(tilesize, use_tile_size);
-	}
-}
 
-/**
- * @brief Retrieves the singleton instance of the Soundsystem.
- * @return A pointer to the Soundsystem instance.
- * @note call init before get_instance otherwise you get a nullptr
- */
-Soundsystem* Soundsystem::get_instance()
-{
-	LOG_TRACE("get_instance called");
-	return s_instance;
-}
-
-/**
- * @brief Deletes the singleton instance of the Soundsystem.
- */
-void Soundsystem::delete_instance()
-{
-	LOG_TRACE("delete_instance called");
-	delete s_instance;
-}
-#endif
-/**
- * @brief Destructor for the Soundsystem class. Clears all resources.
- */
 Soundsystem::~Soundsystem()
 {
 	LOG_TRACE("destructor called");
 	LOG_INFO("clearing sounds");
 	clear_all();
 	LOG_INFO("stopping thread");
-	stop_thread();  // Ensure the thread is stopped when the object is destroyed
+	stop_thread();  
 	LOG_INFO("joining thread");
 	if (m_thread.joinable())
 	{
@@ -567,59 +504,47 @@ void Soundsystem::stop_thread()
 		m_new_data = true;
 	}
 	LOG_TRACE("condition variable notified");
-	m_cv.notify_all();  // Notify the thread to stop
+	m_cv.notify_all(); 
 }
 
-
-/**
- * @brief Retrieves a list of the current volume levels for all groups.
- * @return A vector of float values representing the volumes.
- * @note Index 0 is the global volume, Index 1 to n are your own sounds.
- */
 std::unordered_map<std::string, float> Soundsystem::get_volumes() const
 {
 	LOG_TRACE("get_volumes called");
 	return m_volumes;
 }
 
-/**
- * @brief Loads a sound buffer from a file and adds it to the specified group.
- * @param location The file path of the sound buffer to load.
- * @param priority If true, this sound has priority over others.
- * @param group_id The group to which this sound belongs.
- */
-void Soundsystem::load_buffer(const std::string& location, bool priority, const std::string& group_id)
+void Soundsystem::load_buffer(const std::string& location, const bool only_one_sound, const std::string& group_id)
 {
-	LOG_TRACE("load_buffer called with parameters: location: {} priority: {} group: {}", location, priority, group_id);
+	LOG_TRACE("load_buffer called with parameters: location: {} only_one_sound: {} group: {}", location, only_one_sound, group_id);
 	std::lock_guard lock(m_mutex);
-	internal_load_buffer(location, priority, group_id, {});
+	internal_load_buffer(location, only_one_sound, group_id, {});
 }
 
-void Soundsystem::load_buffer(const std::string& location, bool priority, int group_id)
+void Soundsystem::load_buffer(const std::string& location, const bool only_one_sound, const int group_id)
 {
-	LOG_TRACE("load_buffer called with parameters: location: {} priority: {} group: {}", location, priority, group_id);
+	LOG_TRACE("load_buffer called with parameters: location: {} only_one_sound: {} group: {}", location, only_one_sound, group_id);
 	std::lock_guard lock(m_mutex);
-	internal_load_buffer(location, priority, group_id, {});
+	internal_load_buffer(location, only_one_sound, group_id, {});
 }
 
-void Soundsystem::load_buffer(const std::string& location, bool priority, const std::string& group_id,
+void Soundsystem::load_buffer(const std::string& location, const bool only_one_sound, const std::string& group_id,
 	const Soundmetadata& metadata)
 {
-	LOG_TRACE("load_buffer called with parameters: location: {} priority: {} group: {} metadata: {{min_distance: {} attenuation: {}}}",
-		location, priority, group_id, metadata.mindistance, metadata.attenuation);
+	LOG_TRACE("load_buffer called with parameters: location: {} only_one_sound: {} group: {} metadata: {{min_distance: {} attenuation: {}}}",
+		location, only_one_sound, group_id, metadata.mindistance, metadata.attenuation);
 	std::lock_guard lock(m_mutex);
-	internal_load_buffer(location, priority, group_id, metadata);
+	internal_load_buffer(location, only_one_sound, group_id, metadata);
 }
 
-void Soundsystem::load_buffer(const std::string& location, bool priority, int group_id, const Soundmetadata& metadata)
+void Soundsystem::load_buffer(const std::string& location, const bool only_one_sound, const int group_id, const Soundmetadata& metadata)
 {
-	LOG_TRACE("load_buffer called with parameters: location: {} priority: {} group: {} metadata: {{min_distance: {} attenuation: {}}}",
-		location, priority, group_id, metadata.mindistance, metadata.attenuation);
+	LOG_TRACE("load_buffer called with parameters: location: {} only_one_sound: {} group: {} metadata: {{min_distance: {} attenuation: {}}}",
+		location, only_one_sound, group_id, metadata.mindistance, metadata.attenuation);
 	std::lock_guard lock(m_mutex);
-	internal_load_buffer(location, priority, group_id, metadata);
+	internal_load_buffer(location, only_one_sound, group_id, metadata);
 }
 
-void Soundsystem::set_should_play_music(bool should_play_music)
+void Soundsystem::set_should_play_music(const bool should_play_music)
 {
 	LOG_TRACE("set_should_play_music called with parameters: should_play_music: {}", should_play_music);
 	std::lock_guard lock(m_mutex);
@@ -669,12 +594,12 @@ bool Soundsystem::get_stop_playing_sounds() const
 	return m_stop_playing_sounds;
 }
 
-size_t Soundsystem::get_group_size(int group_id) const
+size_t Soundsystem::get_group_size(const int group_id) const
 {
 	if (!validate_group_id(group_id))
 	{
 		LOG_WARN("group_id: {} doesnt exist", group_id);
-		return -1;
+		return 0;
 	}
 	return internal_get_group_size(m_mapping.at(group_id));
 }
@@ -692,6 +617,17 @@ std::unordered_map<std::string, size_t> Soundsystem::get_group_names() const
 		return_val[name] = sounds.size();
 	}
 	return return_val;
+}
+
+void Soundsystem::set_music_indices(const std::array<int, 3>& i_music_indices)
+{
+	std::lock_guard lock(m_mutex);
+	if(m_music_indices == i_music_indices)
+		return;
+	m_music_indices = i_music_indices;
+	m_new_data = true;
+	m_current_music_index = 0;
+	m_current_music = -1;
 }
 
 
@@ -725,12 +661,12 @@ void Soundsystem::add_group(const std::string& group)
  * @note the group ID and sound ID are based on the order
  * you added them via add_group and load_buffer respectedly.
  */
-void Soundsystem::add_sound(const int group_id, const int sound_id)
+void Soundsystem::play_sound(const int group_id, const int sound_id)
 {
 	LOG_TRACE("add_sound called with parameters: group_id: {} sound_id: {}", group_id, sound_id);
 	std::lock_guard lock(m_mutex);
 	LOG_TRACE("forwarding arguments to internal_add_sound");
-	internal_add_sound(group_id, sound_id, {}, false);
+	internal_play_sound(group_id, sound_id, {}, false);
 }
 
 /**
@@ -739,12 +675,12 @@ void Soundsystem::add_sound(const int group_id, const int sound_id)
  * @param sound_id The sound ID.
  * @note the sound ID is based on the order you added sounds to the group via load_buffer
  */
-void Soundsystem::add_sound(const std::string& group_id, const int sound_id)
+void Soundsystem::play_sound(const std::string& group_id, const int sound_id)
 {
 	LOG_TRACE("add_sound called with parameters: group_id: {} sound_id: {}", group_id, sound_id);
 	std::lock_guard lock(m_mutex);
 	LOG_TRACE("forwarding arguments to internal_add_sound");
-	internal_add_sound(group_id, sound_id, {}, false);
+	internal_play_sound(group_id, sound_id, {}, false);
 }
 
 /**
@@ -755,12 +691,12 @@ void Soundsystem::add_sound(const std::string& group_id, const int sound_id)
  * @note the group ID and sound ID are based on the order you added them via add_group and load_buffer respectedly.
  * Audio spatialization also only works with mono audio.
  */
-void Soundsystem::add_sound(const int group_id, const int sound_id, const sf::Vector3f pos)
+void Soundsystem::play_sound(const int group_id, const int sound_id, const sf::Vector3f pos)
 {
 	LOG_TRACE("add_sound called with parameters: group_id: {} sound_id: {} pos: {{x: {}, y: {}}}", group_id, sound_id, pos.x, pos.y);
 	std::lock_guard lock(m_mutex);
 	LOG_TRACE("forwarding arguments to internal_add_sound");
-	internal_add_sound(group_id, sound_id, pos, true);
+	internal_play_sound(group_id, sound_id, pos, true);
 }
 
 /**
@@ -771,12 +707,12 @@ void Soundsystem::add_sound(const int group_id, const int sound_id, const sf::Ve
  * @note the sound ID is based on the order you added them via load_buffer.
  * Audio spatialization also only works with mono audio.
  */
-void Soundsystem::add_sound(const std::string& group_id, const int sound_id, const sf::Vector3f pos)
+void Soundsystem::play_sound(const std::string& group_id, const int sound_id, const sf::Vector3f pos)
 {
 	LOG_TRACE("add_sound called with parameters: group_id: {} sound_id: {} pos: {{x: {}, y: {}}}", group_id, sound_id, pos.x, pos.y);
 	std::lock_guard lock(m_mutex);
 	LOG_TRACE("forwarding arguments to internal_add_sound");
-	internal_add_sound(group_id, sound_id, pos, true);
+	internal_play_sound(group_id, sound_id, pos, true);
 }
 
 void Soundsystem::play_music()
@@ -787,13 +723,15 @@ void Soundsystem::play_music()
 	auto& music_sounds = m_sounds[Soundsystem_MusicStr][0].first;
 	if (music_sounds.empty())
 	{
-		music_sounds.emplace_back(m_sounds_meta_data[Soundsystem_MusicStr][0].buffer);
+		music_sounds.emplace_back(m_sounds_meta_data[Soundsystem_MusicStr][0].m_buffer);
 		music_sounds.back().setVolume(m_volumes[Soundsystem_GlobalStr] * m_volumes[Soundsystem_MusicStr] / 100);
+		s_current_playing_sounds++;
 	}
+
 	if (m_current_music == -1)
 	{
-		music_sounds.back().setBuffer(m_sounds_meta_data[Soundsystem_MusicStr][0].buffer);
-		s_current_playing_sounds++;
+		music_sounds.back().setBuffer(m_sounds_meta_data[Soundsystem_MusicStr][0].m_buffer);
+		m_current_music = 0;
 	}
 	sf::Sound& music_sound = music_sounds.back();
 	music_sound.play();
@@ -831,19 +769,20 @@ bool Soundsystem::music()
 		return false;
 	}
 	auto& music_sounds = m_sounds[Soundsystem_MusicStr][0].first;
+
 	if (m_current_music == -1)
 	{
 		if (music_sounds.empty())
 		{
-			music_sounds.emplace_back(m_sounds_meta_data[Soundsystem_MusicStr][0].buffer);
-			music_sounds.back().setVolume(m_volumes[Soundsystem_MusicStr] * m_volumes[Soundsystem_MusicStr] / 100);
+			music_sounds.emplace_back(m_sounds_meta_data[Soundsystem_MusicStr][m_music_indices[0]].m_buffer);
+			music_sounds.back().setVolume(m_volumes[Soundsystem_GlobalStr] * m_volumes[Soundsystem_MusicStr] / 100);
+			s_current_playing_sounds++;
 		}
-		music_sounds.back().setBuffer(m_sounds_meta_data[Soundsystem_MusicStr][0].buffer);
+		music_sounds.back().setBuffer(m_sounds_meta_data[Soundsystem_MusicStr][m_music_indices[0]].m_buffer);
 		music_sounds.back().play();
 
 		m_current_music = 0;
-
-		s_current_playing_sounds++;
+		m_current_music_index = 0;
 	}
 	if (music_sounds.back().getStatus() == sf::SoundSource::Stopped)
 	{
@@ -861,9 +800,8 @@ void Soundsystem::cleanup()
 {
 	LOG_TRACE("cleanup called");
 	int counter = 0;
-	auto manual_erase = [&](std::deque<sf::Sound>& sounds, bool& priority) -> void {
-		if (!priority)
-		{
+	auto manual_erase = [&](std::deque<sf::Sound>& sounds) -> void {
+		
 			for (int i = 0; i < sounds.size(); i++)
 			{
 				if (sounds.front().getStatus() == sf::SoundSource::Stopped)
@@ -877,14 +815,16 @@ void Soundsystem::cleanup()
 					break;
 				}
 			}
-		}
+		
 		};
 
-	for (auto& all_sounds : m_sounds | std::views::values)
+	for (auto& [group,all_sounds] : m_sounds)
 	{
-		for (auto& [sounds, priority] : all_sounds)
+		if (group == Soundsystem_MusicStr)
+			continue;
+		for (auto& sounds : all_sounds | std::views::keys)
 		{
-			manual_erase(sounds, priority);
+			manual_erase(sounds);
 		}
 	}
 	LOG_TRACE("removed {} stopped sounds ", counter);
@@ -907,17 +847,12 @@ void Soundsystem::delete_sounds()
 	m_current_music = -1;
 }
 
-/**
- * @brief Pauses all currently playing sounds in the system.
- * @param ignore_priority should sounds of groups with priority also be stopped.
- */
-void Soundsystem::pause_all(const bool ignore_priority)
+void Soundsystem::pause_all()
 {
 	LOG_TRACE("pause_all called");
-	auto pause = [&](auto& sounds, const bool& priority)
+	auto pause = [&](auto& sounds)
 		{
-			if (!priority || ignore_priority)
-			{
+
 				for (sf::Sound& sound : sounds)
 				{
 					if (sound.getStatus() != sf::SoundSource::Stopped)
@@ -925,21 +860,17 @@ void Soundsystem::pause_all(const bool ignore_priority)
 						sound.pause();
 					}
 				}
-			}
 		};
 	for (auto& all_sounds : m_sounds | std::views::values)
 	{
-		for (auto& [sounds, priority] : all_sounds)
+		for (auto& sounds : all_sounds | std::views::keys)
 		{
-			pause(sounds, priority);
+			pause(sounds);
 		}
 	}
 
 }
 
-/**
- * @brief Plays all currently non stopped sounds in the system.
- */
 void Soundsystem::play_all()
 {
 	LOG_TRACE("play_all called");
@@ -984,7 +915,7 @@ void Soundsystem::clear_all()
  * be aware that if their value is outside this range, it will be automatically
  * adjusted to fit within 0.0f to 100.0f.
  */
-void Soundsystem::set_volume(float volume, const int group_id)
+void Soundsystem::set_volume(const float volume, const int group_id)
 {
 	LOG_TRACE("set_volume called with with parameters: volume: {} group_id: {}", volume, group_id);
 	std::lock_guard lock(m_mutex);
@@ -1000,7 +931,7 @@ void Soundsystem::set_volume(float volume, const int group_id)
  * be aware that if their value is outside this range, it will be automatically
  * adjusted to fit within 0.0f to 100.0f.
  */
-void Soundsystem::set_volume(float volume, const std::string& group_id)
+void Soundsystem::set_volume(const float volume, const std::string& group_id)
 {
 	LOG_TRACE("set_volume called with with parameters: volume: {} group_id: {}", volume, group_id);
 	std::lock_guard lock(m_mutex);
@@ -1028,7 +959,7 @@ void Soundsystem::set_volume(const std::unordered_map<std::string, float>& volum
  * be aware that if their value is outside this range, it will be automatically
  * adjusted to fit within 0.0f to 100.0f.
  */
-void Soundsystem::increment_volume(float increase, int group_id)
+void Soundsystem::increment_volume(const float increase, const int group_id)
 {
 	LOG_TRACE("increment_volume called with parameters: increase: {} group_id: {}", increase, group_id);
 	std::lock_guard lock(m_mutex);
@@ -1044,7 +975,7 @@ void Soundsystem::increment_volume(float increase, int group_id)
  * be aware that if their value is outside this range, it will be automatically
  * adjusted to fit within 0.0f to 100.0f.
  */
-void Soundsystem::increment_volume(float increase, const std::string& group_id)
+void Soundsystem::increment_volume(const float increase, const std::string& group_id)
 {
 	LOG_TRACE("increment_volume called with parameters: increase: {} group_id: {}", increase, group_id);
 	std::lock_guard lock(m_mutex);
@@ -1060,7 +991,7 @@ void Soundsystem::increment_volume(float increase, const std::string& group_id)
  * be aware that if their value is outside this range, it will be automatically
  * adjusted to fit within 0.0f to 100.0f.
  */
-void Soundsystem::decrement_volume(float decrease, int group_id)
+void Soundsystem::decrement_volume(const float decrease, const int group_id)
 {
 	LOG_TRACE("decrement_volume called with parameters: decrease: {} group_id: {}", decrease, group_id);
 	std::lock_guard lock(m_mutex);
@@ -1076,7 +1007,7 @@ void Soundsystem::decrement_volume(float decrease, int group_id)
  * be aware that if their value is outside this range, it will be automatically
  * adjusted to fit within 0.0f to 100.0f.
  */
-void Soundsystem::decrement_volume(float decrease, const std::string& group_id)
+void Soundsystem::decrement_volume(const float decrease, const std::string& group_id)
 {
 	LOG_TRACE("decrement_volume called with parameters: decrease: {} group_id: {}", decrease, group_id);
 	std::lock_guard lock(m_mutex);

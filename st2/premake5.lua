@@ -13,7 +13,7 @@ project "st2"
    includedirs
    {
     "../%{IncludeDir.glm}",
---   "../%{IncludeDir.spd_log}",
+    "../%{IncludeDir.spd_log}",
     "../%{IncludeDir.SFML}",
     "../%{IncludeDir.ImGui}",
     "src"
