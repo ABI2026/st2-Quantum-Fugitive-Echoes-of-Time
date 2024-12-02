@@ -25,12 +25,12 @@ void Soundsystem::change_music()
 		return;
 	}
 
-	int new_music_index = m_current_music_index + (signed)Random::uint(1,2);
+	int new_music_index = m_current_music_index + static_cast<signed>(Random::uint(1, 2));
 	LOG_INFO("new_music_index {}", new_music_index);
 	if(new_music_index >= music_indices_size)
 	{
 		new_music_index -= music_indices_size;
-		LOG_INFO("new_music_index {}", new_music_index);
+		LOG_INFO("changed new_music_index {}", new_music_index);
 	}
 	m_current_music_index = new_music_index;
 
@@ -403,7 +403,7 @@ const std::deque<std::pair<std::deque<sf::Sound>, bool>>* Soundsystem::get_sound
 
 std::deque<sf::Sound>* Soundsystem::get_sound_by_group_and_id(const std::string& group_id, const uint32_t sound_id)
 {
-	auto group_sounds = get_sounds_by_group(group_id);
+	const auto group_sounds = get_sounds_by_group(group_id);
 	if (!group_sounds)
 		return nullptr;
 	const size_t group_sounds_size = group_sounds->size();
@@ -415,11 +415,10 @@ std::deque<sf::Sound>* Soundsystem::get_sound_by_group_and_id(const std::string&
 const std::deque<sf::Sound>* Soundsystem::get_sound_by_group_and_id(const std::string& group_id,
 	const uint32_t sound_id) const
 {
-	auto group_sounds = get_sounds_by_group(group_id);
+	const auto group_sounds = get_sounds_by_group(group_id);
 	if (!group_sounds)
 		return nullptr;
-	const size_t group_sounds_size = group_sounds->size();
-	if (sound_id >= group_sounds_size || sound_id < 0)
+	if (sound_id >= group_sounds->size() || sound_id < 0)
 		return nullptr;
 	return &group_sounds->at(sound_id).first;
 }
@@ -774,7 +773,7 @@ bool Soundsystem::music()
 
 	if (m_current_music == -1)
 	{
- 		m_current_music_index = (signed)Random::uint(0, 2);
+ 		m_current_music_index = static_cast<signed>(Random::uint(0, 2));
 		LOG_INFO("m_current_music_index {}", m_current_music_index);
 		m_current_music = m_music_indices[m_current_music_index];
 		LOG_INFO("m_current_music {}", m_current_music);

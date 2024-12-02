@@ -17,7 +17,7 @@ Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 
 void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, const double deltatime)
 {
-	static sf::Vector2f position = sf::Vector2f(eventsystem->get_window_size());
+	static sf::Vector2f position = sf::Vector2f(m_background_texture.getSize() - sf::Vector2u{50u,50u } );
 
 	glm::vec2 movement = { 0.f,0.f };
 

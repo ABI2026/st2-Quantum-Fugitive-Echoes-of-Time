@@ -145,9 +145,9 @@ void OptionsMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_
 
 
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Down) == Eventsystem::action_pressed)
-		m_selected_y = m_selected_y + 1 == (int)buttons_in_y ? 0 : m_selected_y + 1;
+		m_selected_y = m_selected_y + 1 == static_cast<int>(buttons_in_y) ? 0 : m_selected_y + 1;
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Up) == Eventsystem::action_pressed)
-		m_selected_y = m_selected_y - 1 < 0 ? (int)buttons_in_y-1 : m_selected_y - 1;
+		m_selected_y = m_selected_y - 1 < 0 ? static_cast<int>(buttons_in_y)-1 : m_selected_y - 1;
 
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Right) == Eventsystem::action_pressed)
 		m_selected_x = m_selected_x + 1 == 3 ? 0 : m_selected_x + 1;

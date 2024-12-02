@@ -11,6 +11,15 @@ public:
 		s_random_engine.seed(std::random_device()());
 	}
 
+	[[nodiscard]] static bool foo(const double probality)
+	{
+		if (probality >= 1)
+			return true;
+
+		std::bernoulli_distribution distribution(probality);
+		return distribution(s_random_engine);
+	}
+
 	[[nodiscard]] static uint32_t uint()
 	{
 		return s_distribution(s_random_engine);
@@ -25,6 +34,7 @@ public:
 	{
 		return static_cast<float>(s_distribution(s_random_engine)) / static_cast<float>(std::numeric_limits<uint32_t>::max());
 	}
+
 	[[nodiscard]] static float floating(const float min, const float max)
 	{
 		return floating() * (max - min) + min;
@@ -45,9 +55,9 @@ public:
 		return glm::normalize(vec3(-1.0f, 1.0f));
 	}
 private:
-	static std::mt19937 s_random_engine;
+	thread_local static std::mt19937 s_random_engine;
 
-	static std::uniform_int_distribution<std::mt19937::result_type> s_distribution;
+	thread_local static std::uniform_int_distribution<std::mt19937::result_type> s_distribution;
 };
 
 
