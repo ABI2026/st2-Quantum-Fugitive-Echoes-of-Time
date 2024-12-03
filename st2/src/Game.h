@@ -3,6 +3,7 @@
 
 #include "Layer.h"
 #include "Level.h"
+#include "Player.h"
 
 class Game : public Layer
 {
@@ -20,6 +21,10 @@ private:
 	sf::View m_view;
 	sf::Texture m_background_texture;
 	std::shared_ptr<Level> m_level;
+
+
+	Player m_player;
+
 };
 
 

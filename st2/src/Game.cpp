@@ -17,7 +17,9 @@ Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 
 void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, const double deltatime)
 {
-	static sf::Vector2f position = sf::Vector2f(m_background_texture.getSize() - sf::Vector2u{50u,50u } );
+	//static sf::Vector2f position = sf::Vector2f(m_background_texture.getSize() - sf::Vector2u{50u,50u } );
+	sf::Vector2f position = m_player.getPosition();
+
 
 	glm::vec2 movement = { 0.f,0.f };
 
@@ -36,12 +38,23 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 		movement = glm::normalize(movement);
 
 		ImGui::Text("direction: x:%f y:%f", movement.x, movement.y);
+		
+		sf::Vector2f playerMovement(movement.x, movement.y);
+		m_player.updatePosition(playerMovement, static_cast<float>(deltatime));
+
+
 		movement = movement * 600.f * static_cast<float>(deltatime);
 		ImGui::Text("movement: x:%f y:%f", movement.x, movement.y);
+
+
+
 
 		glm::vec2 new_pos = { position.x + movement.x, position.y + movement.y };
 		new_pos = clamp(new_pos, { 50.f,50.f }, { m_background_texture.getSize().x - 50.f,m_background_texture.getSize().y - 50.f });
 		position = { new_pos.x, new_pos.y };
+
+
+		m_player.setPosition(position);
 
 	}
 	else
