@@ -18,58 +18,12 @@ Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, const double deltatime)
 {
 	//static sf::Vector2f position = sf::Vector2f(m_background_texture.getSize() - sf::Vector2u{50u,50u } );
-	sf::Vector2f position = m_player.getPosition();
 
-
-	glm::vec2 movement = { 0.f,0.f };
-
-	if (eventsystem->get_key_state(sf::Keyboard::Key::W))
-		movement.y -= 1;
-	if (eventsystem->get_key_state(sf::Keyboard::Key::A))
-		movement.x -= 1;
-	if (eventsystem->get_key_state(sf::Keyboard::Key::S))
-		movement.y += 1;
-	if (eventsystem->get_key_state(sf::Keyboard::Key::D))
-		movement.x += 1;
-	ImGui::Begin("Debug");
-	ImGui::Text("fps: %f", 1.0 / deltatime);
-	if (movement != glm::vec2{ 0.f,0.f })
-	{
-		movement = glm::normalize(movement);
-
-		ImGui::Text("direction: x:%f y:%f", movement.x, movement.y);
-		
-		sf::Vector2f playerMovement(movement.x, movement.y);
-		m_player.updatePosition(playerMovement, static_cast<float>(deltatime));
-
-
-		movement = movement * 600.f * static_cast<float>(deltatime);
-		ImGui::Text("movement: x:%f y:%f", movement.x, movement.y);
-
-
-
-
-		glm::vec2 new_pos = { position.x + movement.x, position.y + movement.y };
-		new_pos = clamp(new_pos, { 50.f,50.f }, { m_background_texture.getSize().x - 50.f,m_background_texture.getSize().y - 50.f });
-		position = { new_pos.x, new_pos.y };
-
-
-		m_player.setPosition(position);
-
-	}
-	else
-	{
-		ImGui::Text("direction: x:0.000000 y:0.000000");
-		ImGui::Text("movement: x:0.000000 y:0.000000");
-	}
-
-	ImGui::Text("position: x:%f y:%f", position.x, position.y);
-	ImGui::End();
-
+	m_player.update(eventsystem, soundsystem, deltatime);
 
 	const sf::View backup = window.getView();
 	m_view = backup;
-	m_view.setCenter(position);
+	m_view.setCenter(m_player.getPosition());
 	window.setView(m_view);
 
 
@@ -96,18 +50,14 @@ void Game::render(sf::RenderWindow& window)
 	m_view.setSize(sf::Vector2f(window.getSize()));
 	window.setView(m_view);
 	static sf::RectangleShape shape(sf::Vector2f(m_background_texture.getSize()));
-
 	shape.setPosition(0.f,0.f);
 	shape.setFillColor(sf::Color::Cyan);
 	shape.setTexture(&m_background_texture);
-	sf::RectangleShape shape2({ 100.f,100.f });
-	shape2.setOrigin(50.f,50.f);
-	shape2.setPosition(window.getView().getCenter());
-	shape2.setTexture(&m_background_texture);
+
 	//shape2.setFillColor(sf::Color::Yellow);
 
 	window.draw(shape);
-	window.draw(shape2);
+	m_player.draw(window);
 
 	window.setView(backup);
 }

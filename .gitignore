@@ -12,3 +12,4 @@ bin-int/
 # Exclude
 !vendor/bin
 /st2/imgui.ini
+/st2/st2.vcxproj.user

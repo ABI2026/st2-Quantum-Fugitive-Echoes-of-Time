@@ -78,9 +78,12 @@ void PauseMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_pt
 
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Enter) == Eventsystem::action_released)
 	{
+		if (m_selected == 2)
+			soundsystem->set_music_indices({ 0,1,2 });
+		
 		if (m_buttons[m_selected]->on_click(layer_manager, soundsystem, window))
 			m_selected = -1;
-		
+
 		return;
 	}
 }
