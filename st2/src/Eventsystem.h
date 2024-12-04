@@ -15,7 +15,7 @@ public:
 		action_none,
 		action_released,
 		action_pressed,
-		action_repeat
+		action_repeat 
 	} action;
 
 	Eventsystem(const sf::RenderWindow& window);

@@ -50,7 +50,7 @@ int Main(const int argc, char** argv)
     Log::init(LOG_LEVEL_INFO,LOG_LEVEL_INFO);
     Random::init();
 
-    sf::RenderWindow window(sf::VideoMode(720, 480), "window", sf::Style::Default);
+	sf::RenderWindow window(sf::VideoMode(720, 480), "window", sf::Style::Default);
 
 	if (!init_sfml_imgui(window))
     {

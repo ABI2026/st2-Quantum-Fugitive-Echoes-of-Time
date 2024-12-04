@@ -99,12 +99,14 @@ void Eventsystem::handle_updates(sf::RenderWindow& window)
 {
 	for (auto& action : m_key_actions | std::views::values)
 	{
-		action = action_none;
+		if(action != action_repeat)
+			action = action_none;
 	}
 
 	for (auto& action : m_mouse_button_actions | std::views::values)
 	{
-		action = action_none;
+		if (action != action_repeat)
+			action = action_none;
 	}
 
 	m_mouse_offset = { 0,0 };
