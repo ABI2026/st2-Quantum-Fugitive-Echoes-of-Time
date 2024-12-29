@@ -38,7 +38,7 @@ void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 	constexpr float button_size = 50.f;
 	const float total_height = static_cast<float>(m_buttons.size()) * button_size + (static_cast<float>(m_buttons.size()) - 1.f) * padding;
 	const float start_y = (static_cast<float>(eventsystem->get_window_size().y) - total_height) / 2.f;
-
+	
 	for (uint8_t i = 0; i < m_buttons.size(); ++i)
 	{
 		m_buttons[i]->set_position({ static_cast<float>(eventsystem->get_window_size().x) / 2.f - 100.f,start_y + static_cast<float>(i) * (50.f + padding) });

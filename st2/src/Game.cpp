@@ -18,17 +18,15 @@ Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 
 void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, const double deltatime)
 {
-	//static sf::Vector2f position = sf::Vector2f(m_background_texture.getSize() - sf::Vector2u{50u,50u } );
-
 	m_player.update(eventsystem, soundsystem, deltatime);
 
 	const sf::View backup = window.getView();
 	m_view = backup;
 	m_view.setCenter(m_player.getPosition());
-	window.setView(m_view);
+	//window.setView(m_view);
 
 
-	window.setView(backup);
+	//window.setView(backup);
 
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Escape) == Eventsystem::action_pressed || !eventsystem->has_focus())
 	{
@@ -50,12 +48,11 @@ void Game::render(sf::RenderWindow& window)
 	const sf::View backup = window.getView();
 	m_view.setSize(sf::Vector2f(window.getSize()));
 	window.setView(m_view);
+
 	static sf::RectangleShape shape(sf::Vector2f(m_background_texture.getSize()));
 	shape.setPosition({ 0.f,0.f });
 	shape.setFillColor(sf::Color::Cyan);
 	shape.setTexture(&m_background_texture);
-
-	//shape2.setFillColor(sf::Color::Yellow);
 
 	window.draw(shape);
 	m_player.draw(window);
