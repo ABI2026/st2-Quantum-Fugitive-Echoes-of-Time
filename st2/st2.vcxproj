@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SFML_STATIC;PLATFORM_WINDOWS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\spdlog\include;..\vendor\SFML\SFML-2.6.1\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\spdlog\include;..\vendor\SFML\SFML-3.0.0\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -90,8 +90,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>freetype.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;openal32.lib;opengl32.lib;flac.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;sfml-audio-s-d.lib;sfml-network-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\vendor\SFML\SFML-2.6.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;opengl32.lib;flac.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;sfml-audio-s-d.lib;sfml-network-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\vendor\SFML\SFML-3.0.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -99,7 +99,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SFML_STATIC;PLATFORM_WINDOWS;RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\spdlog\include;..\vendor\SFML\SFML-2.6.1\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\spdlog\include;..\vendor\SFML\SFML-3.0.0\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -116,8 +116,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>freetype.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;openal32.lib;opengl32.lib;flac.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-audio-s.lib;sfml-network-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\vendor\SFML\SFML-2.6.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;opengl32.lib;flac.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-audio-s.lib;sfml-network-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\vendor\SFML\SFML-3.0.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -125,7 +125,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SFML_STATIC;PLATFORM_WINDOWS;DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\spdlog\include;..\vendor\SFML\SFML-2.6.1\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\spdlog\include;..\vendor\SFML\SFML-3.0.0\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -142,22 +142,22 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>freetype.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;openal32.lib;opengl32.lib;flac.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-audio-s.lib;sfml-network-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\vendor\SFML\SFML-2.6.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;opengl32.lib;flac.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-audio-s.lib;sfml-network-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\vendor\SFML\SFML-3.0.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Level.h" />
-    <ClInclude Include="src\OptionsMenu.h" />
+    <ClInclude Include="src\Buttons\Button.h" />
     <ClInclude Include="src\Buttons\ButtonBehaviour.h" />
     <ClInclude Include="src\Buttons\ButtonLayout.h" />
-    <ClInclude Include="src\Buttons\Button.h" />
     <ClInclude Include="src\Eventsystem.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Layer.h" />
     <ClInclude Include="src\LayerManager.h" />
+    <ClInclude Include="src\Level.h" />
     <ClInclude Include="src\LevelSelector.h" />
     <ClInclude Include="src\Menu.h" />
+    <ClInclude Include="src\OptionsMenu.h" />
     <ClInclude Include="src\PauseMenu.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Utils\Log.h" />
@@ -166,17 +166,17 @@
     <ClInclude Include="src\Utils\Timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Level.cpp" />
-    <ClCompile Include="src\OptionsMenu.cpp" />
+    <ClCompile Include="src\Buttons\Button.cpp" />
     <ClCompile Include="src\Buttons\ButtonBehaviour.cpp" />
     <ClCompile Include="src\Buttons\ButtonLayout.cpp" />
-    <ClCompile Include="src\Buttons\Button.cpp" />
     <ClCompile Include="src\Eventsystem.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\LayerManager.cpp" />
+    <ClCompile Include="src\Level.cpp" />
     <ClCompile Include="src\LevelSelector.cpp" />
     <ClCompile Include="src\Menu.cpp" />
+    <ClCompile Include="src\OptionsMenu.cpp" />
     <ClCompile Include="src\PauseMenu.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Utils\Log.cpp" />

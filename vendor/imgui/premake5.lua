@@ -26,11 +26,10 @@ project "ImGui"
 	}
 	defines {"SFML_STATIC"}
  
-	libdirs { "../SFML/SFML-2.6.1/lib" }
+	libdirs { "../SFML/SFML-3.0.0/lib" }
 
 	 links
 	 {
-        "openal32",
 		"freetype",
 		"winmm",
 		"gdi32",
@@ -45,11 +44,8 @@ project "ImGui"
 	includedirs
 	{
 	 "../glm",
-	 "../SFML/SFML-2.6.1/include"
+	 "../SFML/SFML-3.0.0/include"
 	}
-
-	filter "action:vs*"
-	buildoptions { "/Zc:__cplusplus" }
 
 	filter "system:windows"
 		systemversion "latest"

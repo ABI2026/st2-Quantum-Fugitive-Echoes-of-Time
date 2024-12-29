@@ -157,11 +157,11 @@ void Soundsystem::internal_play_sound(const std::string& group_id, const int sou
 		{
 			if (m_use_tile_size && m_tilesize > 0.f)
 			{
-				current_sound.setPosition(pos.x / m_tilesize, pos.y / m_tilesize, pos.z / m_tilesize);
+				current_sound.setPosition({pos.x / m_tilesize, pos.y / m_tilesize, pos.z / m_tilesize});
 			}
 			else
 			{
-				current_sound.setPosition(pos.x, pos.y, pos.z);
+				current_sound.setPosition({pos.x, pos.y, pos.z});
 			}
 			current_sound.setMinDistance(metadata.mindistance);
 			current_sound.setAttenuation(metadata.attenuation);
@@ -367,7 +367,7 @@ void Soundsystem::internal_load_buffer(const std::string& location, const bool o
 
 Soundsystem::Soundsystem(const float tilesize, const bool use_tile_size) : m_use_tile_size(use_tile_size), m_tilesize(tilesize)
 {
-	sf::Listener::setPosition(0.f, 0.f, 0.f);
+	sf::Listener::setPosition({0.f, 0.f, 0.f});
 	add_group(Soundsystem_GlobalStr);
 	LOG_TRACE("added global group");
 	add_group(Soundsystem_MusicStr);
@@ -795,7 +795,7 @@ bool Soundsystem::music()
 
 
 	}
-	if (music_sounds.back().getStatus() == sf::SoundSource::Stopped)
+	if (music_sounds.back().getStatus() == sf::SoundSource::Status::Stopped)
 	{
 		change_music();
 		return true;
@@ -815,7 +815,7 @@ void Soundsystem::cleanup()
 		
 			for (int i = 0; i < sounds.size(); i++)
 			{
-				if (sounds.front().getStatus() == sf::SoundSource::Stopped)
+				if (sounds.front().getStatus() == sf::SoundSource::Status::Stopped)
 				{
 					sounds.pop_front();
 					s_current_playing_sounds--;
@@ -866,7 +866,7 @@ void Soundsystem::pause_all()
 
 				for (sf::Sound& sound : sounds)
 				{
-					if (sound.getStatus() != sf::SoundSource::Stopped)
+					if (sound.getStatus() != sf::SoundSource::Status::Stopped)
 					{
 						sound.pause();
 					}
@@ -889,7 +889,7 @@ void Soundsystem::play_all()
 		{
 			for (sf::Sound& sound : sounds)
 			{
-				if (sound.getStatus() != sf::SoundSource::Stopped)
+				if (sound.getStatus() != sf::SoundSource::Status::Stopped)
 				{
 					sound.play();
 				}

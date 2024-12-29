@@ -12,7 +12,8 @@
 Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 {
 	soundsystem->set_music_indices({ 1,2,3 });
-	m_background_texture.loadFromFile("Resources/Images/hintergrund.jpg");
+	if (!m_background_texture.loadFromFile("Resources/Images/hintergrund.jpg"))
+		LOG_ERROR("failed loading background image");
 }
 
 void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, const double deltatime)
@@ -50,7 +51,7 @@ void Game::render(sf::RenderWindow& window)
 	m_view.setSize(sf::Vector2f(window.getSize()));
 	window.setView(m_view);
 	static sf::RectangleShape shape(sf::Vector2f(m_background_texture.getSize()));
-	shape.setPosition(0.f,0.f);
+	shape.setPosition({ 0.f,0.f });
 	shape.setFillColor(sf::Color::Cyan);
 	shape.setTexture(&m_background_texture);
 

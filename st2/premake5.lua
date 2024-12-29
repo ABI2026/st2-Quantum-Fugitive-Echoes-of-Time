@@ -20,7 +20,7 @@ project "st2"
    }
    defines {"SFML_STATIC"}
  
-   libdirs { "../vendor/SFML/SFML-2.6.1/lib" }
+   libdirs { "../vendor/SFML/SFML-3.0.0/lib" }
 
     links
 	{
@@ -47,7 +47,6 @@ project "st2"
       defines { "PLATFORM_WINDOWS" }
       links
       {
-          "openal32",
           "opengl32",
           "flac",
       }

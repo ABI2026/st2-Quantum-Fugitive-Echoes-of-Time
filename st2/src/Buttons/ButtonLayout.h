@@ -59,8 +59,8 @@ public:
 	void render(sf::RenderWindow& window) override;
 	void set_text(const std::string& i_text) override;
 private:
-	sf::Text m_text;
 	sf::Font m_font;
+	sf::Text m_text;
 	sf::RectangleShape m_shape;
 	bool m_hovered{ false };
 	bool m_clicked{ false };

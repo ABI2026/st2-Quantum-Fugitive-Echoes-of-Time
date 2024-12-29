@@ -9,7 +9,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["glm"] = "vendor/glm"
 IncludeDir["spd_log"] = "vendor/spdlog/include"
-IncludeDir["SFML"] = "vendor/SFML/SFML-2.6.1/include"
+IncludeDir["SFML"] = "vendor/SFML/SFML-3.0.0/include"
 IncludeDir["ImGui"] = "vendor/imgui"
 
 

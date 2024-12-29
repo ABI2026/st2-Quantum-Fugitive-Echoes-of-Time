@@ -93,7 +93,7 @@ void PauseMenu::render(sf::RenderWindow& window)
 	m_background_layer->render(window);
 
 	sf::RectangleShape shape(sf::Vector2f(window.getSize()));
-	shape.setPosition(0, 0);
+	shape.setPosition({ 0, 0 });
 	shape.setFillColor(sf::Color(128,128,128,128));
 	window.draw(shape);
 

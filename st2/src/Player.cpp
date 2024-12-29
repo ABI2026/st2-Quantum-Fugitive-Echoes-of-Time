@@ -1,15 +1,18 @@
 #include <iostream>
 #include "Player.h"
 
+#include <glm/geometric.hpp>
 #include <glm/vec2.hpp>
 
 #include "imgui.h"
+#include "Utils/Log.h"
 
 Player::Player() : m_shape({ 100.f,100.f }), m_position(320.f, 320.f), m_velocity(0.0f, 0.0f)
 {
     //konstrukt	 ;
-	m_player_texture.loadFromFile("Resources/Images/hintergrund.jpg");
-	m_shape.setOrigin(50.f, 50.f);
+	if (!m_player_texture.loadFromFile("Resources/Images/hintergrund.jpg"))
+		LOG_ERROR("failed loading player texture");
+	m_shape.setOrigin({50.f, 50.f});
 	m_shape.setTexture(&m_player_texture);
 }
 

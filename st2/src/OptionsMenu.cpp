@@ -132,12 +132,12 @@ void OptionsMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_
 		if (m_windowselect == 0)
 		{
 			m_buttons[2]->set_text("WindowMode");
-			window.create(sf::VideoMode(720, 480), "window", sf::Style::Default);
+			window.create(sf::VideoMode({ 720, 480 }), "window", sf::Style::Default);
 		}
 		else
 		{
 			m_buttons[2]->set_text("Fullscreen");
-			window.create(sf::VideoMode(1920, 1080), "window", sf::Style::Fullscreen);
+			window.create(sf::VideoMode({1920, 1080}), "window", sf::State::Fullscreen);
 		}
 		window.setFramerateLimit(60);
 		LOG_INFO("windowselect: {}", m_windowselect);
@@ -197,12 +197,12 @@ void OptionsMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_
 			if (m_windowselect == 0)
 			{
 				m_buttons[2]->set_text("WindowMode");
-				window.create(sf::VideoMode(720, 480), "window", sf::Style::Default);
+				window.create(sf::VideoMode({720, 480}), "window", sf::Style::Default);
 			}
 			else
 			{
 				m_buttons[2]->set_text("Fullscreen");
-				window.create(sf::VideoMode(1920, 1080), "window", sf::Style::Fullscreen);
+				window.create(sf::VideoMode({1920, 1080}), "window", sf::State::Fullscreen);
 			}
 			window.setFramerateLimit(60);
 			LOG_INFO("windowselect: {}", m_windowselect);

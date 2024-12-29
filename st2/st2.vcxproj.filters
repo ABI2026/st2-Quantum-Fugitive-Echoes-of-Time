@@ -9,21 +9,23 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Buttons\Button.h">
+      <Filter>Buttons</Filter>
+    </ClInclude>
     <ClInclude Include="src\Buttons\ButtonBehaviour.h">
       <Filter>Buttons</Filter>
     </ClInclude>
     <ClInclude Include="src\Buttons\ButtonLayout.h">
       <Filter>Buttons</Filter>
     </ClInclude>
-    <ClInclude Include="src\Buttons\Button.h">
-      <Filter>Buttons</Filter>
-    </ClInclude>
     <ClInclude Include="src\Eventsystem.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Layer.h" />
     <ClInclude Include="src\LayerManager.h" />
+    <ClInclude Include="src\Level.h" />
     <ClInclude Include="src\LevelSelector.h" />
     <ClInclude Include="src\Menu.h" />
+    <ClInclude Include="src\OptionsMenu.h" />
     <ClInclude Include="src\PauseMenu.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Utils\Log.h">
@@ -38,25 +40,25 @@
     <ClInclude Include="src\Utils\Timer.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\OptionsMenu.h" />
-    <ClInclude Include="src\Level.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Buttons\Button.cpp">
+      <Filter>Buttons</Filter>
+    </ClCompile>
     <ClCompile Include="src\Buttons\ButtonBehaviour.cpp">
       <Filter>Buttons</Filter>
     </ClCompile>
     <ClCompile Include="src\Buttons\ButtonLayout.cpp">
       <Filter>Buttons</Filter>
     </ClCompile>
-    <ClCompile Include="src\Buttons\Button.cpp">
-      <Filter>Buttons</Filter>
-    </ClCompile>
     <ClCompile Include="src\Eventsystem.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\LayerManager.cpp" />
+    <ClCompile Include="src\Level.cpp" />
     <ClCompile Include="src\LevelSelector.cpp" />
     <ClCompile Include="src\Menu.cpp" />
+    <ClCompile Include="src\OptionsMenu.cpp" />
     <ClCompile Include="src\PauseMenu.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Utils\Log.cpp">
@@ -69,7 +71,5 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\OptionsMenu.cpp" />
-    <ClCompile Include="src\Level.cpp" />
   </ItemGroup>
 </Project>

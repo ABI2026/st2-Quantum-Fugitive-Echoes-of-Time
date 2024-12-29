@@ -50,7 +50,7 @@ int Main(const int argc, char** argv)
     Log::init(LOG_LEVEL_INFO,LOG_LEVEL_INFO);
     Random::init();
 
-    sf::RenderWindow window(sf::VideoMode(720, 480), "window", sf::Style::Default);
+    sf::RenderWindow window(sf::VideoMode({ 720, 480 }), "window", sf::Style::Default);
 
 	if (!init_sfml_imgui(window))
     {
@@ -104,8 +104,8 @@ bool init_sfml_imgui(sf::RenderWindow& window)
     if (!ImGui::SFML::Init(window, false))
         return false;
     
-    ImGui::SFML::ProcessEvent(window, sf::Event{sf::Event::LostFocus,{}});
-    ImGui::SFML::ProcessEvent(window, sf::Event{sf::Event::GainedFocus,{} });
+    ImGui::SFML::ProcessEvent(window, sf::Event::FocusLost());
+    ImGui::SFML::ProcessEvent(window, sf::Event::FocusGained());
 
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls

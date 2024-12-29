@@ -10,7 +10,7 @@ TextLayout::TextLayout(const std::string& i_text,
     const sf::Color& i_hovered_color,
     const sf::Color& i_pressed_color,
     const sf::Color& i_outline_color
-     )
+     ):m_font(g_RobotoRegular, sizeof g_RobotoRegular),m_text(m_font,i_text, 24)
 {
 
     m_default_color = i_default_color;
@@ -24,9 +24,6 @@ TextLayout::TextLayout(const std::string& i_text,
 	m_shape.setOutlineThickness(i_outline_thickness);
     m_shape.setOutlineColor(i_outline_color);
 
-    m_font.loadFromMemory(g_RobotoRegular, sizeof g_RobotoRegular);
-
-
     m_text.setFont(m_font);
     m_text.setString(i_text);
     m_text.setCharacterSize(24);
@@ -34,13 +31,13 @@ TextLayout::TextLayout(const std::string& i_text,
 
     // Center text
     const sf::FloatRect text_bounds = m_text.getLocalBounds();
-    m_text.setOrigin(0, 0);
+    m_text.setOrigin({0, 0});
     const float center_x = i_position.x + i_size.x / 2.0f;
     const float center_y = i_position.y + i_size.y / 2.0f;
-
-    const float adjusted_x = center_x - (text_bounds.width + text_bounds.left) / 2.0f;
-    const float adjusted_y = center_y - (text_bounds.height + text_bounds.top) / 2.0f;
-    m_text.setPosition(std::floor(adjusted_x), std::floor(adjusted_y));
+    
+    const float adjusted_x = center_x - (text_bounds.size.x+ text_bounds.position.x) / 2.0f;
+    const float adjusted_y = center_y - (text_bounds.size.y + text_bounds.position.y) / 2.0f;
+    m_text.setPosition({std::floor(adjusted_x), std::floor(adjusted_y)});
 
 }
 
@@ -52,9 +49,9 @@ void TextLayout::set_position(const sf::Vector2f& position)
     const float center_x = position.x + size.x / 2.0f;
     const float center_y = position.y + size.y / 2.0f;
 
-    const float adjusted_x = center_x - (text_bounds.width + text_bounds.left) / 2.0f;
-    const float adjusted_y = center_y - (text_bounds.height + text_bounds.top) / 2.0f;
-    m_text.setPosition(std::floor(adjusted_x), std::floor(adjusted_y));
+    const float adjusted_x = center_x - (text_bounds.size.x + text_bounds.position.x) / 2.0f;
+    const float adjusted_y = center_y - (text_bounds.size.y + text_bounds.position.y) / 2.0f;
+    m_text.setPosition({ std::floor(adjusted_x), std::floor(adjusted_y) });
 }
 
 void TextLayout::render(sf::RenderWindow& window)

@@ -12,87 +12,94 @@ Eventsystem::Eventsystem(const sf::RenderWindow& window)
 
 void Eventsystem::process_events(sf::RenderWindow& window, const sf::Event& event)
 {
-	if (event.type == sf::Event::LostFocus)
+	if (event.is<sf::Event::FocusLost>())
 		m_focus = false;
-	else if (event.type == sf::Event::GainedFocus)
+	else if (event.is<sf::Event::FocusGained>() )
 		m_focus = true;
 
 	if (!m_focus)
 		return;
 
-	switch (event.type)
-	{
+
 		//ENTSCHEIDEN OB ANDERE EVENTS AUCH GETRACT WERDEN SOLLTEN WIE RESIZE ETC.
 
-	case sf::Event::Closed:
-		window.close();
-		break;
-	case sf::Event::Resized: 
+	if (event.is<sf::Event::Closed>())
 	{
-		m_window_size.x = event.size.width;
-		m_window_size.y = event.size.height;
+		window.close();
+	}
+	else if(const auto resize = event.getIf<sf::Event::Resized>())
+	{
+		m_window_size.x = resize->size.x;
+		m_window_size.y = resize->size.y;
 		sf::View new_view = window.getView();
-		new_view.setCenter(static_cast<float>(m_window_size.x)/2.f, static_cast<float>(m_window_size.y)/2.f);
-		new_view.setSize(static_cast<float>(m_window_size.x), static_cast<float>(m_window_size.y));
+		new_view.setCenter({ static_cast<float>(m_window_size.x) / 2.f, static_cast<float>(m_window_size.y) / 2.f });
+		new_view.setSize({ static_cast<float>(m_window_size.x), static_cast<float>(m_window_size.y) });
 		window.setView(new_view);
 	}
-		break;
-		//case sf::Event::TextEntered: break;
-	case sf::Event::KeyPressed: //fallthrough
-	case sf::Event::KeyReleased:
+	else if (const auto key_pressed = event.getIf<sf::Event::KeyPressed>())
 	{
-		const sf::Keyboard::Key key = event.key.code;
-		if (!m_key_states.contains(key))
-			break;
-		const bool down = event.type == sf::Event::KeyPressed;
-		const action action = down ? (m_key_states[key] ? action_repeat : action_pressed) : action_released;
-		m_key_actions[key] = action;
-		m_key_states[key] = down;
-		if (m_key_events_callbacks[key])
-			m_key_events_callbacks[key](key, action);
-
+		const sf::Keyboard::Key key = key_pressed->code;
+		if (m_key_states.contains(key))
+		{
+			constexpr bool down = true;
+			const action action = m_key_states[key] ? action_repeat : action_pressed;
+			m_key_actions[key] = action;
+			m_key_states[key] = down;
+			if (m_key_events_callbacks[key])
+				m_key_events_callbacks[key](key, action);
+		}
 	}
-	break;
-	//case sf::Event::MouseWheelMoved: break;
-	//case sf::Event::MouseWheelScrolled: break;
-	case sf::Event::MouseButtonPressed://fallthrough
-	case sf::Event::MouseButtonReleased:
+	else if (const auto key_released = event.getIf<sf::Event::KeyReleased>())
 	{
-		const sf::Mouse::Button button = event.mouseButton.button;
-		if (!m_mouse_button_states.contains(button))
-			break;
-		const bool down = event.type == sf::Event::MouseButtonPressed;
-		const action action = down ? (m_mouse_button_states[button] ? action_repeat : action_pressed) : action_released;
-		m_mouse_button_actions[button] = action;
-		m_mouse_button_states[button] = down;
-		if (m_mouse_button_events_callbacks[button])
-			m_mouse_button_events_callbacks[button](button, action);
+		const sf::Keyboard::Key key = key_released->code;
+		if (m_key_states.contains(key))
+		{
+			constexpr bool down = false;
+			constexpr action action = action_released;
+			m_key_actions[key] = action;
+			m_key_states[key] = down;
+			if (m_key_events_callbacks[key])
+				m_key_events_callbacks[key](key, action);
+		}
 	}
-	break;
-	case sf::Event::MouseMoved:
+	else if (const auto mouse_button_pressed = event.getIf<sf::Event::MouseButtonPressed>())
 	{
-		const sf::Vector2f new_mouse_position = window.mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
+		const sf::Mouse::Button button = mouse_button_pressed->button;
+		if (m_mouse_button_states.contains(button))
+		{
+			constexpr bool down = true;
+			const action action = m_mouse_button_states[button] ? action_repeat : action_pressed;
+			m_mouse_button_actions[button] = action;
+			m_mouse_button_states[button] = down;
+			if (m_mouse_button_events_callbacks[button])
+				m_mouse_button_events_callbacks[button](button, action);
+		}
+	}
+	else if (const auto mouse_button_released = event.getIf<sf::Event::MouseButtonReleased>())
+	{
+		const sf::Mouse::Button button = mouse_button_released->button;
+		if (m_mouse_button_states.contains(button))
+		{
+			constexpr bool down = false;
+			constexpr action action = action_released;
+			m_mouse_button_actions[button] = action;
+			m_mouse_button_states[button] = down;
+			if (m_mouse_button_events_callbacks[button])
+				m_mouse_button_events_callbacks[button](button, action);
+		}
+	}
+	else if(const auto MouseMoved = event.getIf<sf::Event::MouseMoved>())
+	{
+		const sf::Vector2f new_mouse_position = window.mapPixelToCoords({ MouseMoved->position.x, MouseMoved->position.y});
 		m_mouse_offset = m_mouse_position - new_mouse_position;
 		m_mouse_position = new_mouse_position;
 	}
-		break;
-	//case sf::Event::MouseEntered: break;
-	case sf::Event::MouseLeft:
-		m_mouse_offset = {0.f,0.f};
-		m_mouse_position = {-1.f,-1.f};
-		break;
-	//case sf::Event::JoystickButtonPressed: break;
-	//case sf::Event::JoystickButtonReleased: break;
-	//case sf::Event::JoystickMoved: break;
-	//case sf::Event::JoystickConnected: break;
-	//case sf::Event::JoystickDisconnected: break;
-	//case sf::Event::TouchBegan: break;
-	//case sf::Event::TouchMoved: break;
-	//case sf::Event::TouchEnded: break;
-	//case sf::Event::SensorChanged: break;
-
-	default: break;
+	else if (event.is<sf::Event::MouseLeft>()) 
+	{
+		m_mouse_offset = { 0.f,0.f };
+		m_mouse_position = { -1.f,-1.f };
 	}
+
 }
 
 void Eventsystem::handle_updates(sf::RenderWindow& window)
@@ -109,11 +116,10 @@ void Eventsystem::handle_updates(sf::RenderWindow& window)
 
 	m_mouse_offset = { 0,0 };
 
-	sf::Event event{};
-	while (window.pollEvent(event))
+	while (const auto event = window.pollEvent())
 	{
-		ImGui::SFML::ProcessEvent(window, event);
-		process_events(window, event);
+		ImGui::SFML::ProcessEvent(window, *event);
+		process_events(window, *event);
 	}
 
 	if (window.getSize() != m_window_size)
@@ -129,17 +135,32 @@ void Eventsystem::add_key_listener(sf::Keyboard::Key key)
 		m_key_actions.insert({ key,action_none });
 	if (!m_key_events_callbacks.contains(key))
 		m_key_events_callbacks.insert({ key,{} });
-
 }
 
 bool Eventsystem::get_key_state(const sf::Keyboard::Key key) const
 {
-	return m_key_states.at(key);
+	const auto data = m_key_states.find(key);
+	if(data == m_key_states.end())
+	{
+#ifndef DIST
+		LOG_ERROR("button:{} doesn't exist in m_key_states", static_cast<int>(key));
+#endif
+		return false;
+	}
+	return data->second;
 }
 
 Eventsystem::action Eventsystem::get_key_action(const sf::Keyboard::Key key) const
 {
-	return m_key_actions.at(key);
+	const auto data = m_key_actions.find(key);
+	if (data == m_key_actions.end()) 
+	{
+#ifndef DIST
+		LOG_ERROR("key:{} doesn't exist in m_key_actions", static_cast<int>(key));
+#endif
+		return action_none;
+	}
+	return data->second;
 }
 
 void Eventsystem::set_key_callback(sf::Keyboard::Key key, const std::function<void(sf::Keyboard::Key, action)>& callback)
@@ -162,14 +183,28 @@ void Eventsystem::add_mouse_button_listener(sf::Mouse::Button button)
 
 bool Eventsystem::get_mouse_button_state(const sf::Mouse::Button button) const
 {
-	return m_mouse_button_states.at(button);
-
+	const auto data = m_mouse_button_states.find(button);
+	if (data == m_mouse_button_states.end()) 
+	{
+#ifndef DIST
+		LOG_ERROR("button:{} doesn't exist in m_mouse_button_states", static_cast<int>(button));
+#endif
+		return action_none;
+	}
+	return data->second;
 }
 
 Eventsystem::action Eventsystem::get_mouse_button_action(const sf::Mouse::Button button) const
 {
-	return m_mouse_button_actions.at(button);
-
+	const auto data = m_mouse_button_actions.find(button);
+	if (data == m_mouse_button_actions.end()) 
+	{
+#ifndef DIST
+		LOG_ERROR("button:{} doesn't exist in m_mouse_button_actions", static_cast<int>(button));
+#endif
+		return action_none;
+	}
+	return data->second;
 }
 
 void Eventsystem::set_mouse_button_callback(sf::Mouse::Button button, const std::function<void(sf::Mouse::Button, action)>& callback)
