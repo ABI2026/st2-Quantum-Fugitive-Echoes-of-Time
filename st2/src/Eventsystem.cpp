@@ -144,7 +144,7 @@ bool Eventsystem::get_key_state(const sf::Keyboard::Key key) const
 	const auto data = m_key_states.find(key);
 	if(data == m_key_states.end())
 	{
-#ifndef DIST
+#ifdef DEBUG
 		LOG_ERROR("button:{} doesn't exist in m_key_states", static_cast<int>(key));
 #endif
 		return false;
@@ -157,7 +157,7 @@ Eventsystem::action Eventsystem::get_key_action(const sf::Keyboard::Key key) con
 	const auto data = m_key_actions.find(key);
 	if (data == m_key_actions.end()) 
 	{
-#ifndef DIST
+#ifdef DEBUG
 		LOG_ERROR("key:{} doesn't exist in m_key_actions", static_cast<int>(key));
 #endif
 		return action_none;
@@ -188,7 +188,7 @@ bool Eventsystem::get_mouse_button_state(const sf::Mouse::Button button) const
 	const auto data = m_mouse_button_states.find(button);
 	if (data == m_mouse_button_states.end()) 
 	{
-#ifndef DIST
+#ifdef DEBUG
 		LOG_ERROR("button:{} doesn't exist in m_mouse_button_states", static_cast<int>(button));
 #endif
 		return action_none;
@@ -201,7 +201,7 @@ Eventsystem::action Eventsystem::get_mouse_button_action(const sf::Mouse::Button
 	const auto data = m_mouse_button_actions.find(button);
 	if (data == m_mouse_button_actions.end()) 
 	{
-#ifndef DIST
+#ifdef DEBUG
 		LOG_ERROR("button:{} doesn't exist in m_mouse_button_actions", static_cast<int>(button));
 #endif
 		return action_none;
