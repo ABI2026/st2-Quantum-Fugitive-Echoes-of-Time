@@ -39,4 +39,3 @@ public:
 	const Player* getPlayer();
 	static unsigned int getCount();
 };
-

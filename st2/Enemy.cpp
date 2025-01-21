@@ -2,6 +2,7 @@
 #include <string>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics.hpp>
+#include <cmath>
 
 #include "Eventsystem.h"
 #include "LayerManager.h"
@@ -9,11 +10,12 @@
 #include "Utils/Log.h"
 #include "Enemy.h"
 #include "Player.h"
-#include <cmath>
 
 Enemy::~Enemy() {
 	count--;
 }
+int unsigned Enemy::count = 0;
+
 Enemy::Enemy(float i_damage, float i_health, float i_speed, sf::Vector2f i_position, Player* i_player) {
 	count++;
 	m_player = i_player;
@@ -71,6 +73,6 @@ const Player* Enemy::getPlayer() {
 }
 void Enemy::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime) {
 	float m = m_speed/sqrt(pow(m_player->getPosition().x - m_position.x,2) + pow(m_player->getPosition().y - m_position.y,2));//m = speed/wurzel(a²+b²)
-	m_position = { ((m_player->getPosition().x - m_position.x)*m * deltatime)+m_position.x,((m_player->getPosition().y - m_position.y)*m* deltatime)+m_position.y };
-
+	m_position = { ((m_player->getPosition().x - m_position.x)*m * (float)deltatime)+m_position.x,((m_player->getPosition().y - m_position.y)*m* (float)deltatime)+m_position.y };
+	
 }
