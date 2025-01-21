@@ -24,7 +24,7 @@ Enemy::Enemy(float i_damage, float i_health, float i_speed, sf::Vector2f i_posit
 	m_speed = i_speed;
 	m_position = i_position;
 	if (!m_texture.loadFromFile("Resources/Images/hintergrund.jpg")) {
-		LOG_ERROR("failed loading player texture");
+		LOG_ERROR("failed loading Enemy texture");
 	}
 }
 void Enemy::draw(sf::RenderWindow& window) {
@@ -74,5 +74,5 @@ const Player* Enemy::getPlayer() {
 void Enemy::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime) {
 	float m = m_speed/sqrt(pow(m_player->getPosition().x - m_position.x,2) + pow(m_player->getPosition().y - m_position.y,2));//m = speed/wurzel(a²+b²)
 	m_position = { ((m_player->getPosition().x - m_position.x)*m * (float)deltatime)+m_position.x,((m_player->getPosition().y - m_position.y)*m* (float)deltatime)+m_position.y };
-	
+
 }
