@@ -4,6 +4,8 @@
 #include "Layer.h"
 #include "Level.h"
 #include "Player.h"
+#include "Enemy.h"
+
 
 class Game : public Layer
 {

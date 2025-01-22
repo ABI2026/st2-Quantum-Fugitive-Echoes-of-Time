@@ -147,7 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\Buttons\Button.h" />
     <ClInclude Include="src\Buttons\ButtonBehaviour.h" />
     <ClInclude Include="src\Buttons\ButtonLayout.h" />
@@ -167,7 +167,7 @@
     <ClInclude Include="src\Utils\Timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\Buttons\Button.cpp" />
     <ClCompile Include="src\Buttons\ButtonBehaviour.cpp" />
     <ClCompile Include="src\Buttons\ButtonLayout.cpp" />

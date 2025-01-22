@@ -72,7 +72,7 @@ const Player* Enemy::getPlayer() {
 	return m_player;
 }
 void Enemy::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime) {
-	float m = m_speed/sqrt(pow(m_player->getPosition().x - m_position.x,2) + pow(m_player->getPosition().y - m_position.y,2));//m = speed/wurzel(a²+b²)
+	float m = m_speed/(float)sqrt(pow(m_player->getPosition().x - m_position.x,2) + pow(m_player->getPosition().y - m_position.y,2));//m = speed/wurzel(a²+b²)
 	m_position = { ((m_player->getPosition().x - m_position.x)*m * (float)deltatime)+m_position.x,((m_player->getPosition().y - m_position.y)*m* (float)deltatime)+m_position.y };
 
 }

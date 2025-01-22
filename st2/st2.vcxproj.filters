@@ -40,7 +40,7 @@
     <ClInclude Include="src\Utils\Timer.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="src\Enemy.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Buttons\Button.cpp">
@@ -72,6 +72,6 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="src\Enemy.cpp" />
   </ItemGroup>
 </Project>
