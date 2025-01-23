@@ -5,6 +5,7 @@
 #include "Level.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "EnemyManager.h"
 
 
 class Game : public Layer
@@ -26,6 +27,7 @@ private:
 
 
 	Player m_player;
+	EnemyManager m_enemy_manager;
 
 };
 

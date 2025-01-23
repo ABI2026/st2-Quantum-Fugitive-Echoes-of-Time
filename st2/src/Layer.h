@@ -27,10 +27,10 @@ public:
 
 	virtual ~Layer() = default;
 
-	virtual void update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager,
-		std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, double deltatime) {}
+	virtual void update([[maybe_unused]]std::shared_ptr<Eventsystem>& eventsystem, [[maybe_unused]] std::shared_ptr<LayerManager>& layer_manager,
+		[[maybe_unused]] std::shared_ptr<Soundsystem>& soundsystem, [[maybe_unused]] sf::RenderWindow& window, [[maybe_unused]] double deltatime) {}
 
-	virtual void render(sf::RenderWindow& window) {}
+	virtual void render([[maybe_unused]] sf::RenderWindow& window) {}
 
 	virtual void on_close() {}
 

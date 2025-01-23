@@ -29,13 +29,13 @@ public:
 class EmptyLayout : public ButtonLayout
 {
 public:
-	void update(const sf::Vector2f& mouse_position, bool mouse_pressed) override {}
-	void set_position(const sf::Vector2f& position) override {}
+	void update([[maybe_unused]] const sf::Vector2f& mouse_position, [[maybe_unused]] bool mouse_pressed) override {}
+	void set_position([[maybe_unused]] const sf::Vector2f& position) override {}
 	[[nodiscard]] bool is_hovered()  override {return false;}
 	[[nodiscard]] bool is_clicked()  override {return false;}
-	void set_is_hovered(bool hovered)  override {}
-	void render(sf::RenderWindow& window)  override {}
-	void set_text(const std::string& i_text) override {}
+	void set_is_hovered([[maybe_unused]] bool hovered)  override {}
+	void render([[maybe_unused]] sf::RenderWindow& window)  override {}
+	void set_text([[maybe_unused]] const std::string& i_text) override {}
 };
 
 class TextLayout : public ButtonLayout

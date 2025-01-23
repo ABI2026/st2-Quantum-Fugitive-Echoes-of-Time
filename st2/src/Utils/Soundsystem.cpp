@@ -15,7 +15,7 @@ void Soundsystem::change_music()
 	LOG_TRACE("change music called");
 	LOG_TRACE("current music: {}", m_current_music);
 	const int sounds_size = static_cast<signed>(m_sounds_meta_data[Soundsystem_MusicStr].size()) - 1;
-	constexpr int music_indices_size = 3;
+	const int music_indices_size = static_cast<signed int>(m_music_indices.size());
 	LOG_TRACE("amount of music sounds available: {}", sounds_size);
 	sf::Sound& music_sound = m_sounds[Soundsystem_MusicStr][0].first.back();
 	if (sounds_size == 0)
@@ -620,7 +620,7 @@ std::unordered_map<std::string, size_t> Soundsystem::get_group_names() const
 	return return_val;
 }
 
-void Soundsystem::set_music_indices(const std::array<int, 3>& i_music_indices)
+void Soundsystem::set_music_indices(const std::vector<int>& i_music_indices)
 {
 	std::lock_guard lock(m_mutex);
 	if(m_music_indices == i_music_indices)

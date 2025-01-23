@@ -41,6 +41,7 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\Enemy.h" />
+    <ClInclude Include="src\EnemyManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Buttons\Button.cpp">
@@ -73,5 +74,6 @@
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
+    <ClCompile Include="src\EnemyManager.cpp" />
   </ItemGroup>
 </Project>

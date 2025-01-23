@@ -19,7 +19,7 @@ Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, const double deltatime)
 {
 	m_player.update(eventsystem, soundsystem, deltatime);
-
+	m_enemy_manager.update(eventsystem, soundsystem, deltatime, &m_player);
 	const sf::View backup = window.getView();
 	m_view = backup;
 	m_view.setCenter(m_player.getPosition());
@@ -56,6 +56,7 @@ void Game::render(sf::RenderWindow& window)
 
 	window.draw(shape);
 	m_player.draw(window);
+	m_enemy_manager.draw(window);
 
 	window.setView(backup);
 }

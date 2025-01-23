@@ -30,9 +30,9 @@ public:
 class EmptyBehaviour : public ButtonBehaviour
 {
 public:
-	[[nodiscard]] bool on_click(std::shared_ptr<LayerManager>& layer_manager,
-		std::shared_ptr<Soundsystem>& soundsystem,
-		sf::RenderWindow& window) override
+	[[nodiscard]] bool on_click([[maybe_unused]] std::shared_ptr<LayerManager>& layer_manager,
+		[[maybe_unused]] std::shared_ptr<Soundsystem>& soundsystem,
+		[[maybe_unused]] sf::RenderWindow& window) override
 	{
 		return false;
 	}

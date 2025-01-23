@@ -97,7 +97,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>SFML_STATIC;PLATFORM_WINDOWS;_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING;RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\vendor\glm;..\vendor\spdlog\include;..\vendor\SFML\SFML-3.0.0\include;..\vendor\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\EnemyManager.h" />
     <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\Buttons\Button.h" />
     <ClInclude Include="src\Buttons\ButtonBehaviour.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="src\Utils\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\EnemyManager.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\Buttons\Button.cpp" />
     <ClCompile Include="src\Buttons\ButtonBehaviour.cpp" />

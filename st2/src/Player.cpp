@@ -9,6 +9,7 @@
 
 Player::Player() : m_shape({ 100.f,100.f }), m_position(320.f, 320.f), m_velocity(0.0f, 0.0f)
 {
+	m_speed = 0;
     //konstrukt	 ;
 	if (!m_player_texture.loadFromFile("Resources/Images/hintergrund.jpg"))
 		LOG_ERROR("failed loading player texture");
@@ -21,7 +22,7 @@ Player::~Player()
 //destrukt
 }
 
-void Player::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, const double deltatime)
+void Player::update(std::shared_ptr<Eventsystem>& eventsystem, [[maybe_unused]] std::shared_ptr<Soundsystem>& soundsystem, [[maybe_unused]] const double deltatime)
 {
 	glm::vec2 movement = { 0.f,0.f };
 
@@ -62,20 +63,20 @@ void Player::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<S
 
 }
 
-void Player::updatePosition(const sf::Vector2f& movement, float deltaTime)
+void Player::updatePosition([[maybe_unused]] const sf::Vector2f& movement, [[maybe_unused]] float deltaTime)
 {
 	throw std::runtime_error("bitte nicht nutzen danke");
 
-	float length = std::sqrt(movement.x * movement.x + movement.y * movement.y);
-	if (length > 0) {
-		//sf::Vector2f normalizedMovement = movement / length;
+	//float length = std::sqrt(movement.x * movement.x + movement.y * movement.y);
+	//if (length > 0) {
+	//	//sf::Vector2f normalizedMovement = movement / length;
 
-		m_position.x += movement.x * m_speed * deltaTime;
-		m_position.y += movement.y * m_speed * deltaTime;
+	//	m_position.x += movement.x * m_speed * deltaTime;
+	//	m_position.y += movement.y * m_speed * deltaTime;
 
-		//m_velocity = normalizedMovement * m_stats.movementSpeed;
-		//m_position += m_velocity * deltaTime;
-	}
+	//	//m_velocity = normalizedMovement * m_stats.movementSpeed;
+	//	//m_position += m_velocity * deltaTime;
+	//}
 }
 
 void Player::draw(sf::RenderWindow& window) const

@@ -45,7 +45,7 @@ int main(const int argc, char** argv)
 
 
 
-int Main(const int argc, char** argv)
+int Main([[maybe_unused]] const int argc, [[maybe_unused]] char** argv)
 {
     Log::init(LOG_LEVEL_INFO,LOG_LEVEL_INFO);
     Random::init();
@@ -148,6 +148,7 @@ std::shared_ptr<Eventsystem> init_eventsystem(sf::RenderWindow& window)
     eventsystem->add_key_listener(sf::Keyboard::Key::Right);
     eventsystem->add_key_listener(sf::Keyboard::Key::Enter);
     eventsystem->add_key_listener(sf::Keyboard::Key::Escape);
+    eventsystem->add_key_listener(sf::Keyboard::Key::G);
 
     eventsystem->add_mouse_button_listener(sf::Mouse::Button::Left);
 

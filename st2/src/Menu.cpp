@@ -24,7 +24,7 @@ Menu::Menu()
 }
 
 void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, 
-	std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, double deltatime)
+	std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, [[maybe_unused]] double deltatime)
 {
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Escape) == Eventsystem::action_pressed)
 	{

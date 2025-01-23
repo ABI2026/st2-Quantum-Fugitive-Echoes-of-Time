@@ -75,7 +75,9 @@ public:
 
 	[[nodiscard]] std::unordered_map<std::string, size_t> get_group_names() const;
 
-	void set_music_indices(const std::array<int, 3>& i_music_indices);
+	//sets the music indices that can play
+	//note if the index is out of range an index of 0 is being used
+	void set_music_indices(const std::vector<int>& i_music_indices);
 
 public:
 	void add_group(const std::string& group);
@@ -204,5 +206,5 @@ private:
 	int m_current_music = -1;
 	int m_current_music_index = -1;
 	inline static size_t s_current_playing_sounds = 0;
-	std::array<int, 3> m_music_indices{0};
+	std::vector<int> m_music_indices{0};
 };
