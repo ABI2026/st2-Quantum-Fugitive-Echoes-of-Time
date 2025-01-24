@@ -34,10 +34,12 @@ Enemy::Enemy(const float i_damage, const float i_health, const float i_speed, co
 
 void Enemy::draw(sf::RenderTarget& target) const
 {
-	sf::Sprite m_sprite(*m_texture);
-	m_sprite.setPosition(m_position);
-	m_sprite.setOrigin((sf::Vector2f)m_texture->getSize() / 2.f);
-	target.draw(m_sprite);
+	sf::RectangleShape rectangle;
+	rectangle.setTexture(m_texture);
+	rectangle.setPosition(m_position);
+	rectangle.setSize(sf::Vector2f(m_texture->getSize()/2u));
+	rectangle.setOrigin(rectangle.getSize() / 2.f);
+	target.draw(rectangle);
 }
 
 void Enemy::attack_player()
@@ -52,8 +54,9 @@ void Enemy::set_damage(const float i_damage)
 
 void Enemy::set_health(const float i_health)
 {
-	if (i_health <= 0) {
-		this->~Enemy();
+	if (i_health <= 0) 
+	{
+		this->~Enemy(); // du hurensohn
 	}
 	m_health = i_health;
 }
@@ -103,7 +106,7 @@ const Player* Enemy::get_player() const
 	return m_player;
 }
 
-void Enemy::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, const double deltatime)
+void Enemy::update([[maybe_unused]] std::shared_ptr<Eventsystem>& eventsystem, [[maybe_unused]] std::shared_ptr<Soundsystem>& soundsystem, const double deltatime)
 {
 	const float m = m_speed / (float)sqrt(
 		((m_player->getPosition().x - m_position.x) *

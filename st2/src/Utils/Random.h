@@ -50,6 +50,11 @@ public:
 		return { floating(min,max), floating(min,max), floating(min,max)};
 	}
 
+	[[nodiscard]] static glm::vec2 vec2(const float min, const float max)
+	{
+		return { floating(min,max), floating(min,max)};
+	}
+
 	[[nodiscard]] static glm::vec3 in_unit_sphere()
 	{
 		return glm::normalize(vec3(-1.0f, 1.0f));

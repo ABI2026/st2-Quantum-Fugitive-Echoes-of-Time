@@ -12,7 +12,7 @@ EnemyManager::EnemyManager()
 
 void EnemyManager::spawn_enemy(Player* player)
 {
-	glm::vec2 pos = normalize(glm::vec2(Random::in_unit_sphere()));
+	glm::vec2 pos = normalize(Random::vec2(-1,1));
 	constexpr float radius = 1000; //in pixels
 	pos *= radius;
 	pos += glm::vec2{player->getPosition().x, player->getPosition().y};

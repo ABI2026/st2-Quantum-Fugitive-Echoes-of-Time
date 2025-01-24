@@ -11,7 +11,8 @@
 
 Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 {
-	soundsystem->set_music_indices({ 1,2,3 });
+	m_level = std::make_shared<Level>(i_level_id, soundsystem);
+	//soundsystem->set_music_indices({ 1,2,3 });
 	if (!m_background_texture.loadFromFile("Resources/Images/hintergrund.jpg"))
 		LOG_ERROR("failed loading background image");
 }
@@ -36,7 +37,7 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Q) == Eventsystem::action_pressed)
 	{
-		soundsystem->set_music_indices({ 0,1,2 });
+		//soundsystem->set_music_indices({ 0,1,2 });
 		layer_manager->pop_layer();
 	}
 
@@ -55,8 +56,8 @@ void Game::render(sf::RenderWindow& window)
 	shape.setTexture(&m_background_texture);
 
 	window.draw(shape);
-	m_player.draw(window);
 	m_enemy_manager.draw(window);
+	m_player.draw(window);
 
 	window.setView(backup);
 }

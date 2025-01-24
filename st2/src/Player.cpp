@@ -47,7 +47,7 @@ void Player::update(std::shared_ptr<Eventsystem>& eventsystem, [[maybe_unused]] 
 		ImGui::Text("movement: x:%f y:%f", movement.x, movement.y);
 
 		glm::vec2 new_pos = { m_position.x + movement.x, m_position.y + movement.y };
-		new_pos = clamp(new_pos, { 50.f,50.f }, { 590.f,590.f });
+		//new_pos = clamp(new_pos, { 50.f,50.f }, { 590.f,590.f });
 		m_position = { new_pos.x, new_pos.y };
 	}
 	else
