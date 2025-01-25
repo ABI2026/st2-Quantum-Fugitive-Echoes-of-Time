@@ -108,11 +108,18 @@ const Player* Enemy::get_player() const
 
 void Enemy::update([[maybe_unused]] std::shared_ptr<Eventsystem>& eventsystem, [[maybe_unused]] std::shared_ptr<Soundsystem>& soundsystem, const double deltatime)
 {
-	const float m = m_speed / (float)sqrt(
-		((m_player->getPosition().x - m_position.x) *
-		(m_player->getPosition().x - m_position.x)) +
-		((m_player->getPosition().y - m_position.y) * 
-		(m_player->getPosition().y - m_position.y)));//m = speed/wurzel((a*a)+(b*b))
-	m_position = { ((m_player->getPosition().x - m_position.x) * m * (float)deltatime) + m_position.x,((m_player->getPosition().y - m_position.y) * m * (float)deltatime) + m_position.y };
-
+	if (sqrt(((m_player->getPosition().x - m_position.x) * (m_player->getPosition().x - m_position.x)) +
+		((m_player->getPosition().y - m_position.y) * (m_player->getPosition().y - m_position.y))) < 2)
+	{
+		m_position = m_player->getPosition();
+	}
+	else 
+	{
+		const float m = m_speed / (float)sqrt(
+			((m_player->getPosition().x - m_position.x) *
+				(m_player->getPosition().x - m_position.x)) +
+			((m_player->getPosition().y - m_position.y) *
+				(m_player->getPosition().y - m_position.y)));//m = speed/wurzel((a*a)+(b*b))
+		m_position = { ((m_player->getPosition().x - m_position.x) * m * (float)deltatime) + m_position.x,((m_player->getPosition().y - m_position.y) * m * (float)deltatime) + m_position.y };
+	}
 }
