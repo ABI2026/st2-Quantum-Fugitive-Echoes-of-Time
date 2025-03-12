@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AddGameLayer" Collapsed="true">
+    <Position X="10.25" Y="1.5" Width="1.5" />
+    <InheritanceLine Type="ButtonBehaviour" FixedToPoint="true">
+      <Path>
+        <Point X="3.75" Y="1.062" />
+        <Point X="3.75" Y="1.25" />
+        <Point X="4.359" Y="1.25" />
+        <Point X="4.359" Y="2.566" />
+        <Point X="11" Y="2.566" />
+        <Point X="11" Y="2.191" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEAAAAA=</HashCode>
+      <FileName>src\Buttons\ButtonBehaviour.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AddLevelSelectLayer" Collapsed="true">
+    <Position X="12" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>src\Buttons\ButtonBehaviour.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AddOptionsMenu" Collapsed="true">
+    <Position X="5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>src\Buttons\ButtonBehaviour.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Animations" Collapsed="true">
+    <Position X="0.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAgQAAAQAgCAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>src\Utils\Animations.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Button" Collapsed="true">
+    <Position X="2.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAKAAAAAAAAIAAACAAgAABAAIAAQAAAAAEIUQAA=</HashCode>
+      <FileName>src\Buttons\Button.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ButtonBehaviour" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAgAAAAgAEAAAAA=</HashCode>
+      <FileName>src\Buttons\ButtonBehaviour.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ButtonLayout" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAACAAAAAAAAIgAAAAAgAAAAAAAAQAAAgAAIUAAA=</HashCode>
+      <FileName>src\Buttons\ButtonLayout.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EmptyBehaviour" Collapsed="true">
+    <Position X="6.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>src\Buttons\ButtonBehaviour.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EmptyLayout" Collapsed="true">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAIAAAAAAgAAAAAAAAQAAAAAAIUAAA=</HashCode>
+      <FileName>src\Buttons\ButtonLayout.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Enemy" Collapsed="true">
+    <Position X="17.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEAB0BAACEgACAABAIFAQACAAQAAgACQBAAAAKEAAA=</HashCode>
+      <FileName>src\Enemy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EnemyManager" Collapsed="true">
+    <Position X="16" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAIIgAQAAAAAAAAAAAAAAAAAEAAk=</HashCode>
+      <FileName>src\EnemyManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Eventsystem" Collapsed="true">
+    <Position X="11" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIESAAIAIEAAAGAAEIQABCQIBEQCAAgAAAIAEBBAAAA=</HashCode>
+      <FileName>src\Eventsystem.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Game" Collapsed="true">
+    <Position X="13.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAEIAAAEAAAABAgAAAAAAAAAABgUQAA=</HashCode>
+      <FileName>src\Game.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoBackTillLayer" Collapsed="true">
+    <Position X="8.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAEAAAAA=</HashCode>
+      <FileName>src\Buttons\ButtonBehaviour.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Healthbar" Collapsed="true">
+    <Position X="13.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Healthbar.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IncrementVolume" Collapsed="true">
+    <Position X="13.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAABAgAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>src\Buttons\ButtonBehaviour.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Layer" Collapsed="true">
+    <Position X="12" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAQAAAAAAAAIAAAAAAAAAAAAAAAEAAAgAAAUAAA=</HashCode>
+      <FileName>src\Layer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LayerManager" Collapsed="true">
+    <Position X="14" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAIAAAAQAAACAAAAAAAgIAAAAAAA=</HashCode>
+      <FileName>src\LayerManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Level" Collapsed="true">
+    <Position X="16" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAIAAAAAAAAAAAAAAABAAAAEAAEAAA=</HashCode>
+      <FileName>src\Level.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LevelSelector" Collapsed="true">
+    <Position X="4.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAUABA=</HashCode>
+      <FileName>src\LevelSelector.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Log" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAIAAgAAAAEAAAA=</HashCode>
+      <FileName>src\Utils\Log.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Menu" Collapsed="true">
+    <Position X="6.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAEAAAAAAAAAAAIAAAAAAAAAAAIAAAAABAAAAAUAAA=</HashCode>
+      <FileName>src\Menu.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OptionsMenu" Collapsed="true">
+    <Position X="8.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAEEAAAAAAAAAAAIAAAAAAAAAAAAAAIAABAAAAAUAAA=</HashCode>
+      <FileName>src\OptionsMenu.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PauseMenu" Collapsed="true">
+    <Position X="10" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAEAAAAAAAAQAAIAAAAAAAAAAAAAAAAABAAAIAUAAA=</HashCode>
+      <FileName>src\PauseMenu.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player" Collapsed="true">
+    <Position X="16" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEQIAAIQCACAAAAAAIAAAACAAAAEiQAQAgAgQCEABA=</HashCode>
+      <FileName>src\Player.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopLayer" Collapsed="true">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>src\Buttons\ButtonBehaviour.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile" Collapsed="true">
+    <Position X="17.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAACAAgAAAAAAgAAAAAAAAAQAAAAEAEABEIAA=</HashCode>
+      <FileName>src\Projectile.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProjectileManager" Collapsed="true">
+    <Position X="16" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAIAAgAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>src\ProjectileManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Random" Collapsed="true">
+    <Position X="0.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgEAAIABAAAABAAgAAAABAAAgAIAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Utils\Random.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ScopedTimer" Collapsed="true">
+    <Position X="2.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAQ=</HashCode>
+      <FileName>src\Utils\Timer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Soundsystem" Collapsed="true">
+    <Position X="0.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QkIyI1QBSAIVBkAgEDCcUEQCI4UBgAYICCkmQAgMAAE=</HashCode>
+      <FileName>src\Utils\Soundsystem.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TextLayout" Collapsed="true">
+    <Position X="2.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAIAAAAgAIAACAAAgAgAEEEAAwAAAAgAIUAAA=</HashCode>
+      <FileName>src\Buttons\ButtonLayout.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Timer" Collapsed="true">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAACEAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>src\Utils\Timer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Weapon" Collapsed="true">
+    <Position X="16" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIQAAIAAAAAgAAAAAAgAAAAAAIAAAgAAAAAEAAEAAA=</HashCode>
+      <FileName>src\Weapon.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Stats" Collapsed="true">
+    <Position X="10.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACSASAIAAAAABAAAEBkAICAAAARCAAAQAgACAAABAg=</HashCode>
+      <FileName>src\Player.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="LayerID" Collapsed="true">
+    <Position X="5.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAUAAAAAAAAAAAAAAAAAAIAAAIAAAAAAA=</HashCode>
+      <FileName>src\Layer.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

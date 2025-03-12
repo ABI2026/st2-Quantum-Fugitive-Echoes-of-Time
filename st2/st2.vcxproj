@@ -166,11 +166,14 @@
     <ClInclude Include="src\OptionsMenu.h" />
     <ClInclude Include="src\PauseMenu.h" />
     <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\Projectile.h" />
+    <ClInclude Include="src\ProjectileManager.h" />
     <ClInclude Include="src\Utils\Animations.h" />
     <ClInclude Include="src\Utils\Log.h" />
     <ClInclude Include="src\Utils\Random.h" />
     <ClInclude Include="src\Utils\Soundsystem.h" />
     <ClInclude Include="src\Utils\Timer.h" />
+    <ClInclude Include="src\Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Healthbar.cpp" />
@@ -189,16 +192,22 @@
     <ClCompile Include="src\OptionsMenu.cpp" />
     <ClCompile Include="src\PauseMenu.cpp" />
     <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\Projectile.cpp" />
+    <ClCompile Include="src\ProjectileManager.cpp" />
     <ClCompile Include="src\Utils\Animations.cpp" />
     <ClCompile Include="src\Utils\Log.cpp" />
     <ClCompile Include="src\Utils\Random.cpp" />
     <ClCompile Include="src\Utils\Soundsystem.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Vendor\imgui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

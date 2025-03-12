@@ -11,6 +11,8 @@ class EnemyManager
 	std::vector<sf::Texture> m_textures;
 public:
 	EnemyManager();
+	std::shared_ptr<Enemy> get_closest_enemy(sf::Vector2f position);
+	std::vector<std::shared_ptr<Enemy>> all_intersections(sf::FloatRect bounding_box);
 	void spawn_enemy(Player* player);
 	void update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime, Player* player);
 	void add_enemy();

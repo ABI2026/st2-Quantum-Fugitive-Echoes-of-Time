@@ -3,10 +3,12 @@
 
 #include "Layer.h"
 #include "Level.h"
-#include "Player.h"
-#include "Enemy.h"
-#include "EnemyManager.h"
 
+
+class Player;
+class Enemy;
+class EnemyManager;
+class ProjectileManager;
 
 class Game : public Layer
 {
@@ -26,8 +28,9 @@ private:
 	std::shared_ptr<Level> m_level;
 
 
-	Player m_player;
-	EnemyManager m_enemy_manager;
+	std::shared_ptr<Player> m_player;
+	std::shared_ptr<EnemyManager> m_enemy_manager;
+	std::shared_ptr<ProjectileManager> m_projectile_manager;
 
 };
 
