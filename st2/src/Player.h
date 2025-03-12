@@ -85,6 +85,10 @@ public:
 		m_stats = i_stats;
 	}
 
+	void increase_health(float increment)
+	{
+		m_stats.health += increment;
+	}
 
 	//position
 	void updatePosition(const sf::Vector2f& movement, float deltaTime);

@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Healthbar.h" />
     <ClInclude Include="src\EnemyManager.h" />
     <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\Buttons\Button.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="src\Utils\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Healthbar.cpp" />
     <ClCompile Include="src\EnemyManager.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\Buttons\Button.cpp" />

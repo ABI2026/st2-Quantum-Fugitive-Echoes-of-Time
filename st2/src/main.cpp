@@ -50,7 +50,7 @@ int Main([[maybe_unused]] const int argc, [[maybe_unused]] char** argv)
     Log::init(LOG_LEVEL_INFO,LOG_LEVEL_INFO);
     Random::init();
 
-    sf::RenderWindow window(sf::VideoMode({ 720, 480 }), "window", sf::Style::Default);
+	sf::RenderWindow window(sf::VideoMode({ 720, 480 }), "window", sf::Style::Default);
 
 	if (!init_sfml_imgui(window))
     {
@@ -141,14 +141,16 @@ std::shared_ptr<Eventsystem> init_eventsystem(sf::RenderWindow& window)
     eventsystem->add_key_listener(sf::Keyboard::Key::A);
     eventsystem->add_key_listener(sf::Keyboard::Key::S);
     eventsystem->add_key_listener(sf::Keyboard::Key::D);
+    eventsystem->add_key_listener(sf::Keyboard::Key::G);
     eventsystem->add_key_listener(sf::Keyboard::Key::Q);
+    eventsystem->add_key_listener(sf::Keyboard::Key::R);
+    eventsystem->add_key_listener(sf::Keyboard::Key::T);
     eventsystem->add_key_listener(sf::Keyboard::Key::Up);
     eventsystem->add_key_listener(sf::Keyboard::Key::Down);
     eventsystem->add_key_listener(sf::Keyboard::Key::Left);
     eventsystem->add_key_listener(sf::Keyboard::Key::Right);
     eventsystem->add_key_listener(sf::Keyboard::Key::Enter);
     eventsystem->add_key_listener(sf::Keyboard::Key::Escape);
-    eventsystem->add_key_listener(sf::Keyboard::Key::G);
 
     eventsystem->add_mouse_button_listener(sf::Mouse::Button::Left);
 

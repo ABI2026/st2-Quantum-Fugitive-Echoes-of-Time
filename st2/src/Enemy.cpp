@@ -12,6 +12,7 @@
 #include "Player.h"
 
 int unsigned Enemy::count = 0;
+
 Enemy::~Enemy()
 {
 	count--;
@@ -108,18 +109,16 @@ const Player* Enemy::get_player() const
 
 void Enemy::update([[maybe_unused]] std::shared_ptr<Eventsystem>& eventsystem, [[maybe_unused]] std::shared_ptr<Soundsystem>& soundsystem, const double deltatime)
 {
-	if (sqrt(((m_player->getPosition().x - m_position.x) * (m_player->getPosition().x - m_position.x)) +
-		((m_player->getPosition().y - m_position.y) * (m_player->getPosition().y - m_position.y))) < 2)
+	const sf::Vector2f distance_vec = m_player->getPosition() - m_position;
+	//const float dist = distance_vec.length();
+	const float distance_length = sqrt((distance_vec.x * distance_vec.x) + (distance_vec.y * distance_vec.y));
+	if (distance_length < 20)
 	{
 		m_position = m_player->getPosition();
 	}
 	else 
 	{
-		const float m = m_speed / (float)sqrt(
-			((m_player->getPosition().x - m_position.x) *
-				(m_player->getPosition().x - m_position.x)) +
-			((m_player->getPosition().y - m_position.y) *
-				(m_player->getPosition().y - m_position.y)));//m = speed/wurzel((a*a)+(b*b))
-		m_position = { ((m_player->getPosition().x - m_position.x) * m * (float)deltatime) + m_position.x,((m_player->getPosition().y - m_position.y) * m * (float)deltatime) + m_position.y };
+		const float m = m_speed / distance_length;//m = speed/wurzel((a*a)+(b*b))
+		m_position = { (distance_vec.x * m * (float)deltatime) + m_position.x,(distance_vec.y * m * (float)deltatime) + m_position.y };
 	}
 }

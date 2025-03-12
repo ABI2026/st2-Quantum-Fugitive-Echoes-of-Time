@@ -7,8 +7,8 @@
 class Enemy;
 class EnemyManager
 {
-	std::vector<std::shared_ptr<Enemy>> enemies;
-	std::vector<sf::Texture> textures;
+	std::vector<std::shared_ptr<Enemy>> m_enemies;
+	std::vector<sf::Texture> m_textures;
 public:
 	EnemyManager();
 	void spawn_enemy(Player* player);
