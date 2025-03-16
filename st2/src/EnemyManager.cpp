@@ -10,6 +10,28 @@ EnemyManager::EnemyManager()
 	m_textures.emplace_back(std::filesystem::path("Resources/Images/hintergrund.jpg"));
 }
 
+std::shared_ptr<Enemy> EnemyManager::get_closest_enemy(sf::Vector2f position)
+{
+	if (m_enemies.empty())
+		return nullptr;
+	return m_enemies.front(); //TODO: IMPLEMENT ACTUAL LOGIC FOR THIS
+}
+
+std::vector<std::shared_ptr<Enemy>> EnemyManager::all_intersections(sf::FloatRect bounding_box)
+{
+	std::vector<std::shared_ptr<Enemy>> intersected;
+	for (auto enemy: m_enemies)
+	{
+		sf::Vector2f enemy_size = { 64,64 };
+		sf::FloatRect enemy_rect{ enemy->get_position() - (enemy_size / 2.f),enemy_size};
+		if(bounding_box.findIntersection(enemy_rect) != std::nullopt)
+		{
+			intersected.emplace_back(enemy);
+		}
+	}
+	return intersected;
+}
+
 void EnemyManager::spawn_enemy(Player* player)
 {
 	glm::vec2 pos = normalize(Random::vec2(-1,1));
@@ -29,13 +51,18 @@ void EnemyManager::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared
 //		const sf::Vector2f offset = prev_pos - new_pos;
 	}
 
+	std::erase_if(m_enemies, [](const std::shared_ptr<Enemy>& enemy)
+		{
+			return enemy->get_health() <= 0.0;
+		});
+
 	if(eventsystem->get_key_action(sf::Keyboard::Key::G) == Eventsystem::action_pressed)
 	{
 		for(int i = 0; i < 50;++i)
 			spawn_enemy(player);
 	}
 	ImGui::Begin("Debug");
-	ImGui::Text("%d",m_enemies.size());
+	ImGui::Text("amount of enemies: %d",m_enemies.size());
 	ImGui::End();
 }
 

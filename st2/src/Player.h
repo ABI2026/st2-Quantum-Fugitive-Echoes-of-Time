@@ -9,6 +9,9 @@
 #include "Utils/Soundsystem.h"
 
 
+class EnemyManager;
+class ProjectileManager;
+class Weapon;
 /*enum stats
 {
 
@@ -16,7 +19,7 @@
 struct Stats
 {							//standartwerte
 	//Leben
-	float health = 100.0f; //100% 
+	double health = 100.0f; //100% 
 	float maxHealth = 100.0f; //maximales Leben bei 100%
 	float healthGeneration = 10.0f; //10% jede sek
 	float healthCooldown = 5.0f; // 5 sek cooldown bevor regeneration startet
@@ -53,6 +56,7 @@ struct Stats
 };
 
 class Player {
+	double m_invicibility_time{ 0 };
 public:
 
 	Player();
@@ -73,7 +77,18 @@ public:
 
 	//getters und setters
 
-	void update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime);
+	bool take_damage(double damage, double crit_chance, double crit_damage);
+
+	void update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime,
+		std::shared_ptr<EnemyManager> enemy_manager,
+		std::shared_ptr<ProjectileManager> projectile_manager);
+
+	bool intersects(sf::FloatRect bounding_box)
+	{
+		sf::Vector2f player_size = { 64,64 };
+		sf::FloatRect player_rect = { m_position- (player_size / 2.f),player_size };
+		return bounding_box.findIntersection(player_rect) != std::nullopt;
+	}
 
 	const Stats& getStats() const
 	{
@@ -114,7 +129,6 @@ private:
 	sf::Vector2f m_position;
 	sf::Vector2f m_velocity;
 	float m_speed;
-
-
+	std::shared_ptr<Weapon> m_weapon;
 };
 // push_back() emplace_back()  []  clear() pop_back()

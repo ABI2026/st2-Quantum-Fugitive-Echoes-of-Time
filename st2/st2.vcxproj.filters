@@ -44,6 +44,9 @@
     <ClInclude Include="src\EnemyManager.h" />
     <ClInclude Include="src\Utils\Animations.h" />
     <ClInclude Include="src\Healthbar.h" />
+    <ClInclude Include="src\Weapon.h" />
+    <ClInclude Include="src\Projectile.h" />
+    <ClInclude Include="src\ProjectileManager.h" />
     <ClInclude Include="src\Expbar.h" />
   </ItemGroup>
   <ItemGroup>
@@ -81,5 +84,11 @@
     <ClCompile Include="src\Utils\Animations.cpp" />
     <ClCompile Include="src\Healthbar.cpp" />
     <ClCompile Include="src\Expbar.cpp" />
+    <ClCompile Include="src\Weapon.cpp" />
+    <ClCompile Include="src\Projectile.cpp" />
+    <ClCompile Include="src\ProjectileManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

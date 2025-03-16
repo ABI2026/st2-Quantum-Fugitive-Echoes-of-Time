@@ -2,16 +2,22 @@
 
 #include <glm/glm.hpp>
 
+#include "EnemyManager.h"
 #include "Buttons/Button.h"
 #include "Eventsystem.h"
 #include "Healthbar.h"
 #include "imgui.h"
 #include "LayerManager.h"
 #include "PauseMenu.h"
+#include "Player.h"
+#include "ProjectileManager.h"
 #include "Utils/Log.h"
 
 Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 {
+	m_enemy_manager = std::make_shared<EnemyManager>();
+	m_player = std::make_shared<Player>();
+	m_projectile_manager = std::make_shared<ProjectileManager>();
 	m_level = std::make_shared<Level>(i_level_id, soundsystem);
 	//soundsystem->set_music_indices({ 1,2,3 });
 	if (!m_background_texture.loadFromFile("Resources/Images/Unbasdasdenannt-1.png"))
@@ -21,11 +27,12 @@ Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 
 void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, const double deltatime)
 {
-	m_player.update(eventsystem, soundsystem, deltatime);
-	m_enemy_manager.update(eventsystem, soundsystem, deltatime, &m_player);
+	m_player->update(eventsystem, soundsystem, deltatime, m_enemy_manager, m_projectile_manager);
+	m_enemy_manager->update(eventsystem, soundsystem, deltatime, m_player.get());
+	m_projectile_manager->update(deltatime, m_enemy_manager, m_player);
 	const sf::View backup = window.getView();
 	m_view = backup;
-	m_view.setCenter(m_player.getPosition());
+	m_view.setCenter(m_player->getPosition());
 	//window.setView(m_view);
 
 
@@ -33,12 +40,12 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 	m_expbar.update(eventsystem, soundsystem, deltatime);
 	if (eventsystem->get_key_action(sf::Keyboard::Key::R))
 	{
-		m_player.increase_health(-1.0);
+		m_player->increase_health(-1.0);
 	}
 
 	if (eventsystem->get_key_action(sf::Keyboard::Key::T))
 	{
-		m_player.increase_health(1.0);
+		m_player->increase_health(1.0);
 	}
 
 
@@ -90,9 +97,10 @@ void Game::render(sf::RenderWindow& window)
 	states.texture = &m_background_texture;
 	window.draw(background, states);
 
-	m_enemy_manager.draw(window);
-	m_player.draw(window);
-	render_healthbar(window, m_player.getStats().maxHealth, m_player.getStats().health);
+	m_enemy_manager->draw(window);
+	m_player->draw(window);
+	m_projectile_manager->draw(window);
+	render_healthbar(window, m_player->getStats().maxHealth, m_player->getStats().health);
 	m_expbar.draw(window);
 	window.setView(backup);
 }

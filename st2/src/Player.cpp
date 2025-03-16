@@ -5,7 +5,9 @@
 #include <glm/vec2.hpp>
 
 #include "imgui.h"
+#include "Weapon.h"
 #include "Utils/Log.h"
+#include "Utils/Random.h"
 
 Player::Player() : m_shape({ 100.f,100.f }), m_position(320.f, 320.f), m_velocity(0.0f, 0.0f)
 {
@@ -15,6 +17,7 @@ Player::Player() : m_shape({ 100.f,100.f }), m_position(320.f, 320.f), m_velocit
 		LOG_ERROR("failed loading player texture");
 	m_shape.setOrigin({50.f, 50.f});
 	m_shape.setTexture(&m_player_texture);
+	m_weapon = std::make_shared<Weapon>(2.0, 0.25f, 1, 0.5, 50.0, 400.f);
 }
 
 Player::~Player()
@@ -22,8 +25,26 @@ Player::~Player()
 //destrukt
 }
 
-void Player::update(std::shared_ptr<Eventsystem>& eventsystem, [[maybe_unused]] std::shared_ptr<Soundsystem>& soundsystem, [[maybe_unused]] const double deltatime)
+bool Player::take_damage(double damage, double crit_chance, double crit_damage)
 {
+	if (m_invicibility_time > 0.0)
+		return false;
+
+	m_stats.health -= damage + Random::foo(crit_chance) * crit_damage; //TODO: ACTUAL DAMAGE CALCULATION
+	m_invicibility_time = 0.125;
+	return true;
+}
+
+void Player::update(std::shared_ptr<Eventsystem>& eventsystem,
+	[[maybe_unused]] std::shared_ptr<Soundsystem>& soundsystem,
+	[[maybe_unused]] const double deltatime,
+	std::shared_ptr<EnemyManager> enemy_manager,
+	std::shared_ptr<ProjectileManager> projectile_manager
+
+)
+{
+	m_invicibility_time -= deltatime;
+	m_weapon->update(deltatime, m_position, enemy_manager, projectile_manager);
 	glm::vec2 movement = { 0.f,0.f };
 
 	if (eventsystem->get_key_state(sf::Keyboard::Key::W))

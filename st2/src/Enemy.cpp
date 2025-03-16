@@ -10,6 +10,7 @@
 #include "Utils/Log.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "Utils/Random.h"
 
 int unsigned Enemy::count = 0;
 
@@ -38,7 +39,7 @@ void Enemy::draw(sf::RenderTarget& target) const
 	sf::RectangleShape rectangle;
 	rectangle.setTexture(m_texture);
 	rectangle.setPosition(m_position);
-	rectangle.setSize(sf::Vector2f(m_texture->getSize()/2u));
+	rectangle.setSize({64.f,64.f});
 	rectangle.setOrigin(rectangle.getSize() / 2.f);
 	target.draw(rectangle);
 }
@@ -48,16 +49,26 @@ void Enemy::attack_player()
 	//m_player->getStats().health = -m_damage; der Player hat leider Godmode
 }
 
+bool Enemy::take_damage(double damage, double crit_chance, double crit_damage)
+{
+	if (m_invicibility_time > 0.0)
+		return false;
+
+	m_health -= damage + Random::foo(crit_chance) * crit_damage;//TODO: ACTUAL DAMAGE CALCULATION
+	m_invicibility_time = 0.125;
+	return true;
+}
+
 void Enemy::set_damage(const float i_damage)
 {
 	m_damage = i_damage;
 }
 
-void Enemy::set_health(const float i_health)
+void Enemy::set_health(const double i_health)
 {
 	if (i_health <= 0) 
 	{
-		this->~Enemy(); // du hurensohn
+		this->~Enemy();
 	}
 	m_health = i_health;
 }
@@ -87,7 +98,7 @@ float Enemy::get_damage() const
 	return m_damage;
 }
 
-float Enemy::get_health() const
+double Enemy::get_health() const
 {
 	return m_health;
 }
@@ -109,6 +120,7 @@ const Player* Enemy::get_player() const
 
 void Enemy::update([[maybe_unused]] std::shared_ptr<Eventsystem>& eventsystem, [[maybe_unused]] std::shared_ptr<Soundsystem>& soundsystem, const double deltatime)
 {
+	m_invicibility_time -= deltatime;
 	const sf::Vector2f distance_vec = m_player->getPosition() - m_position;
 	//const float dist = distance_vec.length();
 	const float distance_length = sqrt((distance_vec.x * distance_vec.x) + (distance_vec.y * distance_vec.y));
