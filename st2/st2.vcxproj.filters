@@ -44,6 +44,7 @@
     <ClInclude Include="src\EnemyManager.h" />
     <ClInclude Include="src\Utils\Animations.h" />
     <ClInclude Include="src\Healthbar.h" />
+    <ClInclude Include="src\Expbar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Buttons\Button.cpp">
@@ -79,5 +80,6 @@
     <ClCompile Include="src\EnemyManager.cpp" />
     <ClCompile Include="src\Utils\Animations.cpp" />
     <ClCompile Include="src\Healthbar.cpp" />
+    <ClCompile Include="src\Expbar.cpp" />
   </ItemGroup>
 </Project>

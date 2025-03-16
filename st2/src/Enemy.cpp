@@ -112,7 +112,7 @@ void Enemy::update([[maybe_unused]] std::shared_ptr<Eventsystem>& eventsystem, [
 	const sf::Vector2f distance_vec = m_player->getPosition() - m_position;
 	//const float dist = distance_vec.length();
 	const float distance_length = sqrt((distance_vec.x * distance_vec.x) + (distance_vec.y * distance_vec.y));
-	if (distance_length < 20)
+	if (distance_length < 3)
 	{
 		m_position = m_player->getPosition();
 	}
