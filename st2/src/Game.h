@@ -4,7 +4,7 @@
 #include "Layer.h"
 #include "Level.h"
 
-
+class Expbar;
 class Player;
 class Enemy;
 class EnemyManager;

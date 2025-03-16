@@ -5,6 +5,7 @@
 #include "EnemyManager.h"
 #include "Buttons/Button.h"
 #include "Eventsystem.h"
+#include "Expbar.h"
 #include "Healthbar.h"
 #include "imgui.h"
 #include "LayerManager.h"
@@ -37,7 +38,7 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 
 
 	//window.setView(backup);
-	m_expbar.update(eventsystem, soundsystem, deltatime);
+	m_expbar->update(eventsystem, soundsystem, deltatime);
 	if (eventsystem->get_key_action(sf::Keyboard::Key::R))
 	{
 		m_player->increase_health(-1.0);
@@ -101,7 +102,7 @@ void Game::render(sf::RenderWindow& window)
 	m_player->draw(window);
 	m_projectile_manager->draw(window);
 	render_healthbar(window, m_player->getStats().maxHealth, m_player->getStats().health);
-	m_expbar.draw(window);
+	m_expbar->draw(window);
 	window.setView(backup);
 }
 
