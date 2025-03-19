@@ -4,8 +4,8 @@ Expbar::Expbar() {
 	//if (!m_texture->loadFromFile("....png")) { //keine Texture fuer Expbar :(
 	//	this->~Expbar();
 	//}
-	m_exp = 250;
-	m_maxExp = 500;
+	m_exp = 0;
+	m_maxExp = 50;
 	m_lvl = 1;
 }
 Expbar::~Expbar() {
@@ -33,12 +33,19 @@ void Expbar::setTexture(sf::Texture* i_texture) {
 	m_texture = i_texture;
 }
 void Expbar::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime) {
-
+	if (eventsystem->get_key_action(sf::Keyboard::Key::E)) {
+		m_exp += 5;
+	}
+	if (this->getExp() >= this->getMaxExp()) {
+		m_exp -= m_maxExp;
+		m_maxExp *= 1.5;
+		m_lvl += 1;
+	}
 }
 void Expbar::draw(sf::RenderWindow& window) {
 	sf::RectangleShape background({ 500,50 });
 	sf::RectangleShape border({ 520,70 });
-	sf::RectangleShape expbar({500 * (float)250 / 500, 50 });
+	sf::RectangleShape expbar({500 * (float)m_exp / m_maxExp, 50 });
 
 	background.setFillColor(sf::Color::Black);
 	border.setFillColor(sf::Color::White);

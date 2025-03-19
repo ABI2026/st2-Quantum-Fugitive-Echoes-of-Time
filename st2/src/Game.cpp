@@ -20,6 +20,7 @@ Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 	m_player = std::make_shared<Player>();
 	m_projectile_manager = std::make_shared<ProjectileManager>();
 	m_level = std::make_shared<Level>(i_level_id, soundsystem);
+	m_expbar = std::make_shared<Expbar>();
 	//soundsystem->set_music_indices({ 1,2,3 });
 	if (!m_background_texture.loadFromFile("Resources/Images/Unbasdasdenannt-1.png"))
 		LOG_ERROR("failed loading background image");
