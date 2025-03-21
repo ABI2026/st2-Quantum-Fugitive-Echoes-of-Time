@@ -3,9 +3,9 @@
 
 Expbar::Expbar() {
 	if (!m_texture_full.loadFromFile("Resources/Images/Expbar_full.png"))
-		LOG_ERROR("failed loading player texture");
+		LOG_ERROR("failed loading Expbar_Full texture");
 	if (!m_texture_empty.loadFromFile("Resources/Images/Expbar_empty.png"))
-		LOG_ERROR("failed loading player texture");
+		LOG_ERROR("failed loading Expbar_Empty texture");
 	m_exp = 0;
 	m_maxExp = 50;
 	m_lvl = 1;
