@@ -2,6 +2,7 @@
 
 #include "Enemy.h"
 #include "imgui.h"
+#include "Expbar.h"
 #include "Utils/Log.h"
 #include "Utils/Random.h"
 
@@ -41,7 +42,7 @@ void EnemyManager::spawn_enemy(Player* player)
 	m_enemies.push_back(std::make_shared<Enemy>(10.f, 10.f, 300.f, sf::Vector2f{ pos.x,pos.y }, &m_textures.back(), player));
 }
 
-void EnemyManager::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime, Player* player)
+void EnemyManager::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime, Player* player, std::shared_ptr<Expbar>& expbar)
 {
 	for (const auto& enemy : m_enemies)
 	{
@@ -51,12 +52,18 @@ void EnemyManager::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared
 //		const sf::Vector2f offset = prev_pos - new_pos;
 	}
 
-	std::erase_if(m_enemies, [](const std::shared_ptr<Enemy>& enemy)
+	std::erase_if(m_enemies, [&](const std::shared_ptr<Enemy>& enemy)
 		{
-			return enemy->get_health() <= 0.0;
+			bool should_get_removed = enemy->get_health() <= 0.0;
+			if (should_get_removed)
+			{
+				expbar->setExp(5 + expbar->getExp());
+			}
+
+			return should_get_removed;
 		});
 
-	if(eventsystem->get_key_action(sf::Keyboard::Key::G) == Eventsystem::action_pressed)
+	if(eventsystem->get_key_action(sf::Keyboard::Key::G)&1)
 	{
 		for(int i = 0; i < 50;++i)
 			spawn_enemy(player);

@@ -15,7 +15,8 @@ private:
 	int m_exp;
 	int m_maxExp;
 	int m_lvl;
-	sf::Texture* m_texture;
+	sf::Texture m_texture_full;
+	sf::Texture m_texture_empty;
 public:
 	Expbar();
 	~Expbar();
@@ -27,7 +28,6 @@ public:
 	void setExp(int i_exp);
 	void setMaxExp(int i_maxExp);
 	void setLvl(int i_lvl);
-	void setTexture(sf::Texture* i_texture);
 
 	void update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime);
 	void draw(sf::RenderWindow& window);

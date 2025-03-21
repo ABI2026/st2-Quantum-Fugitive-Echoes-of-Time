@@ -30,7 +30,7 @@ Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, const double deltatime)
 {
 	m_player->update(eventsystem, soundsystem, deltatime, m_enemy_manager, m_projectile_manager);
-	m_enemy_manager->update(eventsystem, soundsystem, deltatime, m_player.get());
+	m_enemy_manager->update(eventsystem, soundsystem, deltatime, m_player.get(),m_expbar);
 	m_projectile_manager->update(deltatime, m_enemy_manager, m_player);
 	const sf::View backup = window.getView();
 	m_view = backup;

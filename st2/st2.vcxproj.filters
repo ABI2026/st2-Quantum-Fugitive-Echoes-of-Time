@@ -82,11 +82,11 @@
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\EnemyManager.cpp" />
     <ClCompile Include="src\Utils\Animations.cpp" />
-    <ClCompile Include="src\Healthbar.cpp" />
     <ClCompile Include="src\Expbar.cpp" />
     <ClCompile Include="src\Weapon.cpp" />
     <ClCompile Include="src\Projectile.cpp" />
     <ClCompile Include="src\ProjectileManager.cpp" />
+    <ClCompile Include="src\Healthbar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
