@@ -11,7 +11,9 @@ void Weapon::update(double deltatime,
                     const std::shared_ptr<EnemyManager>& enemy_manager,
                     const std::shared_ptr<ProjectileManager>& projectile_manager)
 {
-	current_cooldown -= deltatime;
+	if (current_cooldown > 0.0)
+		current_cooldown -= deltatime;
+
 	if(current_cooldown <= 0.0)
 	{
 		const std::shared_ptr<Enemy> enemy = enemy_manager->get_closest_enemy(pos);
@@ -27,7 +29,7 @@ void Weapon::update(double deltatime,
 		projectile_manager->add_projectile(pos,
 			dir,
 			projectile_speed,
-			damage, //TODO: MIT SPIELER VERRECHNEN
+			damage, 
 			penetration,
 			crit_damage, //TODO: MIT SPIELER VERRECHNEN
 			crit_chance, //TODO: MIT SPIELER VERRECHNEN

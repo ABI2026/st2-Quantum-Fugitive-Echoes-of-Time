@@ -137,7 +137,7 @@ bool init_sfml_imgui(sf::RenderWindow& window)
 std::shared_ptr<Eventsystem> init_eventsystem(sf::RenderWindow& window)
 {
     auto eventsystem = std::make_shared<Eventsystem>(window);
-    eventsystem->add_key_listener(sf::Keyboard::Key::W);
+    eventsystem->add_key_listener(sf::Keyboard::Key::W); 
     eventsystem->add_key_listener(sf::Keyboard::Key::A);
     eventsystem->add_key_listener(sf::Keyboard::Key::S);
     eventsystem->add_key_listener(sf::Keyboard::Key::D);

@@ -33,6 +33,7 @@ private:
 	std::shared_ptr<ProjectileManager> m_projectile_manager;
 
 	std::shared_ptr<Expbar> m_expbar;
+	sf::Texture m_sprite_sheet;
 };
 
 

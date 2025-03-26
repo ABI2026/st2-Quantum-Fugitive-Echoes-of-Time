@@ -59,7 +59,7 @@ class Player {
 	double m_invicibility_time{ 0 };
 public:
 
-	Player();
+	Player(sf::Texture& texture);
 	~Player();
 
 
@@ -124,7 +124,7 @@ public:
 
 private:
 	Stats m_stats;
-	sf::Texture m_player_texture;
+	//sf::Texture m_player_texture;
 	sf::RectangleShape m_shape;
 	sf::Vector2f m_position;
 	sf::Vector2f m_velocity;

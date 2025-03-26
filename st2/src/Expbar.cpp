@@ -35,7 +35,8 @@ void Expbar::setTexture(sf::Texture* i_texture) {
 void Expbar::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime) {
 
 }
-void Expbar::draw(sf::RenderWindow& window) {
+void Expbar::draw(sf::RenderWindow& window)
+{
 	sf::RectangleShape background({ 500,50 });
 	sf::RectangleShape border({ 520,70 });
 	sf::RectangleShape expbar({500 * (float)250 / 500, 50 });

@@ -16,8 +16,12 @@
 
 Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 {
+if(!m_sprite_sheet.loadFromFile("Resources/Images/Image (1).png"))
+{
+	LOG_ERROR("error loading sprite sheet");
+}
 	m_enemy_manager = std::make_shared<EnemyManager>();
-	m_player = std::make_shared<Player>();
+	m_player = std::make_shared<Player>(m_sprite_sheet);
 	m_projectile_manager = std::make_shared<ProjectileManager>();
 	m_level = std::make_shared<Level>(i_level_id, soundsystem);
 	//soundsystem->set_music_indices({ 1,2,3 });
@@ -88,13 +92,14 @@ void Game::render(sf::RenderWindow& window)
 	const float texture_offset_x = (float)fmod(view_center.x, m_background_texture.getSize().x);
 	const float texture_offset_y = (float)fmod(view_center.y, m_background_texture.getSize().y);
 	constexpr float tiling_scale = 1.f;
-
+	
 	background[0].texCoords = sf::Vector2f(texture_offset_x, texture_offset_y);
-	background[1].texCoords = sf::Vector2f(texture_offset_x + view_size.x * tiling_scale, texture_offset_y);  
+	background[1].texCoords = sf::Vector2f(texture_offset_x + view_size.x * tiling_scale,texture_offset_y);  
 	background[2].texCoords = sf::Vector2f(texture_offset_x, texture_offset_y + view_size.y * tiling_scale);  
-	background[3].texCoords = sf::Vector2f(texture_offset_x + view_size.x * tiling_scale, texture_offset_y + view_size.y * tiling_scale);  
+	background[3].texCoords = sf::Vector2f(texture_offset_x + view_size.x * tiling_scale,texture_offset_y + view_size.y * tiling_scale);  
 
 	sf::RenderStates states = sf::RenderStates::Default;
+	
 	states.texture = &m_background_texture;
 	window.draw(background, states);
 

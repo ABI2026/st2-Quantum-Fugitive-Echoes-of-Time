@@ -45,6 +45,25 @@ void ProjectileManager::update(const double deltatime, std::shared_ptr<EnemyMana
 		{
 			return proj->penetration < 1 || proj->lifetime <0.0;
 		});
+
+	if(auto enemy =	enemy_manager->get_closest_enemy({ 0.f,0.f }))
+	{
+		sf::Vector2f dir = player->getPosition() - enemy->get_position();
+		if (dir != sf::Vector2f{ 0.f,0.f })
+			dir = dir.normalized();
+		else
+			dir = { 0.f,1.f };
+
+		add_projectile(enemy->get_position(),
+			dir,
+			4000.f,
+			1.0, 
+			1,
+			2.0, 
+			0.5, 
+			false);
+	}
+
 	ImGui::Begin("Debug");
 	ImGui::Text("amount of projectiles: %d", m_projectiles.size());
 	ImGui::End();
