@@ -145,12 +145,14 @@ std::shared_ptr<Eventsystem> init_eventsystem(sf::RenderWindow& window)
     eventsystem->add_key_listener(sf::Keyboard::Key::Q);
     eventsystem->add_key_listener(sf::Keyboard::Key::R);
     eventsystem->add_key_listener(sf::Keyboard::Key::T);
+    eventsystem->add_key_listener(sf::Keyboard::Key::E);
     eventsystem->add_key_listener(sf::Keyboard::Key::Up);
     eventsystem->add_key_listener(sf::Keyboard::Key::Down);
     eventsystem->add_key_listener(sf::Keyboard::Key::Left);
     eventsystem->add_key_listener(sf::Keyboard::Key::Right);
     eventsystem->add_key_listener(sf::Keyboard::Key::Enter);
     eventsystem->add_key_listener(sf::Keyboard::Key::Escape);
+    eventsystem->add_key_listener(sf::Keyboard::Key::LShift);
 
     eventsystem->add_mouse_button_listener(sf::Mouse::Button::Left);
 
