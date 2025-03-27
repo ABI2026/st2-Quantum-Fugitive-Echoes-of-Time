@@ -14,17 +14,31 @@
 #include "ProjectileManager.h"
 #include "Utils/Log.h"
 
+
+#include "../Resources/Images/Roboto-Regular.embed"
 Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 {
-if(!m_sprite_sheet.loadFromFile("Resources/Images/Image (1).png"))
-{
-	LOG_ERROR("error loading sprite sheet");
-}
+	if(!m_sprite_sheet.loadFromFile("Resources/Images/Image (1).png"))
+	{
+		LOG_ERROR("error loading sprite sheet");
+	}
 	m_enemy_manager = std::make_shared<EnemyManager>();
 	m_player = std::make_shared<Player>(m_sprite_sheet);
 	m_projectile_manager = std::make_shared<ProjectileManager>();
 	m_level = std::make_shared<Level>(i_level_id, soundsystem);
 	m_expbar = std::make_shared<Expbar>();
+
+	if (!m_font.openFromMemory(g_RobotoRegular, sizeof(g_RobotoRegular)))
+		LOG_ERROR("failed to load font");
+
+	if (!m_healthbar_full.loadFromFile("Resources/Images/Health_full.png"))
+		LOG_ERROR("failed loading healtbar full");
+
+	if (!m_healthbar_empty.loadFromFile("Resources/Images/Health_empty.png"))
+		LOG_ERROR("failed loading healtbar empty");
+
+
+	m_healthbar = std::make_shared<Healthbar>(m_player->getStats().maxHealth, m_player->getStats().health,m_font , &m_healthbar_full, &m_healthbar_empty);
 	//soundsystem->set_music_indices({ 1,2,3 });
 	if (!m_background_texture.loadFromFile("Resources/Images/Unbasdasdenannt-1.png"))
 		LOG_ERROR("failed loading background image");
@@ -44,6 +58,7 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 
 	//window.setView(backup);
 	m_expbar->update(eventsystem, soundsystem, deltatime);
+	m_healthbar->update(m_player->getStats().maxHealth, m_player->getStats().health);
 	if (eventsystem->get_key_action(sf::Keyboard::Key::R))
 	{
 		m_player->increase_health(-1.0);
@@ -107,7 +122,8 @@ void Game::render(sf::RenderWindow& window)
 	m_enemy_manager->draw(window);
 	m_player->draw(window);
 	m_projectile_manager->draw(window);
-	render_healthbar(window, m_player->getStats().maxHealth, m_player->getStats().health);
+	//render_healthbar(window, m_player->getStats().maxHealth, m_player->getStats().health);
+	m_healthbar->render(window);
 	m_expbar->draw(window);
 	window.setView(backup);
 }

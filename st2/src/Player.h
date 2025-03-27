@@ -20,7 +20,7 @@ struct Stats
 {							//standartwerte
 	//Leben
 	double health = 100.0f; //100% 
-	float maxHealth = 100.0f; //maximales Leben bei 100%
+	double maxHealth = 100.0f; //maximales Leben bei 100%
 	float healthGeneration = 10.0f; //10% jede sek
 	float healthCooldown = 5.0f; // 5 sek cooldown bevor regeneration startet
 	float lastDamageTaken = 0.0f; //Timer für Lebensgernation

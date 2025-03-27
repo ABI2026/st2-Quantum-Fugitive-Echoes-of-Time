@@ -4,6 +4,7 @@
 #include "Layer.h"
 #include "Level.h"
 
+class Healthbar;
 class Expbar;
 class Player;
 class Enemy;
@@ -25,6 +26,9 @@ public:
 private:
 	sf::View m_view;
 	sf::Texture m_background_texture;
+	sf::Texture m_healthbar_full;
+	sf::Texture m_healthbar_empty;
+	sf::Font m_font;
 	std::shared_ptr<Level> m_level;
 
 
@@ -33,6 +37,7 @@ private:
 	std::shared_ptr<ProjectileManager> m_projectile_manager;
 
 	std::shared_ptr<Expbar> m_expbar;
+	std::shared_ptr<Healthbar> m_healthbar;
 	sf::Texture m_sprite_sheet;
 };
 
