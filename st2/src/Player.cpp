@@ -106,15 +106,16 @@ void Player::update(std::shared_ptr<Eventsystem>& eventsystem,
 	{
 		condt = 0;
 		y_pos += 17;
-		if (x_pos_sprite == 170-17)
-		{
-			y_pos = y_pos % (6 * 17);
-		}
-		else
-		{
-			y_pos = y_pos % (5 * 17);
-		}
+		
 		//y_pos -= y_pos % 17;
+	}
+	if (x_pos_sprite == 170 - 17)
+	{
+		y_pos = y_pos % (6 * 17);
+	}
+	else
+	{
+		y_pos = y_pos % (5 * 17);
 	}
 	m_shape.setTextureRect({ { x_pos_sprite,y_pos }, { 16,16 } });
 	m_shape.setPosition(m_position);
