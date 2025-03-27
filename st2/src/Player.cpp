@@ -20,7 +20,7 @@ Player::Player(sf::Texture& texture) : m_shape({ 100.f,100.f }), m_position(320.
 	m_shape.setSize({ 16*8,16*8 });
 	m_shape.setOrigin(m_shape.getSize()/2.f);
 
-	m_weapon = std::make_shared<Weapon>(2.0, 0.25f, 1, 0.5, 50.0, 400.f);
+	m_weapon = std::make_shared<Weapon>(20.0, 0.1f, INT_MAX, 0.5, 50.0, 400.f);
 }
 
 Player::~Player()
