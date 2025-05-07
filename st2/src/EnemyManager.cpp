@@ -73,29 +73,28 @@ void EnemyManager::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared
 
 	if(eventsystem->get_key_action(sf::Keyboard::Key::G)&1)
 	{
-		for(int i = 0; i < 50;++i)
+		for(int i = 0; i < 500;++i)
 			spawn_enemy(player);
 	}
 	ImGui::Begin("Debug");
 	{
 		int i = 0;
-		if (m_enemies.size() * 6 != m_vertex_array.getVertexCount())
-		{
-			m_vertex_array.clear();
-			m_vertex_array.resize(m_enemies.size() * 6);
-		}
-		for (auto enemy : m_enemies)
-		{
-			sf::Vector2f enemy_pos = enemy->get_position();
-			sf::Vector2f enemy_size = { 64.f,64.f };
 
-			m_vertex_array[i]    .position = enemy_pos;
-			m_vertex_array[i + 1].position = { enemy_pos.x + enemy_size.x,enemy_pos.y };
-			m_vertex_array[i + 2].position = { enemy_pos.x,enemy_pos.y + enemy_size.y};
+			//m_vertex_array.clear();
+		m_vertex_array.resize(m_enemies.size() * 6);
 
-			m_vertex_array[i + 3].position = { enemy_pos.x + enemy_size.x,enemy_pos.y };
-			m_vertex_array[i + 4].position = { enemy_pos.x,enemy_pos.y + enemy_size.y };
-			m_vertex_array[i + 5].position = enemy_pos + enemy_size;
+		for (const auto&  enemy : m_enemies)
+		{
+			const sf::Vector2f enemy_pos = enemy->get_position();
+			const sf::Vector2f enemy_size = { 64.f,64.f };
+
+			m_vertex_array[i].position = { enemy_pos - enemy_size/2.f };
+			m_vertex_array[i + 1].position = { enemy_pos.x + enemy_size.x / 2.f,enemy_pos.y - enemy_size.y / 2.f };
+			m_vertex_array[i + 2].position = { enemy_pos.x - enemy_size.x / 2.f,enemy_pos.y + enemy_size.y / 2.f };
+
+			m_vertex_array[i + 3].position = { enemy_pos.x + enemy_size.x / 2.f,enemy_pos.y - enemy_size.y / 2.f };
+			m_vertex_array[i + 4].position = { enemy_pos.x - enemy_size.x / 2.f,enemy_pos.y + enemy_size.y / 2.f };
+			m_vertex_array[i + 5].position = { enemy_pos + enemy_size/2.f };
 
 			m_vertex_array[i]    .texCoords = {0,0};
 			m_vertex_array[i + 1].texCoords = {16,0};

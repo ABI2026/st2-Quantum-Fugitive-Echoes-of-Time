@@ -50,8 +50,9 @@ int Main([[maybe_unused]] const int argc, [[maybe_unused]] char** argv)
     Log::init(LOG_LEVEL_INFO,LOG_LEVEL_INFO);
     Random::init();
 
-	sf::RenderWindow window(sf::VideoMode({ 720, 480 }), "window", sf::Style::Default);
-
+	sf::RenderWindow window(sf::VideoMode({ 720, 480 }), "echoes of time", sf::Style::Default);
+    sf::Image image(std::filesystem::path("Resources/Images/Quantum-Photoroom.png"));
+    window.setIcon(image);
 	if (!init_sfml_imgui(window))
     {
         LOG_ERROR("failed to initialize imgui");

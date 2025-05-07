@@ -1,4 +1,6 @@
 #pragma once
+#include <SFML/Graphics/Texture.hpp>
+
 #include "Layer.h"
 
 class Button;
@@ -17,5 +19,7 @@ private:
 	int m_windowselect = 0;
 	int m_selected_y{-1};
 	int m_selected_x{-1};
+	sf::Texture background;
+
 };
 

@@ -65,6 +65,10 @@ OptionsMenu::OptionsMenu()
 
 	m_buttons[15]->set_layout(std::make_shared<TextLayout>(">", sf::Vector2f{ 460.f,285.f + 150.f }, sf::Vector2f{ 50.f,50.f }, 0.f));
 	m_buttons[15]->set_behaviour(std::make_shared<IncrementVolume>("player_sounds", 5.f));
+
+	if (!background.loadFromFile(std::filesystem::path("Resources/Images/Hintergrund.png")))
+		LOG_ERROR("Failed to load image");
+
 }
 
 void OptionsMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager,
@@ -221,6 +225,10 @@ void OptionsMenu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_
 
 void OptionsMenu::render(sf::RenderWindow& window)
 {
+	sf::RectangleShape s((sf::Vector2f)window.getSize());
+	s.setTexture(&background);
+	window.draw(s);
+
 	for (const auto& button : m_buttons)
 	{
 		button->render(window);

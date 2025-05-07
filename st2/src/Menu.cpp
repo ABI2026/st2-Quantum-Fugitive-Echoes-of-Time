@@ -8,19 +8,28 @@
 
 Menu::Menu()
 {
+
+	if (!button_1.loadFromFile(std::filesystem::path("Resources/Images/Button_1.png")))
+		LOG_ERROR("error loading image");
+	if (!button_2.loadFromFile(std::filesystem::path("Resources/Images/Button_2.png")))
+		LOG_ERROR("error loading image");
 	m_buttons.emplace_back(std::make_shared<Button>());
 	m_buttons.emplace_back(std::make_shared<Button>());
 	m_buttons.emplace_back(std::make_shared<Button>());
 
-	m_buttons[0]->set_layout(std::make_shared<TextLayout>("start", sf::Vector2f{ 260.f,145.f }, sf::Vector2f{ 200.f,50.f }));
+	m_buttons[0]->set_layout(std::make_shared<TextImageLayout>("start", sf::Vector2f{ 260.f,145.f }, sf::Vector2f{ 400.f,100.f },&button_1,&button_2, &button_2, 0.f));
 	m_buttons[0]->set_behaviour(std::make_shared<AddLevelSelectLayer>());
 
-	m_buttons[1]->set_layout(std::make_shared<TextLayout>("optionen", sf::Vector2f{ 260.f,215.f }, sf::Vector2f{ 200.f,50.f }));
+	m_buttons[1]->set_layout(std::make_shared<TextImageLayout>("optionen", sf::Vector2f{ 260.f,215.f }, sf::Vector2f{ 400.f,100.f }, &button_1, &button_2, &button_2, 0.f));
 	m_buttons[1]->set_behaviour(std::make_shared<AddOptionsMenu>());
 
 
-	m_buttons[2]->set_layout(std::make_shared<TextLayout>("schließen", sf::Vector2f{ 260.f,285.f }, sf::Vector2f{ 200.f,50.f }));
+	m_buttons[2]->set_layout(std::make_shared<TextImageLayout>("schließen", sf::Vector2f{ 260.f,285.f }, sf::Vector2f{ 400.f,100.f }, &button_1, &button_2, &button_2, 0.f));
 	m_buttons[2]->set_behaviour(std::make_shared<PopLayer>());
+
+	if (!background.loadFromFile(std::filesystem::path("Resources/Images/Hintergrund.png")))
+		LOG_ERROR("Failed to load image");
+
 }
 
 void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager, 
@@ -35,13 +44,13 @@ void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 	const sf::Vector2f mouse_pos = eventsystem->get_mouse_position();
 
 	constexpr float padding = 20.0f;
-	constexpr float button_size = 50.f;
+	constexpr float button_size = 100.f;
 	const float total_height = static_cast<float>(m_buttons.size()) * button_size + (static_cast<float>(m_buttons.size()) - 1.f) * padding;
 	const float start_y = (static_cast<float>(eventsystem->get_window_size().y) - total_height) / 2.f;
 	
 	for (uint8_t i = 0; i < m_buttons.size(); ++i)
 	{
-		m_buttons[i]->set_position({ static_cast<float>(eventsystem->get_window_size().x) / 2.f - 100.f,start_y + static_cast<float>(i) * (50.f + padding) });
+		m_buttons[i]->set_position({ static_cast<float>(eventsystem->get_window_size().x) / 2.f - 200.f,start_y + static_cast<float>(i) * (button_size + padding) });
 		m_buttons[i]->update(mouse_pos, eventsystem->get_mouse_button_action(sf::Mouse::Button::Left) == Eventsystem::action_released);
 		if (!m_buttons[i]->is_clicked())
 			continue;
@@ -79,6 +88,10 @@ void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 
 void Menu::render(sf::RenderWindow& window)
 {
+	sf::RectangleShape s((sf::Vector2f)window.getSize());
+	s.setTexture(&background);
+	window.draw(s);
+
 	for (const auto& button : m_buttons)
 	{
 		button->render(window);

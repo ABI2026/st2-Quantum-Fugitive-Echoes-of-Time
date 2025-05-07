@@ -68,3 +68,34 @@ private:
 	sf::Color m_hovered_color;
 	sf::Color m_pressed_color;
 };
+
+class TextImageLayout : public ButtonLayout
+{
+public:
+	TextImageLayout(
+		const std::string& i_text,
+		const sf::Vector2f& i_position,
+		const sf::Vector2f& i_size,
+		sf::Texture* i_default_texture,
+		sf::Texture* i_hovered_texture,
+		sf::Texture* i_pressed_texture,
+		float i_outline_thickness = 2.f,
+		const sf::Color& i_outline_color = sf::Color::Black
+	);
+	void update(const sf::Vector2f& mouse_position, bool mouse_pressed) override;
+	void set_position(const sf::Vector2f& position) override;
+	[[nodiscard]] bool is_hovered() override;
+	[[nodiscard]] bool is_clicked() override;
+	void set_is_hovered(bool hovered) override;
+	void render(sf::RenderWindow& window) override;
+	void set_text(const std::string& i_text) override;
+private:
+	sf::Font m_font;
+	sf::Text m_text;
+	sf::RectangleShape m_shape;
+	bool m_hovered{ false };
+	bool m_clicked{ false };
+	sf::Texture* m_default_texture;
+	sf::Texture* m_hovered_texture;
+	sf::Texture* m_pressed_texture;
+};

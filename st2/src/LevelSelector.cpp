@@ -38,6 +38,10 @@ LevelSelector::LevelSelector()
 
 	m_buttons[6]->set_layout(std::make_shared<TextLayout>("zurrück", sf::Vector2f{ 260.f,285.f }, sf::Vector2f{ 200.f,50.f },0.f, sf::Color::Yellow));
 	m_buttons[6]->set_behaviour(std::make_shared<PopLayer>());
+
+	if (!background.loadFromFile(std::filesystem::path("Resources/Images/Hintergrund.png")))
+		LOG_ERROR("Failed to load image");
+
 }
 
 void LevelSelector::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager,
@@ -123,6 +127,10 @@ void LevelSelector::update(std::shared_ptr<Eventsystem>& eventsystem, std::share
 
 void LevelSelector::render(sf::RenderWindow& window)
 {
+	sf::RectangleShape s((sf::Vector2f)window.getSize());
+	s.setTexture(&background);
+	window.draw(s);
+
 	for (const auto& button : m_buttons)
 	{
 		button->render(window);

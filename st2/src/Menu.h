@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 #include "Layer.h"
 
@@ -21,5 +22,8 @@ private:
 	int m_selected = -1;
 
 	std::vector<std::shared_ptr<Button>> m_buttons;
+	sf::Texture background;
+	sf::Texture button_1;
+	sf::Texture button_2;
 };
 
