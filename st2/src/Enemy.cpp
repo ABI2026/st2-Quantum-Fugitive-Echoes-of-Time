@@ -19,8 +19,8 @@ Enemy::~Enemy()
 	count--;
 }
 
-Enemy::Enemy(const float i_damage, const float i_health, const float i_speed, const sf::Vector2f i_position, sf::Texture* i_texture, Player* i_player)
-	: m_damage(i_damage), m_health(i_health), m_speed(i_speed), m_position(i_position), m_texture(i_texture), m_player(i_player)
+Enemy::Enemy(const float i_damage, const float i_health, const float i_speed, const sf::Vector2f i_position, Player* i_player)
+	: m_damage(i_damage), m_health(i_health), m_speed(i_speed), m_position(i_position),/* m_texture(i_texture),*/ m_player(i_player)
 {
 	count++;
 	m_player = i_player;
@@ -34,15 +34,15 @@ Enemy::Enemy(const float i_damage, const float i_health, const float i_speed, co
 	}*/
 }
 
-void Enemy::draw(sf::RenderTarget& target) const
-{
-	sf::RectangleShape rectangle;
-	rectangle.setTexture(m_texture);
-	rectangle.setPosition(m_position);
-	rectangle.setSize({64.f,64.f});
-	rectangle.setOrigin(rectangle.getSize() / 2.f);
-	target.draw(rectangle);
-}
+//void Enemy::draw(sf::RenderTarget& target) const
+//{
+//	sf::RectangleShape rectangle;
+//	rectangle.setTexture(m_texture);
+//	rectangle.setPosition(m_position);
+//	rectangle.setSize({64.f,64.f});
+//	rectangle.setOrigin(rectangle.getSize() / 2.f);
+//	target.draw(rectangle);
+//}
 
 void Enemy::attack_player()
 {

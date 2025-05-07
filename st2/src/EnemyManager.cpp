@@ -8,14 +8,22 @@
 
 EnemyManager::EnemyManager()
 {
-	m_textures.emplace_back(std::filesystem::path("Resources/Images/hintergrund.jpg"));
+	m_vertex_array.setPrimitiveType(sf::PrimitiveType::Triangles);
+	if (!m_texture.loadFromFile(std::filesystem::path("Resources/Images/Enemy.png")))
+		LOG_ERROR("failed loading enemy texture");
 }
 
 std::shared_ptr<Enemy> EnemyManager::get_closest_enemy(sf::Vector2f position)
 {
 	if (m_enemies.empty())
 		return nullptr;
-	return m_enemies.front(); //TODO: IMPLEMENT ACTUAL LOGIC FOR THIS
+	return 	std::ranges::min(m_enemies, [position](const std::shared_ptr<Enemy>& enemy1, const std::shared_ptr<Enemy>& enemy2) {
+		const float dist1 = sf::Vector2f(position - enemy1->get_position()).length();
+		const float dist2 = sf::Vector2f(position - enemy2->get_position()).length();
+		return dist1 < dist2;
+		});
+
+	//return m_enemies.front(); //TODO: IMPLEMENT ACTUAL LOGIC FOR THIS
 }
 
 std::vector<std::shared_ptr<Enemy>> EnemyManager::all_intersections(sf::FloatRect bounding_box)
@@ -39,7 +47,7 @@ void EnemyManager::spawn_enemy(Player* player)
 	constexpr float radius = 1000; //in pixels
 	pos *= radius;
 	pos += glm::vec2{player->getPosition().x, player->getPosition().y};
-	m_enemies.push_back(std::make_shared<Enemy>(10.f, 10.f, 300.f, sf::Vector2f{ pos.x,pos.y }, &m_textures.back(), player));
+	m_enemies.push_back(std::make_shared<Enemy>(10.f, 10.f, 300.f, sf::Vector2f{ pos.x,pos.y }, player));
 }
 
 void EnemyManager::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime, Player* player, std::shared_ptr<Expbar>& expbar)
@@ -68,15 +76,42 @@ void EnemyManager::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared
 		for(int i = 0; i < 50;++i)
 			spawn_enemy(player);
 	}
-
-	std::sort(m_enemies.begin(), m_enemies.end(), [player](const std::shared_ptr<Enemy>& enemy1, const std::shared_ptr<Enemy>& enemy2) {
-		float dist1 = sf::Vector2f(player->getPosition() - enemy1->get_position()).length();
-		float dist2 = sf::Vector2f(player->getPosition() - enemy2->get_position()).length();
-		return dist1 < dist2;
-			});
-
-
 	ImGui::Begin("Debug");
+	{
+		int i = 0;
+		if (m_enemies.size() * 6 != m_vertex_array.getVertexCount())
+		{
+			m_vertex_array.clear();
+			m_vertex_array.resize(m_enemies.size() * 6);
+		}
+		for (auto enemy : m_enemies)
+		{
+			sf::Vector2f enemy_pos = enemy->get_position();
+			sf::Vector2f enemy_size = { 64.f,64.f };
+
+			m_vertex_array[i]    .position = enemy_pos;
+			m_vertex_array[i + 1].position = { enemy_pos.x + enemy_size.x,enemy_pos.y };
+			m_vertex_array[i + 2].position = { enemy_pos.x,enemy_pos.y + enemy_size.y};
+
+			m_vertex_array[i + 3].position = { enemy_pos.x + enemy_size.x,enemy_pos.y };
+			m_vertex_array[i + 4].position = { enemy_pos.x,enemy_pos.y + enemy_size.y };
+			m_vertex_array[i + 5].position = enemy_pos + enemy_size;
+
+			m_vertex_array[i]    .texCoords = {0,0};
+			m_vertex_array[i + 1].texCoords = {16,0};
+			m_vertex_array[i + 2].texCoords = {0,16};
+
+			m_vertex_array[i + 3].texCoords = {16,0};
+			m_vertex_array[i + 4].texCoords = {0,16};
+			m_vertex_array[i + 5].texCoords = {16,16};
+
+			//ImGui::Text("%d", i);
+			i += 6;
+		}
+		m_vertex_array.setPrimitiveType(sf::PrimitiveType::Triangles);
+
+	}
+
 	ImGui::Text("amount of enemies: %d",m_enemies.size());
 	ImGui::End();
 }
@@ -87,8 +122,11 @@ void EnemyManager::add_enemy()
 
 void EnemyManager::draw(sf::RenderTarget& target) const
 {
-	for (const auto& enemy : m_enemies)
-	{
-		enemy->draw(target);
-	}
+	sf::RenderStates states = sf::RenderStates::Default;
+	states.texture = &m_texture;
+	target.draw(m_vertex_array,states);
+	//for (const auto& enemy : m_enemies)
+	//{
+	//	enemy->draw(target);
+	//}
 }

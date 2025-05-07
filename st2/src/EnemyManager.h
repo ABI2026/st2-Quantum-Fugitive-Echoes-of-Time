@@ -9,7 +9,8 @@ class Expbar;
 class EnemyManager
 {
 	std::vector<std::shared_ptr<Enemy>> m_enemies;
-	std::vector<sf::Texture> m_textures;
+	sf::Texture m_texture;
+	sf::VertexArray m_vertex_array;
 public:
 	EnemyManager();
 	std::shared_ptr<Enemy> get_closest_enemy(sf::Vector2f position);

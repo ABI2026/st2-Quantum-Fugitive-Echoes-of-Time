@@ -16,15 +16,14 @@ protected:
 	double m_health{0}; 
 	float m_speed {0}; 
 	sf::Vector2f m_position;
-	sf::Texture* m_texture;
 	Player* m_player; //??
 	double m_invicibility_time{0};
 public:
 	~Enemy();
-	Enemy(float i_damage, float i_health, float i_speed, sf::Vector2f i_position, sf::Texture* i_texture, Player* i_player);
+	Enemy(float i_damage, float i_health, float i_speed, sf::Vector2f i_position, Player* i_player);
 
 	void update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime);
-	void draw(sf::RenderTarget& target) const;
+	//void draw(sf::RenderTarget& target) const;
 	void attack_player(); //?? warum wird das so gemacht ??
 
 	bool take_damage(double damage, double crit_chance, double crit_damage);
