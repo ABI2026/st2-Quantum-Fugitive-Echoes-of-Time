@@ -77,6 +77,7 @@ void ProjectileManager::draw(sf::RenderWindow& window)
 	for(const auto& projectile:m_projectiles)
 	{
 		proj.setPosition(projectile->current_pos);
+		proj.setFillColor(projectile->was_shot_by_player ? sf::Color::Red : sf::Color::White);
 		window.draw(proj);
 	}
 }

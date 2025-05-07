@@ -68,6 +68,14 @@ void EnemyManager::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared
 		for(int i = 0; i < 50;++i)
 			spawn_enemy(player);
 	}
+
+	std::sort(m_enemies.begin(), m_enemies.end(), [player](const std::shared_ptr<Enemy>& enemy1, const std::shared_ptr<Enemy>& enemy2) {
+		float dist1 = sf::Vector2f(player->getPosition() - enemy1->get_position()).length();
+		float dist2 = sf::Vector2f(player->getPosition() - enemy2->get_position()).length();
+		return dist1 < dist2;
+			});
+
+
 	ImGui::Begin("Debug");
 	ImGui::Text("amount of enemies: %d",m_enemies.size());
 	ImGui::End();
