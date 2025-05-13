@@ -23,6 +23,14 @@ private:
 	inline static std::shared_ptr<spdlog::logger> s_client_logger;
 };
 
+#define LOG_LEVEL_TRACE spdlog::level::trace
+#define LOG_LEVEL_DEBUG spdlog::level::debug
+#define LOG_LEVEL_INFO spdlog::level::info
+#define LOG_LEVEL_WARN spdlog::level::warn
+#define LOG_LEVEL_ERROR spdlog::level::err
+#define LOG_LEVEL_CRITICAL spdlog::level::critical
+#define LOG_LEVEL_OFF spdlog::level::off
+
 #ifdef DIST
 #define LOG_TRACE(...)      
 #define LOG_DEBUG(...)      
@@ -30,7 +38,7 @@ private:
 #define LOG_WARN(...)       
 #define LOG_ERROR(...)      
 #define LOG_CRITICAL(...)
-#define GET_LOG_LEVEL() (-1)
+#define GET_LOG_LEVEL() (LOG_LEVEL_OFF)
 #define SET_LOG_LEVEL(...)
 #else
 #define LOG_TRACE(...)         ::Log::get_logger()->trace(__VA_ARGS__)
@@ -42,10 +50,3 @@ private:
 #define GET_LOG_LEVEL()		   ::Log::get_logger()->level()
 #define SET_LOG_LEVEL(...)	   ::Log::get_logger()->set_level(__VA_ARGS__)
 #endif
-
-#define LOG_LEVEL_TRACE spdlog::level::trace
-#define LOG_LEVEL_DEBUG spdlog::level::debug
-#define LOG_LEVEL_INFO spdlog::level::info
-#define LOG_LEVEL_WARN spdlog::level::warn
-#define LOG_LEVEL_ERROR spdlog::level::err
-#define LOG_LEVEL_CRITICAL spdlog::level::critical

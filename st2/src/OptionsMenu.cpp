@@ -67,7 +67,9 @@ OptionsMenu::OptionsMenu()
 	m_buttons[15]->set_behaviour(std::make_shared<IncrementVolume>("player_sounds", 5.f));
 
 	if (!background.loadFromFile(std::filesystem::path("Resources/Images/Hintergrund.png")))
+	{
 		LOG_ERROR("Failed to load image");
+	}
 
 }
 

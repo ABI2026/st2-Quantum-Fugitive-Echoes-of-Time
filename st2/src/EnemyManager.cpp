@@ -10,7 +10,9 @@ EnemyManager::EnemyManager()
 {
 	m_vertex_array.setPrimitiveType(sf::PrimitiveType::Triangles);
 	if (!m_texture.loadFromFile(std::filesystem::path("Resources/Images/Enemy.png")))
+	{
 		LOG_ERROR("failed loading enemy texture");
+	}
 }
 
 std::shared_ptr<Enemy> EnemyManager::get_closest_enemy(sf::Vector2f position)

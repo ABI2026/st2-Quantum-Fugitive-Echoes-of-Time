@@ -40,7 +40,9 @@ LevelSelector::LevelSelector()
 	m_buttons[6]->set_behaviour(std::make_shared<PopLayer>());
 
 	if (!background.loadFromFile(std::filesystem::path("Resources/Images/Hintergrund.png")))
+	{
 		LOG_ERROR("Failed to load image");
+	}
 
 }
 

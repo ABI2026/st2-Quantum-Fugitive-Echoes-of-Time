@@ -29,19 +29,27 @@ Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 	m_expbar = std::make_shared<Expbar>();
 
 	if (!m_font.openFromMemory(g_RobotoRegular, sizeof(g_RobotoRegular)))
+	{
 		LOG_ERROR("failed to load font");
+	}
 
 	if (!m_healthbar_full.loadFromFile("Resources/Images/Health_full.png"))
+	{
 		LOG_ERROR("failed loading healtbar full");
+	}
 
 	if (!m_healthbar_empty.loadFromFile("Resources/Images/Health_empty.png"))
+	{
 		LOG_ERROR("failed loading healtbar empty");
+	}
 
 
 	m_healthbar = std::make_shared<Healthbar>(m_player->getStats().maxHealth, m_player->getStats().health,m_font , &m_healthbar_full, &m_healthbar_empty);
 	//soundsystem->set_music_indices({ 1,2,3 });
 	if (!m_background_texture.loadFromFile("Resources/Images/Unbasdasdenannt-1.png"))
+	{
 		LOG_ERROR("failed loading background image");
+	}
 	m_background_texture.setRepeated(true);
 }
 

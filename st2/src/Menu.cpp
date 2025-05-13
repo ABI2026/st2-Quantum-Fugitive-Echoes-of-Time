@@ -10,9 +10,13 @@ Menu::Menu()
 {
 
 	if (!button_1.loadFromFile(std::filesystem::path("Resources/Images/Button_1.png")))
+	{
 		LOG_ERROR("error loading image");
+	}
 	if (!button_2.loadFromFile(std::filesystem::path("Resources/Images/Button_2.png")))
+	{
 		LOG_ERROR("error loading image");
+	}
 	m_buttons.emplace_back(std::make_shared<Button>());
 	m_buttons.emplace_back(std::make_shared<Button>());
 	m_buttons.emplace_back(std::make_shared<Button>());
@@ -28,7 +32,9 @@ Menu::Menu()
 	m_buttons[2]->set_behaviour(std::make_shared<PopLayer>());
 
 	if (!background.loadFromFile(std::filesystem::path("Resources/Images/Hintergrund.png")))
+	{
 		LOG_ERROR("Failed to load image");
+	}
 
 }
 
