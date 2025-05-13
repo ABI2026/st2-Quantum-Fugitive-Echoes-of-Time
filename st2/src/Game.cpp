@@ -13,6 +13,8 @@
 #include "Player.h"
 #include "ProjectileManager.h"
 #include "Utils/Log.h"
+#include <SFML/Graphics.hpp>
+
 
 
 #include "../Resources/Images/Roboto-Regular.embed"
@@ -40,8 +42,34 @@ Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 
 	m_healthbar = std::make_shared<Healthbar>(m_player->getStats().maxHealth, m_player->getStats().health,m_font , &m_healthbar_full, &m_healthbar_empty);
 	//soundsystem->set_music_indices({ 1,2,3 });
-	if (!m_background_texture.loadFromFile("Resources/Images/Unbasdasdenannt-1.png"))
-		LOG_ERROR("failed loading background image");
+	
+	//struktur
+	std::shared_ptr<sf::Texture> texture1 = std::make_shared<sf::Texture>();
+	std::shared_ptr<sf::Texture> texture2 = std::make_shared<sf::Texture>();
+	//sf::Texture* texture3 = new sf::Texture();
+
+	if (!texture1->loadFromFile("Resources/Images/struktur1.png")) LOG_ERROR("failed to load structure 1");
+	if (!texture2->loadFromFile("Resources/Images/struktur2.png")) LOG_ERROR("failed to load structure 2");
+	//if (!texture3->loadFromFile("Resources/Images/")) LOG_ERROR("failed to load structure 3");
+
+	m_structure_textures = { texture1, texture2};
+
+	m_structures.emplace_back(texture1, sf::Vector2f(-100.f, 0.f));
+	m_structures.emplace_back(texture2, sf::Vector2f(0.f, 0.f));
+	//m_structures.emplace_back(, sf::Vector2f(100.f, 0.f));
+
+	/*for (int i = 0; i < 2; ++i) 
+	{
+		sf::Sprite tx;
+
+		tx.setTexture(*m_structure_textures[i]);
+		tx.setPosition(structure_positions[i]);
+		m_structures.push_back(tx);
+	}*/
+
+	//if (!m_background_texture.loadFromFile("Resources/Images/Unbasdasdenannt-1.png"))
+		if (!m_background_texture.loadFromFile("Resources/Images/Hintergrund_game.png"))
+			LOG_ERROR("failed loading background image");
 	m_background_texture.setRepeated(true);
 }
 
@@ -126,6 +154,11 @@ void Game::render(sf::RenderWindow& window)
 	m_healthbar->render(window);
 	m_expbar->draw(window);
 	window.setView(backup);
+
+	for (const auto& structure : m_structures) {
+		window.draw(structure.sprite);
+	}
+
 }
 
 void Game::on_close()

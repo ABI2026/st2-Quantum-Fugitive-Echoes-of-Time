@@ -91,4 +91,7 @@
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\Hintergrund_game.png" />
+  </ItemGroup>
 </Project>
