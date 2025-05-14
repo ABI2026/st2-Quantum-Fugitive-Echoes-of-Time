@@ -181,11 +181,19 @@ std::shared_ptr<Soundsystem> init_soundsystem()
     //TODO: ADD ADITIONAL SOUNDS
     soundsystem->add_group("ui_sounds");
     soundsystem->add_group("player_sounds");
-    soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", true, "ui_sounds");
-    soundsystem->load_buffer("Resources/Sounds/background_menu_music_1.mp3",false,"music");
+
+	soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "ui_sounds");
+
+	soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
+    soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
+    soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
+    soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
+
+	soundsystem->load_buffer("Resources/Sounds/background_menu_music_1.mp3",false,"music");
     soundsystem->load_buffer("Resources/Sounds/background_menu_music_2.mp3",false,"music");
     soundsystem->load_buffer("Resources/Sounds/background_menu_music_3.mp3",false,"music");
-    soundsystem->set_music_indices({0, 1, 2});
+
+	soundsystem->set_music_indices({0, 1, 2});
     soundsystem->set_should_play_music(true);
 
     std::ifstream fin("optionen.txt");

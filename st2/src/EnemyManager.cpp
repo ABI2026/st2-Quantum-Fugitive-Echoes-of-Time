@@ -5,6 +5,14 @@
 #include "Expbar.h"
 #include "Utils/Log.h"
 #include "Utils/Random.h"
+constexpr float chunk_size = 128.f;
+std::size_t KeyHasher::operator()(const sf::Vector2f& key) const
+{
+	const std::size_t h1 = std::hash<float>()(key.x);
+	const std::size_t h2 = std::hash<float>()(key.y);
+
+	return h1 ^ (h2 << 1);
+}
 
 EnemyManager::EnemyManager()
 {
@@ -31,15 +39,31 @@ std::shared_ptr<Enemy> EnemyManager::get_closest_enemy(sf::Vector2f position)
 std::vector<std::shared_ptr<Enemy>> EnemyManager::all_intersections(sf::FloatRect bounding_box)
 {
 	std::vector<std::shared_ptr<Enemy>> intersected;
-	for (auto enemy: m_enemies)
+	constexpr sf::Vector2f chunk_size_vec = { chunk_size,chunk_size };
+	constexpr sf::Vector2f max_enemy_size = {64.f,64.f };
+	constexpr sf::Vector2f min_enemy_size = { 64.f,64.f };
+	for (auto& [cell_pos,enemies] : m_cells_enemies)
 	{
-		sf::Vector2f enemy_size = { 64,64 };
-		sf::FloatRect enemy_rect{ enemy->get_position() - (enemy_size / 2.f),enemy_size};
-		if(bounding_box.findIntersection(enemy_rect) != std::nullopt)
+		sf::FloatRect cell{ cell_pos - max_enemy_size / 2.f,(chunk_size_vec + max_enemy_size)};
+		if(bounding_box.findIntersection(cell) == std::nullopt)
 		{
-			intersected.emplace_back(enemy);
+			continue;
+		}
+
+		for (auto& enemy : enemies)
+		{
+			if(enemy.expired())
+				continue;
+			std::shared_ptr<Enemy> locked_enemy = enemy.lock();
+			sf::Vector2f enemy_size = { 64,64 };
+			sf::FloatRect enemy_rect{ locked_enemy->get_position() - (enemy_size / 2.f),enemy_size };
+			if (bounding_box.findIntersection(enemy_rect) != std::nullopt)
+			{
+				intersected.emplace_back(locked_enemy);
+			}
 		}
 	}
+
 	return intersected;
 }
 
@@ -47,7 +71,7 @@ void EnemyManager::spawn_enemy(Player* player)
 {
 	glm::vec2 pos = normalize(Random::vec2(-1,1));
 	constexpr float radius = 1000; //in pixels
-	pos *= radius;
+	pos *= radius * Random::floating(1.f,5.f);
 	pos += glm::vec2{player->getPosition().x, player->getPosition().y};
 	m_enemies.push_back(std::make_shared<Enemy>(10.f, 10.f, 300.f, sf::Vector2f{ pos.x,pos.y }, player));
 }
@@ -56,28 +80,55 @@ void EnemyManager::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared
 {
 	for (const auto& enemy : m_enemies)
 	{
-//		const sf::Vector2f prev_pos = enemy->get_position();
+		//const sf::Vector2f prev_pos = enemy->get_position();
 		enemy->update(eventsystem,soundsystem,deltatime);
-//		const sf::Vector2f new_pos = enemy->get_position();
-//		const sf::Vector2f offset = prev_pos - new_pos;
+		//const sf::Vector2f new_pos = enemy->get_position();
+		//const sf::Vector2f prev_chunk_pos = prev_pos / chunk_size;
+		//const sf::Vector2f new_chunk_pos = enemy->get_position() / chunk_size;
+
+		//const sf::Vector2f offset = prev_pos - new_pos;
 	}
 
-	std::erase_if(m_enemies, [&](const std::shared_ptr<Enemy>& enemy)
-		{
-			bool should_get_removed = enemy->get_health() <= 0.0;
-			if (should_get_removed)
-			{
-				expbar->setExp(5 + expbar->getExp());
-			}
-
-			return should_get_removed;
-		});
-
-	if(eventsystem->get_key_action(sf::Keyboard::Key::G)&1)
+	if (eventsystem->get_key_action(sf::Keyboard::Key::G) & 1)
 	{
-		for(int i = 0; i < 500;++i)
+		for (int i = 0; i < 500; ++i)
 			spawn_enemy(player);
 	}
+
+	m_cells_enemies.clear();
+	constexpr int first_death_sound_id = 1;
+	static int death_sound = 0;
+	int count = 0;
+	std::erase_if(m_enemies, [&](const std::shared_ptr<Enemy>& enemy)
+	{
+		const bool should_get_removed = enemy->get_health() <= 0.0;
+		if (should_get_removed)
+		{
+			if (count < 3) 
+			{
+				soundsystem->play_sound("player_sounds", first_death_sound_id + death_sound);
+				death_sound++;
+				count++;
+				death_sound %= 3;
+			}
+			expbar->setExp(5 + expbar->getExp());
+		}
+		else
+		{
+			const sf::Vector2f chunk_pos = 
+			{
+				floor(enemy->get_position().x / chunk_size) * chunk_size,
+				floor(enemy->get_position().y / chunk_size) * chunk_size
+			};
+			
+			m_cells_enemies[chunk_pos].emplace_back(enemy);
+		}
+
+		return should_get_removed;
+	});
+
+
+
 	ImGui::Begin("Debug");
 	{
 		int i = 0;
@@ -90,7 +141,7 @@ void EnemyManager::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared
 			const sf::Vector2f enemy_pos = enemy->get_position();
 			const sf::Vector2f enemy_size = { 64.f,64.f };
 
-			m_vertex_array[i].position = { enemy_pos - enemy_size/2.f };
+			m_vertex_array[i]    .position = { enemy_pos - enemy_size/2.f };
 			m_vertex_array[i + 1].position = { enemy_pos.x + enemy_size.x / 2.f,enemy_pos.y - enemy_size.y / 2.f };
 			m_vertex_array[i + 2].position = { enemy_pos.x - enemy_size.x / 2.f,enemy_pos.y + enemy_size.y / 2.f };
 

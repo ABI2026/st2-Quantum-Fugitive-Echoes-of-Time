@@ -3,12 +3,21 @@
 #include <vector>
 #include <SFML/Graphics/Texture.hpp>
 
+struct KeyHasher
+{
+	std::size_t operator()(const sf::Vector2f& key) const;
+};
+
+
 #include "Player.h"
+
+
 class Enemy;
 class Expbar;
 class EnemyManager
 {
 	std::vector<std::shared_ptr<Enemy>> m_enemies;
+	std::unordered_map<sf::Vector2f,std::vector<std::weak_ptr<Enemy>>, KeyHasher> m_cells_enemies;
 	sf::Texture m_texture;
 	sf::VertexArray m_vertex_array;
 public:
