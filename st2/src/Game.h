@@ -4,12 +4,26 @@
 #include "Layer.h"
 #include "Level.h"
 
+
 class Healthbar;
 class Expbar;
 class Player;
 class Enemy;
 class EnemyManager;
 class ProjectileManager;
+
+struct Structure {
+	sf::Sprite sprite;
+	//standartkostruktor
+	//Structure() = default;
+
+	Structure(std::shared_ptr<sf::Texture> texture, sf::Vector2f position = { 0.f,0.f }) :sprite(*texture)
+	{
+		sprite.setPosition(position);
+	}
+
+};
+
 class SkillSelector;
 class Game : public Layer
 {
@@ -40,6 +54,12 @@ private:
 	std::shared_ptr<Expbar> m_expbar;
 	std::shared_ptr<Healthbar> m_healthbar;
 	sf::Texture m_sprite_sheet;
+
+	std::vector<Structure> m_structures;
+	std::vector<std::shared_ptr<sf::Texture>> m_structure_textures;
+	
+
+
 };
 
 

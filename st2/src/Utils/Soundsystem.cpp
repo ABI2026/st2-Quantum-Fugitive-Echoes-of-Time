@@ -118,8 +118,8 @@ void Soundsystem::internal_play_sound(const std::string& group_id, const int sou
 	}
 	if (group_id == Soundsystem_MusicStr || group_id == Soundsystem_GlobalStr)
 	{
-		LOG_INFO("You cant add sounds to the global group!");
-		LOG_INFO("Sound addition to the music group is handled seperatly!");
+		LOG_INFO("You cant play or add sounds from or to the global group!");
+		LOG_INFO("Sound playing of the music group is handled seperatly!");
 		LOG_INFO("the given id is: {}", group_id);
 		return;
 	}

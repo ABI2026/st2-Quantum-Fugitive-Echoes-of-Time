@@ -17,7 +17,7 @@ void ProjectileManager::update(const double deltatime, std::shared_ptr<EnemyMana
 		const sf::FloatRect proj_rect = { projectile->current_pos - (projectile_size / 2.f),projectile_size };
 		if (projectile->was_shot_by_player)
 		{
-			for (auto enemy : enemy_manager->all_intersections(proj_rect))
+			for (const auto& enemy : enemy_manager->all_intersections(proj_rect))
 			{
 				if (enemy->take_damage(projectile->damage, projectile->crit_chance, projectile->crit_damage))
 				{

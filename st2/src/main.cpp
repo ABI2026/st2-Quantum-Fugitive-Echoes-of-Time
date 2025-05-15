@@ -1,4 +1,5 @@
 #include <cmath>
+#include <fstream>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
@@ -26,6 +27,9 @@ static [[nodiscard]] std::shared_ptr<Eventsystem> init_eventsystem(sf::RenderWin
 static [[nodiscard]] std::shared_ptr<LayerManager> init_layer_manager();
 
 static [[nodiscard]] std::shared_ptr<Soundsystem> init_soundsystem();
+
+static void save_volumes(std::shared_ptr<Soundsystem> soundsystem);
+
 
 #if (defined(PLATFORM_WINDOWS) || defined (_WIN64)) && defined(DIST)
 #include <windows.h>
@@ -93,6 +97,9 @@ int Main([[maybe_unused]] const int argc, [[maybe_unused]] char** argv)
     }
 
     ImGui::SFML::Shutdown(window);
+
+    save_volumes(soundsystem);
+
 	return 0;
 }
 
@@ -174,11 +181,68 @@ std::shared_ptr<Soundsystem> init_soundsystem()
     //TODO: ADD ADITIONAL SOUNDS
     soundsystem->add_group("ui_sounds");
     soundsystem->add_group("player_sounds");
-    soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", true, "ui_sounds");
-    soundsystem->load_buffer("Resources/Sounds/background_menu_music_1.mp3",false,"music");
+
+	soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "ui_sounds");
+
+	soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
+    soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
+    soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
+    soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
+
+	soundsystem->load_buffer("Resources/Sounds/background_menu_music_1.mp3",false,"music");
     soundsystem->load_buffer("Resources/Sounds/background_menu_music_2.mp3",false,"music");
     soundsystem->load_buffer("Resources/Sounds/background_menu_music_3.mp3",false,"music");
-    soundsystem->set_music_indices({0, 1, 2});
+
+	soundsystem->set_music_indices({0, 1, 2});
     soundsystem->set_should_play_music(true);
+
+    std::ifstream fin("optionen.txt");
+    std::unordered_map volumes = soundsystem->get_volumes();
+    if (fin.is_open())
+    {
+	    while (!fin.eof())
+	    {
+		    try
+		    {
+                std::string group;
+                std::getline(fin, group, ';');
+                if (group.empty())
+                    continue;
+                std::string line;
+                float volume;
+                std::getline(fin,line);
+                volume = std::stof(line);
+                volumes[group] = volume;
+		    }
+		    catch (...)
+		    {
+		    }
+
+
+	    }
+    }
+    else
+    {
+        std::ofstream fout("optionen.txt");
+        fout.close();
+    }
+    soundsystem->set_volume(volumes);
+
     return soundsystem;
+}
+
+void save_volumes(std::shared_ptr<Soundsystem> soundsystem)
+{
+    std::unordered_map volumes = soundsystem->get_volumes();
+    std::ofstream fout("optionen.txt");
+    if(!fout.is_open())
+    {
+        LOG_ERROR("couldnt open/create optionen.txt");
+        return;
+    }
+
+    for (auto [group,volume] : volumes)
+    {
+        fout << group << ';' << volume << '\n';
+    }
 }

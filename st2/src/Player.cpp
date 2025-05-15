@@ -20,7 +20,7 @@ Player::Player(sf::Texture& texture) : m_shape({ 100.f,100.f }), m_position(320.
 	m_shape.setSize({ 16*8,16*8 });
 	m_shape.setOrigin(m_shape.getSize()/2.f);
 
-	m_weapon = std::make_shared<Weapon>(20.0, 0.1f, INT_MAX, 0.5, 50.0, 400.f);
+	m_weapon = std::make_shared<Weapon>(200.0, 0.1f, INT_MAX, 0.5, 50.0, 400.f);
 }
 
 Player::~Player()
@@ -46,7 +46,7 @@ void Player::update(std::shared_ptr<Eventsystem>& eventsystem,
 
 )
 {
-	static float condt = 0;
+	static double condt = 0;
 	condt += deltatime;
 
 	m_invicibility_time -= deltatime;
@@ -102,7 +102,7 @@ void Player::update(std::shared_ptr<Eventsystem>& eventsystem,
 	ImGui::Text("position: x:%f y:%f", m_position.x, m_position.y);
 	ImGui::End();
 	int y_pos = m_shape.getTextureRect().position.y;
-	if(condt > 0.25f)
+	if(condt > 0.25)
 	{
 		condt = 0;
 		y_pos += 17;
