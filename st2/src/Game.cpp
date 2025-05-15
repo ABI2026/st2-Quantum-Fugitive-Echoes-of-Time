@@ -13,7 +13,7 @@
 #include "Player.h"
 #include "ProjectileManager.h"
 #include "Utils/Log.h"
-
+//#include "SkillSelector.h"
 
 #include "../Resources/Images/Roboto-Regular.embed"
 Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
@@ -27,6 +27,7 @@ Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 	m_projectile_manager = std::make_shared<ProjectileManager>();
 	m_level = std::make_shared<Level>(i_level_id, soundsystem);
 	m_expbar = std::make_shared<Expbar>();
+	//m_skillselector = std::make_shared<SkillSelector>();
 
 	if (!m_font.openFromMemory(g_RobotoRegular, sizeof(g_RobotoRegular)))
 		LOG_ERROR("failed to load font");
@@ -58,6 +59,7 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 
 	//window.setView(backup);
 	m_expbar->update(eventsystem, soundsystem, deltatime);
+	//m_skillselector->update(eventsystem, soundsystem, deltatime);
 	m_healthbar->update(m_player->getStats().maxHealth, m_player->getStats().health);
 	if (eventsystem->get_key_action(sf::Keyboard::Key::R))
 	{
@@ -125,6 +127,7 @@ void Game::render(sf::RenderWindow& window)
 	//render_healthbar(window, m_player->getStats().maxHealth, m_player->getStats().health);
 	m_healthbar->render(window);
 	m_expbar->draw(window);
+	//m_skillselector->draw(window);
 	window.setView(backup);
 }
 
