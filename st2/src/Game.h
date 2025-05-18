@@ -49,7 +49,7 @@ private:
 	std::shared_ptr<Player> m_player;
 	std::shared_ptr<EnemyManager> m_enemy_manager;
 	std::shared_ptr<ProjectileManager> m_projectile_manager;
-	//std::shared_ptr<SkillSelector> m_skillselector;
+//	std::shared_ptr<SkillSelector> m_skillselector;
 
 	std::shared_ptr<Expbar> m_expbar;
 	std::shared_ptr<Healthbar> m_healthbar;

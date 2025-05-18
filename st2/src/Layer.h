@@ -13,6 +13,7 @@ enum class LayerID
     pause_menu,
     level_selector,
     options,
+	skill_selector
 };
 
 

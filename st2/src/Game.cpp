@@ -13,7 +13,7 @@
 #include "Player.h"
 #include "ProjectileManager.h"
 #include "Utils/Log.h"
-//#include "SkillSelector.h"
+#include "SkillSelector.h"
 
 #include "../Resources/Images/Roboto-Regular.embed"
 Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
@@ -100,7 +100,15 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 
 
 	//window.setView(backup);
+	 
+	int prev_lvl = m_expbar->getLvl();
 	m_expbar->update(eventsystem, soundsystem, deltatime);
+	int new_lvl = m_expbar->getLvl();
+	if (prev_lvl != new_lvl) 
+	{
+		std::shared_ptr<SkillSelector> skillselector = std::make_shared<SkillSelector>(layer_manager->get_top(), m_player);
+		layer_manager->push_layer(skillselector);
+	}
 	//m_skillselector->update(eventsystem, soundsystem, deltatime);
 	m_healthbar->update(m_player->getStats().maxHealth, m_player->getStats().health);
 	if (eventsystem->get_key_action(sf::Keyboard::Key::R))
@@ -120,11 +128,11 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 		return;
 	}
 
-	if (eventsystem->get_key_action(sf::Keyboard::Key::Q) == Eventsystem::action_pressed)
-	{
-		//soundsystem->set_music_indices({ 0,1,2 });
-		layer_manager->pop_layer();
-	}
+	//if (eventsystem->get_key_action(sf::Keyboard::Key::Q) == Eventsystem::action_pressed)
+	//{
+	//	//soundsystem->set_music_indices({ 0,1,2 });
+	//	layer_manager->pop_layer();
+	//}
 
 	//float blend = 1-pow(lerp_speed,deltatime);
 }
@@ -175,11 +183,10 @@ void Game::render(sf::RenderWindow& window)
 	//render_healthbar(window, m_player->getStats().maxHealth, m_player->getStats().health);
 	m_healthbar->render(window);
 	m_expbar->draw(window);
-	//m_skillselector->draw(window);
 	window.setView(backup);
+	//m_skillselector->render(window);
 
-
-
+	
 }
 
 void Game::on_close()
