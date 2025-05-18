@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\SkillSelector.h" />
     <ClInclude Include="src\Expbar.h" />
     <ClInclude Include="src\Healthbar.h" />
     <ClInclude Include="src\EnemyManager.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="src\Weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\SkillSelector.cpp" />
     <ClCompile Include="src\Expbar.cpp" />
     <ClCompile Include="src\Healthbar.cpp" />
     <ClCompile Include="src\EnemyManager.cpp" />
