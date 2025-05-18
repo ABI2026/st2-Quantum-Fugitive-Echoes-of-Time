@@ -39,7 +39,7 @@ public:
 		: m_name(name) {}
 	~ScopedTimer()
 	{
-		double time = m_timer.elapsed_millis();
+		[[maybe_unused]] double time = m_timer.elapsed_millis();
 		LOG_INFO("[TIMER] {} - {} ms", m_name, time);
 	}
 private:

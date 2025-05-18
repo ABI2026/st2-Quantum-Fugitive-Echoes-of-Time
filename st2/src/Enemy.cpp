@@ -14,12 +14,14 @@
 
 int unsigned Enemy::count = 0;
 
+
+
 Enemy::~Enemy()
 {
 	count--;
 }
 
-Enemy::Enemy(const float i_damage, const float i_health, const float i_speed, const sf::Vector2f i_position, Player* i_player)
+Enemy::Enemy(const float i_damage, const double i_health, const float i_speed, const sf::Vector2f i_position, Player* i_player)
 	: m_damage(i_damage), m_health(i_health), m_speed(i_speed), m_position(i_position),/* m_texture(i_texture),*/ m_player(i_player)
 {
 	count++;
@@ -120,6 +122,13 @@ const Player* Enemy::get_player() const
 
 void Enemy::update([[maybe_unused]] std::shared_ptr<Eventsystem>& eventsystem, [[maybe_unused]] std::shared_ptr<Soundsystem>& soundsystem, const double deltatime)
 {
+	condt += deltatime;
+	while (condt >= 0.125f)
+	{
+		current_animation++;
+		condt -= 0.125f;
+		current_animation %= 4;
+	}
 	m_invicibility_time -= deltatime;
 	const sf::Vector2f distance_vec = m_player->getPosition() - m_position;
 	//const float dist = distance_vec.length();
@@ -133,4 +142,14 @@ void Enemy::update([[maybe_unused]] std::shared_ptr<Eventsystem>& eventsystem, [
 		const float m = m_speed / distance_length;//m = speed/wurzel((a*a)+(b*b))
 		m_position = { (distance_vec.x * m * (float)deltatime) + m_position.x,(distance_vec.y * m * (float)deltatime) + m_position.y };
 	}
+}
+
+int Enemy::get_current_animation() const
+{
+	return current_animation;
+}
+
+int Enemy::get_sprite_id() const
+{
+	return sprite_id;
 }
