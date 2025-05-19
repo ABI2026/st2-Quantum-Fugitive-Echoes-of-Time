@@ -136,7 +136,7 @@ void EnemyManager::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared
 	{
 		int i = 0;
 
-			//m_vertex_array.clear();
+		//m_vertex_array.clear();
 		m_vertex_array.resize(m_enemies.size() * 6);
 
 		for (const auto&  enemy : m_enemies)

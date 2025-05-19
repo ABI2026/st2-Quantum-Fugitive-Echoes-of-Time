@@ -2,6 +2,7 @@
 #include <memory>
 
 #include "Layer.h"
+#include "Utils/Random.h"
 #include "Utils/Soundsystem.h"
 
 
@@ -34,6 +35,7 @@ public:
 		[[maybe_unused]] std::shared_ptr<Soundsystem>& soundsystem,
 		[[maybe_unused]] sf::RenderWindow& window) override
 	{
+		soundsystem->play_sound("ui_sounds", Random::uint(0, 1));
 		return false;
 	}
 };

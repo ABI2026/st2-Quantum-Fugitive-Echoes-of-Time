@@ -50,7 +50,7 @@ public:
 	[[nodiscard]] bool on_click(std::shared_ptr<LayerManager>& layer_manager, std::shared_ptr<Soundsystem>& soundsystem,
 		sf::RenderWindow& window) const
 	{
-		soundsystem->play_sound("ui_sounds", 0);
+
 		return m_button_behaviour->on_click(layer_manager, soundsystem, window);
 	}
 
