@@ -100,10 +100,10 @@ void Game::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 
 
 	//window.setView(backup);
-	 
-	int prev_lvl = m_expbar->getLvl();
+
+	const int prev_lvl = m_expbar->getLvl();
 	m_expbar->update(eventsystem, soundsystem, deltatime);
-	int new_lvl = m_expbar->getLvl();
+	const int new_lvl = m_expbar->getLvl();
 	if (prev_lvl != new_lvl) 
 	{
 		std::shared_ptr<SkillSelector> skillselector = std::make_shared<SkillSelector>(layer_manager->get_top(), m_player);

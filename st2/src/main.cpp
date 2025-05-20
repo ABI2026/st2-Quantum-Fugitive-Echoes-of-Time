@@ -183,10 +183,12 @@ std::shared_ptr<Soundsystem> init_soundsystem()
     soundsystem->add_group("player_sounds");
     LOG_INFO("loading ui sounds");
     const std::filesystem::path ui_sounds{ std::filesystem::path("Resources") / "Sounds" / "UI" };
+
     for (auto const& dir_entry : std::filesystem::directory_iterator{ ui_sounds })
     {
         LOG_INFO("{}", dir_entry.path().string());
-    	soundsystem->load_buffer(dir_entry.path().string(), false, "ui_sounds");
+        
+        soundsystem->load_buffer(dir_entry.path().string(), false, "ui_sounds");
     }
 
     LOG_INFO("loading player sounds");
@@ -197,7 +199,10 @@ std::shared_ptr<Soundsystem> init_soundsystem()
             continue;
 
         LOG_INFO("{}", dir_entry.path().string());
-    	soundsystem->load_buffer(dir_entry.path().string(), false, "player_sounds");
+        if (dir_entry.path().filename().string().find("footsteps") != std::string::npos)
+            soundsystem->load_buffer(dir_entry.path().string(), true, "player_sounds");
+        else
+            soundsystem->load_buffer(dir_entry.path().string(), false, "player_sounds");
     }
 	//soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
  //   soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");

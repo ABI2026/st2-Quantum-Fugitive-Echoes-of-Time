@@ -6,6 +6,12 @@ SkillSelector::SkillSelector(std::shared_ptr<Layer> i_previous_layer, std::share
 {
 	if (!m_texture.loadFromFile("Resources/Images/SkillSelector.png"))
 		LOG_ERROR("failed loading SkillSelector texture");
+
+	// links 217;261
+	// mitte 212;267
+	// recht 218;267
+
+
 }
 void SkillSelector::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<LayerManager>& layer_manager,
 	std::shared_ptr<Soundsystem>& soundsystem, sf::RenderWindow& window, double deltatime)
@@ -26,7 +32,8 @@ void SkillSelector::render(sf::RenderWindow& window)
 	window.draw(shape);
 
 	sf::Sprite m_sprite(m_texture);
+
 	m_sprite.setOrigin({ m_texture.getSize().x /2.f,m_texture.getSize().y / 2.f });
-	m_sprite.setPosition({ 1920 / 2,1080 / 2 });
+	m_sprite.setPosition(sf::Vector2f(window.getSize()) / 2.f);
 	window.draw(m_sprite);
 }

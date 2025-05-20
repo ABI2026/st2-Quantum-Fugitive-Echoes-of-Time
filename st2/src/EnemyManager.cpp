@@ -97,8 +97,8 @@ void EnemyManager::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared
 	}
 
 	m_cells_enemies.clear();
-	constexpr int first_death_sound_id = 10; // 7
-	constexpr int amount_of_death_sounds = 1; // 7
+	constexpr int first_death_sound_id = 7; // 7
+	constexpr int amount_of_death_sounds = 3; 
 	static int death_sound = 0;
 	int count = 0;
 	std::erase_if(m_enemies, [&](const std::shared_ptr<Enemy>& enemy)
