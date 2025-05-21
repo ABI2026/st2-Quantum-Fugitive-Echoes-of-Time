@@ -5,6 +5,7 @@ class Animations
 {
 	std::vector<int> m_indices;
 	std::vector<double> m_intervals;
+	int current = 0;
 	double m_passed_time = 0;
 	bool playing = false;
 public:

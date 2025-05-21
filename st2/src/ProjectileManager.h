@@ -2,6 +2,8 @@
 #include <memory>
 #include <vector>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/System/Vector2.hpp>
 
 #include "Projectile.h"
@@ -14,16 +16,20 @@ class Player;
 class ProjectileManager
 {
 	std::vector<std::unique_ptr<Projectile>> m_projectiles;
+	sf::VertexArray m_vertex_array;
+	sf::Texture m_texture;
 public:
 
+	ProjectileManager();
+
 	void add_projectile(sf::Vector2f current_pos,
-	sf::Vector2f dir,
-	float speed,
-	double damage,
-	int penetration,
-	double crit_damage,
-	double crit_chance,
-	bool was_shot_by_player)
+	                    sf::Vector2f dir,
+	                    float speed,
+	                    double damage,
+	                    int penetration,
+	                    double crit_damage,
+	                    double crit_chance,
+	                    bool was_shot_by_player)
 	{
 		m_projectiles.emplace_back(std::make_unique<Projectile>(
 			current_pos,

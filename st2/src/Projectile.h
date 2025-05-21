@@ -14,6 +14,8 @@ public:
 	double crit_chance;
 	bool was_shot_by_player;
 	double lifetime{ 20.0 };
+	int sprite_id = 0;
+	int current_animation = 0;
 
 	Projectile(const sf::Vector2f& current_pos,
 		const sf::Vector2f& dir,

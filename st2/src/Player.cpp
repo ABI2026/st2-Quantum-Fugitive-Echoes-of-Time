@@ -16,7 +16,7 @@ Player::Player(sf::Texture& texture) : m_shape({ 100.f,100.f }), m_position(320.
 	//if (!m_player_texture.loadFromFile("Resources/Images/Sheet_Sprites_16Bit.png"))
 	//	LOG_ERROR("failed loading player texture");
 	m_shape.setTexture(&texture);
-	m_shape.setTextureRect({ {0,0},{16,16} });
+	m_shape.setTextureRect({ {0,0},{32,32} });
 	m_shape.setSize({ 16*8,16*8 });
 	m_shape.setOrigin(m_shape.getSize()/2.f);
 
@@ -52,18 +52,18 @@ void Player::update(std::shared_ptr<Eventsystem>& eventsystem,
 	m_invicibility_time -= deltatime;
 	m_weapon->update(deltatime, m_position, enemy_manager, projectile_manager);
 	glm::vec2 movement = { 0.f,0.f };
-	int x_pos_sprite = 170-17;
+	int x_pos_sprite = 30;
 
 	if (eventsystem->get_key_state(sf::Keyboard::Key::W)) 
 	{
 		//m_shape.setTextureRect({ {17,m_shape.getTextureRect().position.y},{16,16} });
-		x_pos_sprite = 17;
+		x_pos_sprite = 30;
 		movement.y -= 1;
 	}
 	if (eventsystem->get_key_state(sf::Keyboard::Key::A))
 	{
 		//m_shape.setTextureRect({ {34,m_shape.getTextureRect().position.y},{16,16} });
-		x_pos_sprite = 34;
+		x_pos_sprite = 30;
 		movement.x -= 1;
 	}
 	if (eventsystem->get_key_state(sf::Keyboard::Key::S))
@@ -74,7 +74,7 @@ void Player::update(std::shared_ptr<Eventsystem>& eventsystem,
 	}
 	if (eventsystem->get_key_state(sf::Keyboard::Key::D))
 	{
-		x_pos_sprite = 51;
+		x_pos_sprite = 90;
 		movement.x += 1;
 	}
 
@@ -82,6 +82,68 @@ void Player::update(std::shared_ptr<Eventsystem>& eventsystem,
 	ImGui::Text("fps: %f", 1.0 / deltatime);
 	if (movement != glm::vec2{ 0.f,0.f })
 	{
+		constexpr float animation_length = 0.125f;
+		if(movement.x == 1.f)
+		{
+			if (m_animation_id >= 0 && m_animation_id < 10)
+			{
+				if (condt > animation_length)
+				{
+					condt -= animation_length;
+					m_animation_id++;
+					if (m_animation_id >= 10)
+						m_animation_id = 0;
+				}
+			}
+			else
+				m_animation_id = 0;
+		}
+		else if(movement.x == -1.f)
+		{
+			if (m_animation_id >= 10 && m_animation_id < 20)
+			{
+				if (condt > animation_length)
+				{
+					condt -= animation_length;
+					m_animation_id++;
+					if (m_animation_id >= 20)
+						m_animation_id = 10;
+				}
+			}
+			else
+				m_animation_id = 10;
+		}
+		else if(movement.y == 1.f)
+		{
+			if (m_animation_id >= 20 && m_animation_id < 30)
+			{
+				if (condt > animation_length)
+				{
+					condt -= animation_length;
+					m_animation_id++;
+					if (m_animation_id >= 30)
+						m_animation_id = 20;
+				}
+			}
+			else
+				m_animation_id = 20;
+		}
+		else if(movement.y == -1.f)
+		{
+			if (m_animation_id >= 30 && m_animation_id < 40)
+			{
+				if (condt > animation_length)
+				{
+					condt -= animation_length;
+					m_animation_id++;
+					if (m_animation_id >= 40)
+						m_animation_id = 30;
+				}
+			}
+			else
+				m_animation_id = 30;
+		}
+
 		movement = glm::normalize(movement);
 		const auto footsteps = soundsystem->get_sound_by_group_and_id("player_sounds", 4);
 		if (footsteps->empty())
@@ -100,6 +162,54 @@ void Player::update(std::shared_ptr<Eventsystem>& eventsystem,
 	}
 	else
 	{
+		constexpr float animation_length = 0.25f;
+
+		if(condt > animation_length)
+		{
+			condt -= animation_length;
+			if((m_animation_id >= 0 && m_animation_id < 10) || m_animation_id == 51) //walking right
+			{
+				m_animation_id = 40; 
+			}
+			else if(m_animation_id >= 40 && m_animation_id < 44) //idle right
+			{
+				m_animation_id++;
+				if (m_animation_id >= 44)
+					m_animation_id = 40;
+			}
+			else if((m_animation_id >= 10 && m_animation_id < 20) || m_animation_id == 52 || m_animation_id == 53) //walking left
+			{
+				m_animation_id = 44;
+			}
+			else if (m_animation_id >= 44 && m_animation_id < 49) //idle left
+			{
+				m_animation_id++;
+				if (m_animation_id >= 49)
+					m_animation_id = 44;
+			}
+			else if((m_animation_id >= 20 && m_animation_id < 30) || m_animation_id == 49) //walking down
+			{
+				m_animation_id = 54;
+			}
+			else if (m_animation_id >= 54 && m_animation_id < 57) //idle down
+			{
+				m_animation_id++;
+				if (m_animation_id >= 57)
+					m_animation_id = 54;
+			}
+			else if((m_animation_id >= 30 && m_animation_id < 40) || m_animation_id == 50) //walking up
+			{
+				m_animation_id = 57;
+			}
+			else if (m_animation_id >= 57 && m_animation_id < 60) //idle up
+			{
+				m_animation_id++;
+				if (m_animation_id >= 60)
+					m_animation_id = 57;
+			}
+
+		}
+
 		const auto footsteps = soundsystem->get_sound_by_group_and_id("player_sounds", 4);
 		if(!footsteps->empty())
 			footsteps->front().pause();
@@ -109,24 +219,27 @@ void Player::update(std::shared_ptr<Eventsystem>& eventsystem,
 	}
 
 	ImGui::Text("position: x:%f y:%f", m_position.x, m_position.y);
+
+	int y_pos = (m_animation_id / 8) * 30;
+	x_pos_sprite = (m_animation_id % 8) * 30;
+	ImGui::Text("animation_id: %d x_pos: %d y_pos: %d",m_animation_id, x_pos_sprite,y_pos);
 	ImGui::End();
-	int y_pos = m_shape.getTextureRect().position.y;
-	if(condt > 0.25)
-	{
-		condt = 0;
-		y_pos += 17;
-		
-		//y_pos -= y_pos % 17;
-	}
-	if (x_pos_sprite == 170 - 17)
-	{
-		y_pos = y_pos % (6 * 17);
-	}
-	else
-	{
-		y_pos = y_pos % (5 * 17);
-	}
-	m_shape.setTextureRect({ { x_pos_sprite,y_pos }, { 16,16 } });
+	//if(condt > 0.25)
+	//{
+	//	condt = 0;
+	//	y_pos += 30;
+	//	
+	//	//y_pos -= y_pos % 17;
+	//}
+	//if (x_pos_sprite == 170 - 30)
+	//{
+	//	y_pos = y_pos % (6 * 30);
+	//}
+	//else
+	//{
+	//	y_pos = y_pos % (5 * 30);
+	//}
+	m_shape.setTextureRect({ { x_pos_sprite,y_pos }, { 30,30 } });
 	m_shape.setPosition(m_position);
 
 

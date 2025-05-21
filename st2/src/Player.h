@@ -57,6 +57,8 @@ struct Stats
 
 class Player {
 	double m_invicibility_time{ 0 };
+	int m_animation_id = 54;
+
 public:
 
 	Player(sf::Texture& texture);

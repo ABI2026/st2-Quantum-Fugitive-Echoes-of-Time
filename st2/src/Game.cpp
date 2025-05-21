@@ -18,7 +18,7 @@
 #include "../Resources/Images/Roboto-Regular.embed"
 Game::Game(int i_level_id, std::shared_ptr<Soundsystem>& soundsystem)
 {
-	if(!m_sprite_sheet.loadFromFile("Resources/Images/Image (1).png"))
+	if(!m_sprite_sheet.loadFromFile("Resources/Images/sprite_ohneshadows.png"))
 	{
 		LOG_ERROR("error loading sprite sheet");
 	}
