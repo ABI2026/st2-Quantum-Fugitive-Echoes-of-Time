@@ -13,11 +13,11 @@ class Enemy
 protected:
 	static unsigned int count; //?? wofuer wird count gebraucht? das wird spaeter eh in nem std::vector oder aehnlichem gespeichert
 	float m_damage{0}; 
-	double m_health{0}; 
+	std::atomic<double> m_health{0}; 
 	float m_speed {0}; 
 	sf::Vector2f m_position;
 	Player* m_player; //??
-	double m_invicibility_time{0};
+	std::atomic<double> m_invicibility_time{0};
 public:
 	~Enemy();
 	Enemy(float i_damage, float i_health, float i_speed, sf::Vector2f i_position, Player* i_player);

@@ -14,3 +14,8 @@ Level::~Level()
 void Level::update([[maybe_unused]]std::shared_ptr<Soundsystem>& soundsystem, [[maybe_unused]] double deltatime)
 {
 }
+
+int Level::get_level_id() const
+{
+	return m_level_id;
+}

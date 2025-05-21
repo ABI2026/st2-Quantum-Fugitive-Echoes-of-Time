@@ -13,3 +13,4 @@ bin-int/
 !vendor/bin
 /st2/imgui.ini
 /st2/st2.vcxproj.user
+/st2/optionen.txt

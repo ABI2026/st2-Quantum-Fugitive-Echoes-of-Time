@@ -23,7 +23,7 @@ class EnemyManager
 public:
 	EnemyManager();
 	std::shared_ptr<Enemy> get_closest_enemy(sf::Vector2f position);
-	std::vector<std::shared_ptr<Enemy>> all_intersections(sf::FloatRect bounding_box);
+	std::vector<std::shared_ptr<Enemy>> all_intersections(sf::FloatRect bounding_box) const;
 	void spawn_enemy(Player* player);
 	void update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Soundsystem>& soundsystem, double deltatime, Player* player, std::shared_ptr<Expbar>& expbar);
 	void add_enemy();

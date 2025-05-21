@@ -1,5 +1,6 @@
 ﻿#include "ProjectileManager.h"
 
+#include <execution>
 #include <SFML/Graphics/Rect.hpp>
 
 #include "Enemy.h"
@@ -10,7 +11,8 @@
 void ProjectileManager::update(const double deltatime, std::shared_ptr<EnemyManager> enemy_manager,
 	std::shared_ptr<Player> player)
 {
-	for (const auto& projectile : m_projectiles)
+	std::for_each(std::execution::par, m_projectiles.begin(), m_projectiles.end(), 
+		[&](const std::unique_ptr<Projectile>& projectile)
 	{
 		projectile->update(deltatime);
 		const sf::Vector2f projectile_size = { 32,32 };
@@ -40,7 +42,7 @@ void ProjectileManager::update(const double deltatime, std::shared_ptr<EnemyMana
 				}
 			}
 		}
-	}
+	});
 	std::erase_if(m_projectiles, [](const std::unique_ptr<Projectile>& proj)
 		{
 			return proj->penetration < 1 || proj->lifetime <0.0;

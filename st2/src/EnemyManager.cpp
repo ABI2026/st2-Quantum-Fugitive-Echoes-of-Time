@@ -36,7 +36,7 @@ std::shared_ptr<Enemy> EnemyManager::get_closest_enemy(sf::Vector2f position)
 	//return m_enemies.front(); //TODO: IMPLEMENT ACTUAL LOGIC FOR THIS
 }
 
-std::vector<std::shared_ptr<Enemy>> EnemyManager::all_intersections(sf::FloatRect bounding_box)
+std::vector<std::shared_ptr<Enemy>> EnemyManager::all_intersections(sf::FloatRect bounding_box) const
 {
 	std::vector<std::shared_ptr<Enemy>> intersected;
 	constexpr sf::Vector2f chunk_size_vec = { chunk_size,chunk_size };

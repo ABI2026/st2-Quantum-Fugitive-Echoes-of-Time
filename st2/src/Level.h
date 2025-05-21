@@ -7,6 +7,8 @@ public:
 	Level(int level_id, std::shared_ptr<Soundsystem>& soundsystem);
 	~Level();
 	void update(std::shared_ptr<Soundsystem>& soundsystem, double deltatime);
+	[[nodiscard]] int get_level_id() const;
+
 private:
 	int m_level_id = 0;
 	std::shared_ptr<Soundsystem> m_soundsystem;
