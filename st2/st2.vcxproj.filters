@@ -48,6 +48,7 @@
     <ClInclude Include="src\Projectile.h" />
     <ClInclude Include="src\ProjectileManager.h" />
     <ClInclude Include="src\Expbar.h" />
+    <ClInclude Include="src\SkillSelector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Buttons\Button.cpp">
@@ -87,6 +88,7 @@
     <ClCompile Include="src\Projectile.cpp" />
     <ClCompile Include="src\ProjectileManager.cpp" />
     <ClCompile Include="src\Healthbar.cpp" />
+    <ClCompile Include="src\SkillSelector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

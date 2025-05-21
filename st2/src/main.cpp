@@ -181,13 +181,33 @@ std::shared_ptr<Soundsystem> init_soundsystem()
     //TODO: ADD ADITIONAL SOUNDS
     soundsystem->add_group("ui_sounds");
     soundsystem->add_group("player_sounds");
+    LOG_INFO("loading ui sounds");
+    const std::filesystem::path ui_sounds{ std::filesystem::path("Resources") / "Sounds" / "UI" };
 
-	soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "ui_sounds");
+    for (auto const& dir_entry : std::filesystem::directory_iterator{ ui_sounds })
+    {
+        LOG_INFO("{}", dir_entry.path().string());
+        
+        soundsystem->load_buffer(dir_entry.path().string(), false, "ui_sounds");
+    }
 
-	soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
-    soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
-    soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
-    soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
+    LOG_INFO("loading player sounds");
+    const std::filesystem::path player_sounds{ std::filesystem::path("Resources") / "Sounds" / "Player" };
+    for (auto const& dir_entry : std::filesystem::recursive_directory_iterator{ player_sounds })
+    {
+        if (dir_entry.is_directory())
+            continue;
+
+        LOG_INFO("{}", dir_entry.path().string());
+        if (dir_entry.path().filename().string().find("footsteps") != std::string::npos)
+            soundsystem->load_buffer(dir_entry.path().string(), true, "player_sounds");
+        else
+            soundsystem->load_buffer(dir_entry.path().string(), false, "player_sounds");
+    }
+	//soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
+ //   soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
+ //   soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
+ //   soundsystem->load_buffer("Resources/Sounds/Hitmarker.ogg", false, "player_sounds");
 
 	soundsystem->load_buffer("Resources/Sounds/background_menu_music_1.mp3",false,"music");
     soundsystem->load_buffer("Resources/Sounds/background_menu_music_2.mp3",false,"music");

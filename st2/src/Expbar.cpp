@@ -39,7 +39,15 @@ void Expbar::update(std::shared_ptr<Eventsystem>& eventsystem, [[maybe_unused]] 
 	if (eventsystem->get_key_action(sf::Keyboard::Key::E)) {
 		m_exp += 5;
 	}
-	if (this->getExp() >= this->getMaxExp()) {
+	if (this->getExp() >= this->getMaxExp()) 
+	{
+		constexpr int lvl_up_sound_start = 0;
+		static int current_lvl_up_sound = 0;
+		constexpr int amount_of_lvl_up_sounds = 3;
+		soundsystem->play_sound("player_sounds", lvl_up_sound_start + current_lvl_up_sound);
+		current_lvl_up_sound++;
+		current_lvl_up_sound %= amount_of_lvl_up_sounds;
+
 		m_exp -= m_maxExp;
 		m_maxExp = static_cast<int>(floor(static_cast<double>(m_maxExp) * 1.5));
 		m_lvl += 1;

@@ -83,6 +83,11 @@ void Player::update(std::shared_ptr<Eventsystem>& eventsystem,
 	if (movement != glm::vec2{ 0.f,0.f })
 	{
 		movement = glm::normalize(movement);
+		const auto footsteps = soundsystem->get_sound_by_group_and_id("player_sounds", 4);
+		if (footsteps->empty())
+			soundsystem->play_sound("player_sounds", 4);
+		else if(footsteps->front().getStatus() == sf::Sound::Status::Paused)
+			footsteps->front().play();
 
 		ImGui::Text("direction: x:%f y:%f", movement.x, movement.y);
 
@@ -95,6 +100,10 @@ void Player::update(std::shared_ptr<Eventsystem>& eventsystem,
 	}
 	else
 	{
+		const auto footsteps = soundsystem->get_sound_by_group_and_id("player_sounds", 4);
+		if(!footsteps->empty())
+			footsteps->front().pause();
+
 		ImGui::Text("direction: x:0.000000 y:0.000000");
 		ImGui::Text("movement: x:0.000000 y:0.000000");
 	}

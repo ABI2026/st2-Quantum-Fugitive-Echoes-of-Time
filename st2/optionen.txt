@@ -1,0 +1,4 @@
+global;10
+music;100
+ui_sounds;100
+player_sounds;100

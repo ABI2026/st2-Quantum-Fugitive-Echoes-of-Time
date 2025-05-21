@@ -240,7 +240,6 @@ void Soundsystem::internal_set_volumes(const std::unordered_map<std::string, flo
 	{
 		return;
 	}
-
 #ifndef DIST
 	if (GET_LOG_LEVEL() == LOG_LEVEL_TRACE)
 	{
@@ -256,7 +255,6 @@ void Soundsystem::internal_set_volumes(const std::unordered_map<std::string, flo
 		}
 	}
 #endif
-
 	auto set_volume_for_group = [&](float end_lautstaerke, const std::string& group_name) -> void
 		{
 			if (end_lautstaerke > 100.f || end_lautstaerke < 0)
