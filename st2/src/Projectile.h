@@ -16,6 +16,7 @@ public:
 	double lifetime{ 20.0 };
 	int sprite_id = 0;
 	int current_animation = 0;
+	double passed_time = 0.0;
 
 	Projectile(const sf::Vector2f& current_pos,
 		const sf::Vector2f& dir,
@@ -39,6 +40,14 @@ public:
 	void update(const double deltatime)
 	{
 		lifetime -= deltatime;
+		passed_time += deltatime;
 		current_pos += dir * speed * (float)deltatime;
+		
+		if(passed_time > 0.125)
+		{
+			current_animation++;
+			current_animation %= 6;
+			passed_time -= 0.125;
+		}
 	}
 };

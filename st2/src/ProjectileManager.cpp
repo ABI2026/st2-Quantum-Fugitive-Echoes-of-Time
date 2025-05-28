@@ -11,7 +11,7 @@
 
 ProjectileManager::ProjectileManager()
 {
-	if (!m_texture.loadFromFile(std::filesystem::path("Resources") / "Images" / "projectile_sprites.png"))
+	if (!m_texture.loadFromFile(std::filesystem::path("Resources") / "Images" / "ball animation.png"))
 	{
 		LOG_ERROR("projectile texture couldn't load");
 	}
@@ -95,23 +95,24 @@ void ProjectileManager::update(const double deltatime, std::shared_ptr<EnemyMana
 			m_vertex_array[i + 4].position = { projectile_pos.x - projectile_size.x / 2.f,projectile_pos.y + projectile_size.y / 2.f };
 			m_vertex_array[i + 5].position = { projectile_pos + projectile_size / 2.f };
 
-			const sf::Vector2f single_sprite_size = { 16.f, 16.f };
-			const sf::Vector2f top_left_tex_coord = { (float)sprite_id * single_sprite_size.x , (float)animation_id * single_sprite_size.y };
+			const sf::Vector2f single_sprite_size = { 30.f, 30.f };
+			const sf::Vector2f top_left_tex_coord = { (float)(animation_id%2) * single_sprite_size.x , (float)(animation_id / 3) * single_sprite_size.y };
 			const sf::Vector2f bottom_right_tex_coord = top_left_tex_coord + single_sprite_size;
-			/*m_vertex_array[i].texCoords = top_left_tex_coord;
+			m_vertex_array[i].texCoords = top_left_tex_coord;
 			m_vertex_array[i + 1].texCoords = { bottom_right_tex_coord.x,top_left_tex_coord.y };
 			m_vertex_array[i + 2].texCoords = { top_left_tex_coord.x,bottom_right_tex_coord.y };
 
 			m_vertex_array[i + 3].texCoords = { bottom_right_tex_coord.x,top_left_tex_coord.y };
 			m_vertex_array[i + 4].texCoords = { top_left_tex_coord.x,bottom_right_tex_coord.y };
-			m_vertex_array[i + 5].texCoords = bottom_right_tex_coord;*/
-			sf::Color color = projectile->was_shot_by_player ? sf::Color::Red : sf::Color::White;
-			m_vertex_array[i].color   = sf::Color::Red;
-			m_vertex_array[i+1].color = sf::Color::Green;
-			m_vertex_array[i+2].color = sf::Color::Blue;
-			m_vertex_array[i+3].color = sf::Color::Green;
-			m_vertex_array[i+4].color = sf::Color::Blue;
-			m_vertex_array[i+5].color = sf::Color::Yellow;
+			m_vertex_array[i + 5].texCoords = bottom_right_tex_coord;
+
+			/*sf::Color color = projectile->was_shot_by_player ? sf::Color::Red : sf::Color::White;
+			m_vertex_array[i].color   = sf::Color(255,255,0);
+			m_vertex_array[i+1].color = sf::Color();
+			m_vertex_array[i+2].color = sf::Color();
+			m_vertex_array[i+3].color = sf::Color();
+			m_vertex_array[i+4].color = sf::Color();
+			m_vertex_array[i+5].color = sf::Color();*/
 
 			//ImGui::Text("%d", i);
 			i += 6;
@@ -120,14 +121,14 @@ void ProjectileManager::update(const double deltatime, std::shared_ptr<EnemyMana
 
 	}
 	ImGui::Begin("Debug");
-	ImGui::Text("amount of projectiles: %d", m_projectiles.size());
+	ImGui::Text("amount of projectiles: %llu", m_projectiles.size());
 	ImGui::End();
 }
 
 void ProjectileManager::draw(sf::RenderWindow& window)
 {
 	sf::RenderStates states = sf::RenderStates::Default;
-	//states.texture = m_texture;
+	states.texture = &m_texture;
 	window.draw(m_vertex_array, states);
 	//sf::RectangleShape proj{ {32,32} };
 	//proj.setFillColor(sf::Color::Red);
