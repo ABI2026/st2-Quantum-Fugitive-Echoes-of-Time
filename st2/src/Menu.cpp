@@ -44,6 +44,7 @@ void Menu::update(std::shared_ptr<Eventsystem>& eventsystem, std::shared_ptr<Lay
 	if (eventsystem->get_key_action(sf::Keyboard::Key::Escape) == Eventsystem::action_pressed)
 	{
 		layer_manager->pop_layer();
+		soundsystem->play_sound("ui_sounds", 2);
 		return;
 	}
 
